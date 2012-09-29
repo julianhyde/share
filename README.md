@@ -1,4 +1,4 @@
 share
 =====
 
-Shared files, presentations, and other materials
+Shared files, presentations, and other materials.
