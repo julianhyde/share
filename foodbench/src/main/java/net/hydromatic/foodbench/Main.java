@@ -139,28 +139,32 @@ public class Main {
 
   private static RangeSet<Integer> parseInts(String idsProperty) {
     RangeSet<Integer> idSet = TreeRangeSet.create();
-    if (idsProperty == null || idsProperty.isEmpty()) {
+    if (idsProperty == null) {
       idsProperty = "";
     }
     if (idsProperty.isEmpty() || idsProperty.startsWith("-")) {
       idSet.add(Range.<Integer>all());
     }
-    for (String id : idsProperty.split(",")) {
-      String[] split2 = id.split("-");
-      if (split2.length != 2) {
-        if (id.endsWith("-")) {
-          // 10- means "10 onwards"
-          idSet.add(Range.atLeast(Integer.parseInt(id.substring(0, id.length() - 1))));
+    if (!idsProperty.isEmpty()) {
+      for (String id : idsProperty.split(",")) {
+        String[] split2 = id.split("-");
+        if (split2.length != 2) {
+          if (id.endsWith("-")) {
+            // 10- means "10 onwards"
+            idSet.add(
+                Range.atLeast(
+                    Integer.parseInt(id.substring(0, id.length() - 1))));
+          } else {
+            idSet.add(Range.singleton(Integer.parseInt(id)));
+          }
+        } else if (split2[0].equals("")) {
+          // -10 means "not 10"
+          idSet.remove(Range.singleton(Integer.parseInt(split2[1])));
         } else {
-          idSet.add(Range.singleton(Integer.parseInt(id)));
+          int min = Integer.parseInt(split2[0]);
+          int max = Integer.parseInt(split2[1]);
+          idSet.add(Range.closed(min, max));
         }
-      } else if (split2[0].equals("")) {
-        // -10 means "not 10"
-        idSet.remove(Range.singleton(Integer.parseInt(split2[1])));
-      } else {
-        int min = Integer.parseInt(split2[0]);
-        int max = Integer.parseInt(split2[1]);
-        idSet.add(Range.closed(min, max));
       }
     }
     return idSet;
