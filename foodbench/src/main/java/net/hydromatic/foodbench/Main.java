@@ -32,7 +32,11 @@ import java.sql.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Command-line app that runs FoodBench.
+ */
 public class Main {
+  /** Optiq model. */
   public static final String OPTIQ_MODEL =
       "{~\n"
       + "  version: '1.0',\n"
@@ -52,6 +56,7 @@ public class Main {
       + "  ]\n"
       + "}\n";
 
+    /** Main method. */
   public static void main(String[] args) {
     try {
       Main main = new Main();
@@ -81,8 +86,8 @@ public class Main {
   }
 
   private void run(RangeSet<Integer> idSet, String jdbcUrl, String catalog,
-      String driverClassName)
-      throws IOException, SQLException, ClassNotFoundException {
+      String driverClassName) throws IOException, SQLException,
+     ClassNotFoundException {
     URL url = FoodMartQuery.class.getResource("/queries.json");
     InputStream inputStream = url.openStream();
     ObjectMapper mapper = new ObjectMapper();
