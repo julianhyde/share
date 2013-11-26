@@ -38,7 +38,7 @@ import java.util.Map;
 public class Main {
   /** Optiq model. */
   public static final String OPTIQ_MODEL =
-      "{~\n"
+      "{\n"
       + "  version: '1.0',\n"
       + "  defaultSchema: 'FOODMART_CLONE',\n"
       + "  schemas: [\n"
@@ -140,18 +140,23 @@ public class Main {
   private static RangeSet<Integer> parseInts(String idsProperty) {
     RangeSet<Integer> idSet = TreeRangeSet.create();
     if (idsProperty == null || idsProperty.isEmpty()) {
-      return idSet;
+      idsProperty = "";
+    }
+    if (idsProperty.isEmpty() || idsProperty.startsWith("-")) {
+      idSet.add(Range.<Integer>all());
     }
     for (String id : idsProperty.split(",")) {
       String[] split2 = id.split("-");
       if (split2.length != 2) {
-        idSet.add(Range.singleton(Integer.parseInt(id)));
+        if (id.endsWith("-")) {
+          // 10- means "10 onwards"
+          idSet.add(Range.atLeast(Integer.parseInt(id.substring(0, id.length() - 1))));
+        } else {
+          idSet.add(Range.singleton(Integer.parseInt(id)));
+        }
       } else if (split2[0].equals("")) {
         // -10 means "not 10"
         idSet.remove(Range.singleton(Integer.parseInt(split2[1])));
-      } else if (split2[1].equals("")) {
-        // 10- means "10 onwards"
-        idSet.add(Range.atLeast(Integer.parseInt(split2[0])));
       } else {
         int min = Integer.parseInt(split2[0]);
         int max = Integer.parseInt(split2[1]);
