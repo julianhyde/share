@@ -56,25 +56,35 @@ public class Main {
       + "  ]\n"
       + "}\n";
 
-    /** Main method. */
+  private final RangeSet<Integer> idSet;
+  private final boolean verbose;
+
+  /** Creates a Main. */
+  private Main(RangeSet<Integer> idSet, boolean verbose) {
+    this.idSet = idSet;
+    this.verbose = verbose;
+  }
+
+  /** Main method. */
   public static void main(String[] args) {
     try {
-      Main main = new Main();
-
       // E.g. Main -Dtest.ids=10,20-30,-23
-      RangeSet<Integer> idSet = parseInts(System.getProperty("test.ids"));
+      final RangeSet<Integer> idSet =
+          parseInts(System.getProperty("foodbench.ids"));
+      final boolean verbose =
+          Boolean.parseBoolean(System.getProperty("foodbench.verbose"));
+
+      Main main = new Main(idSet, verbose);
 
       switch (1) {
       case 0:
         main.run(
-            idSet,
             "jdbc:mysql://localhost?user=foodmart&password=foodmart",
             "foodmart",
             "com.mysql.jdbc.Driver");
         break;
       case 1:
         main.run(
-            idSet,
             "jdbc:optiq:model=inline:" + OPTIQ_MODEL,
             "FOODMART_CLONE",
             null);
@@ -85,9 +95,9 @@ public class Main {
     }
   }
 
-  private void run(RangeSet<Integer> idSet, String jdbcUrl, String catalog,
-      String driverClassName) throws IOException, SQLException,
-     ClassNotFoundException {
+  /** Does the work. */
+  private void run(String jdbcUrl, String catalog, String driverClassName)
+    throws IOException, SQLException, ClassNotFoundException {
     URL url = FoodMartQuery.class.getResource("/queries.json");
     InputStream inputStream = url.openStream();
     ObjectMapper mapper = new ObjectMapper();
@@ -131,6 +141,9 @@ public class Main {
       } catch (SQLException e) {
         System.out.println("query id: " + id + " sql: " + sql
             + " error: " + e.getMessage());
+        if (verbose) {
+          e.printStackTrace();
+        }
       }
     }
     statement.close();
