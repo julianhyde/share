@@ -127,6 +127,9 @@ public class Main {
           continue;
         }
       }
+      if (jdbcUrl.startsWith("jdbc:optiq:")) {
+        sql = sql.replace("RTRIM(", "TRIM(TRAILING ' ' FROM ");
+      }
       try {
         final long t0 = System.nanoTime();
         ResultSet resultSet = statement.executeQuery(sql);
