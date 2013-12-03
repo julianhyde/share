@@ -17,6 +17,10 @@
 */
 package net.hydromatic.foodbench;
 
+import net.hydromatic.linq4j.function.Function1;
+
+import net.hydromatic.optiq.runtime.Hook;
+
 import mondrian.test.data.FoodMartQuery;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,8 +33,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.*;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Command-line app that runs FoodBench.
@@ -55,6 +61,9 @@ public class Main {
       + "    }\n"
       + "  ]\n"
       + "}\n";
+
+  /** Format numbers with thousands separators. */
+  private static final NumberFormat NF = NumberFormat.getNumberInstance();
 
   private final RangeSet<Integer> idSet;
   private final boolean verbose;
@@ -130,6 +139,14 @@ public class Main {
       if (jdbcUrl.startsWith("jdbc:optiq:")) {
         sql = sql.replace("RTRIM(", "TRIM(TRAILING ' ' FROM ");
       }
+      final AtomicLong tPrepare = new AtomicLong(0);
+      Hook.Closeable hook = Hook.JAVA_PLAN.add(
+          new Function1<Object, Object>() {
+            public Object apply(Object a0) {
+              tPrepare.set(System.nanoTime());
+              return null;
+            }
+          });
       try {
         final long t0 = System.nanoTime();
         ResultSet resultSet = statement.executeQuery(sql);
@@ -138,15 +155,22 @@ public class Main {
           ++n;
         }
         resultSet.close();
-        final long nanos = System.nanoTime() - t0;
-        System.out.println("query id: " + id + " rows: "
-            + n + " nanos: " + nanos);
+        final long tEnd = System.nanoTime();
+        final long nanos = tEnd - t0;
+        final long prepare = tPrepare.longValue() - t0;
+        final long execute = tEnd - tPrepare.longValue();
+        System.out.println("query id: " + id + " rows: " + n
+            + " nanos: " + NF.format(nanos) + " prepare: " + NF.format(prepare)
+            + " execute: " + NF.format(execute)
+            + " prepare%: " + ((float) prepare / (float) nanos * 100f));
       } catch (SQLException e) {
         System.out.println("query id: " + id + " sql: " + sql
             + " error: " + e.getMessage());
         if (verbose) {
           e.printStackTrace();
         }
+      } finally {
+        hook.close();
       }
     }
     statement.close();
