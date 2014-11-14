@@ -6,6 +6,7 @@ if [ $(pwd) = /usr/local/bin ]; then
   exit
 fi
 for i in \
+  emacsValidate \
   extra.awk \
   extra.sh
 do
