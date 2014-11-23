@@ -8,7 +8,8 @@ fi
 for i in \
   emacsValidate \
   extra.awk \
-  extra.sh
+  extra.sh \
+  relNotes
 do
   ln -s $(pwd)/$i /usr/local/bin
 done

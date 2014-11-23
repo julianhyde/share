@@ -1,0 +1,8 @@
+# Generates release notes (go into HISTORY.md)
+git log --abbrev-commit --pretty=format:'* %s' |
+sed -e '
+s!\(http.*\), !<a href="\1">#xxx</a>, !;
+s!\(CALCITE-[0-9]*\)!<a href="https://issues.apache.org/jira/browse/\1">\1</a>!;
+s!</a>\]!</a>]\
+ !;'
+# End
