@@ -40,16 +40,34 @@ END {
     err(FILENAME, FNR, "Orphan <p>. Make it the first line of a paragraph");
 }
 /@/ && !/@see/ && length($0) > 80 {
-    s = $0;
-    gsub(/^ *\* */, "", s);
-    gsub(/ \*\/$/, "", s);
-    gsub(/[;.,]$/, "", s);
-    gsub(/<li>/, "", s);
-    if (s ~ /^{@link .*}$/) {}
-    else if (FILENAME ~ /CalciteResource.java/) {}
-    else {
+  s = $0;
+  gsub(/^ *\* */, "", s);
+  gsub(/ \*\/$/, "", s);
+  gsub(/[;.,]$/, "", s);
+  gsub(/<li>/, "", s);
+  if (s ~ /^{@link .*}$/) {}
+  else if (FILENAME ~ /CalciteResource.java/) {}
+  else {
     err(FILENAME, FNR, "Javadoc line too long (" + length($0) + " chars)");
+  }
+}
+FILENAME ~ /\.java/ && (/\(/ || /\)/) {
+  s = $0;
+  if ($0 ~ /"/) {
+      gsub(/"[^"]*"/, "string", s);
+  }
+  o = 0;
+  for (i = 1; i <= length(s); i++) {
+    c = substr(s, i, 1);
+    if (c == "(" && i > 1 && substr(s, i - 1, 1) ~ /[A-Za-z0-9_]/) {
+      ++o;
+    } else if (c == ")") {
+      --o;
     }
+  }
+  if (o > 1) {
+    err(FILENAME, FNR, "Open parentheses exceed closes by 2 or more");
+  }
 }
 {
   prevFnr = FNR;
