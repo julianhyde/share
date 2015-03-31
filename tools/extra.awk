@@ -16,12 +16,22 @@ function err(f,n,m) {
 }
 FNR == 1 {
   afterFile();
+  off = 0;
   prev = "";
   prevFileName = FILENAME;
   endCount = 0;
 }
 END {
   afterFile();
+}
+/CHECKSTYLE: ON/ {
+  off = 0;
+}
+/CHECKSTYLE: OFF/ {
+  off = 1;
+}
+off {
+  next
 }
 /^\/\/ End / {
   if (endCount++ > 0) {
