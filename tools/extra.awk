@@ -20,6 +20,10 @@ FNR == 1 {
   prev = "";
   prevFileName = FILENAME;
   endCount = 0;
+  maxLineLength = 80;
+  if (FILENAME ~ /calcite/) {
+    maxLineLength = 100;
+  }
 }
 END {
   afterFile();
@@ -49,7 +53,7 @@ off {
 /<p>$/ {
     err(FILENAME, FNR, "Orphan <p>. Make it the first line of a paragraph");
 }
-/@/ && !/@see/ && length($0) > 80 {
+/@/ && !/@see/ && length($0) > maxLineLength {
   s = $0;
   gsub(/^ *\* */, "", s);
   gsub(/ \*\/$/, "", s);
