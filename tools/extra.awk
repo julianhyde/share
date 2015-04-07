@@ -42,6 +42,9 @@ off {
     err(FILENAME, FNR, "End seen more than once");
   }
 }
+/\\n" \+ "/ {
+  err(FILENAME, FNR, "Newline in string should be at end of line");
+}
 /{@link/ {
   if ($0 !~ /}/) {
     err(FILENAME, FNR, "Split @link");
