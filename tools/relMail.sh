@@ -1,20 +1,22 @@
 #!/bin/bash
 # Generates emails for Apache release votes
 
-export REL=1.1.0-incubating
+export REL=1.2.0-incubating
+export REL2="1.2.0 (incubating)"
 export RC=1
-export BR=branch-1.1
-export NEXUS=1006
-export HASH=f10ea367ff1cc25497f50f149ef0c91b3ae03031
+export BR=branch-1.2
+export NEXUS=1007
+export HASH=d60f2aa3aa9ce7cda7c4f6986af5729d50a28679
 
 export RELNOTES_URL=https://github.com/apache/incubator-calcite/blob/${BR}/doc/HISTORY.md
 export COMMIT_URL=http://git-wip-us.apache.org/repos/asf/incubator-calcite/commit/${HASH}
 export NEXUS_URL=https://repository.apache.org/content/repositories/orgapachecalcite-${NEXUS}
-export ARTIFACTS_URL=http://people.apache.org/~jhyde/apache-calcite-${REL}-rc${RC}/
+export ARTIFACTS_URL=https://dist.apache.org/repos/dist/dev/incubator/calcite/apache-calcite-${REL}-rc${RC}
 export KEY_URL=https://people.apache.org/keys/committer/jhyde.asc
 
 checkUrl() {
   pushd /tmp
+  echo check "$1"
   if curl -f -s -O "$1"; then
     :
   else
@@ -27,11 +29,11 @@ checkUrl() {
 checkUrl $RELNOTES_URL
 checkUrl $COMMIT_URL
 checkUrl $NEXUS_URL
-checkUrl $ARTIFACTS_URL
+checkUrl $ARTIFACTS_URL/apache-calcite-${REL}-src.tar.gz
 checkUrl $KEY_URL
 
 foo() {
-  curl -s http://people.apache.org/~jhyde/apache-calcite-${REL}-rc${RC}/apache-calcite-${REL}-${1}
+  curl -s ${ARTIFACTS_URL}/apache-calcite-${REL}-${1}
 }
 
 mail1() {
@@ -174,8 +176,44 @@ mail4() {
   echo "Julian"
 }
 
+mail5() {
+  echo "To: announce@apache.org"
+  echo "Subject: [ANNOUNCE] Apache Calcite ${REL2} released"
+  echo ""
+  echo "The Apache Calcite team is pleased to announce the release of"
+  echo "Apache Calcite ${REL2}."
+  echo ""
+  echo "Calcite is a dynamic data management framework. Its cost-based"
+  echo "optimizer converts queries, represented in relational algebra,"
+  echo "into executable plans. Calcite supports many front-end languages"
+  echo "and back-end data engines, and includes an SQL parser and the"
+  echo "Avatica JDBC driver."
+  echo ""
+  echo "The release is available here:"
+  echo ""
+  echo "   http://www.apache.org/dyn/closer.cgi/incubator/calcite/apache-calcite-${REL}/"
+  echo ""
+  echo "We welcome your help and feedback. For more information on how to"
+  echo "report problems, and to get involved, visit the project website at"
+  echo ""
+  echo "   http://calcite.incubator.apache.org"
+  echo ""
+  echo "Julian Hyde, on behalf of the Apache Calcite Team"
+  echo ""
+  echo ""
+  echo "Disclaimer: Apache Calcite is an effort undergoing incubation at The"
+  echo "Apache Software Foundation (ASF), sponsored by Apache Incubator."
+  echo "Incubation is required of all newly accepted projects until a further"
+  echo "review indicates that the infrastructure, communications, and decision"
+  echo "making process have stabilized in a manner consistent with other"
+  echo "successful ASF projects. While incubation status is not necessarily a"
+  echo "reflection of the completeness or stability of the code, it does"
+  echo "indicate that the project has yet to be fully endorsed by the ASF."
+}
+
 mail1 > mail1.txt
 mail2 > mail2.txt
 mail3 > mail3.txt
 mail4 > mail4.txt
+mail5 > mail5.txt
 
