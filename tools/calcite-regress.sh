@@ -6,7 +6,11 @@ function foo() {
   . ./env ${jdk}
   cd /home/jhyde/open1/calcite.3
   git fetch --all
-  git checkout -b b-$label $remote/$branch
+  if [ "$remote" = hash ]; then
+    git checkout -b b-$label $branch
+  else
+    git checkout -b b-$label $remote/$branch
+  fi
   git status
   git log -n 1 --pretty=format:'%h "%s"' >> $subject
   echo $remote/$branch >> $subject
@@ -23,20 +27,29 @@ function foo() {
 
 function usage() {
   remotes="$(cd /home/jhyde/open1/calcite.3; git remote)"
-  echo "Usage: calcite-regress.sh jdk remote branch [flags]"
+  echo "Usage:"
+  echo "  calcite-regress.sh [ --batch ] <jdk> <remote> <branch> [flags]"
+  echo "  calcite-regress.sh [ --batch ] <jdk> hash <commit> [flags]"
+  echo "  calcite-regress.sh --help"
   echo
   echo "For example, the following fetches the latest master branch from the"
   echo "origin remote repository and runs the suite using JDK 1.8:"
   echo
   echo "  calcite-regress.sh jdk1.8 origin master -DskipTests"
   echo
+  echo "Or, to check out a hash and run against JDK 1.7:"
+  echo
+  echo "  calcite-regress.sh jdk1.7 hash abc123"
+  echo
   echo "Arguments:"
   echo "--help"
   echo "     Print this help and exit"
+  echo "--batch"
+  echo "     Submit this task as a batch job"
   echo "jdk"
   echo "     One of jdk1.6, jdk1.7, jdk1.8"
   echo "remote"
-  echo "      A git remote:" ${remotes}
+  echo "      A git remote (one of:" ${remotes} ")"
   echo "branch"
   echo "      A branch within the remote"
   echo "flags"
@@ -46,6 +59,12 @@ function usage() {
 if [ $# -lt 3 -o x"$1" = x--help -o x"$1" = x-h ]; then
   usage
   exit 0
+fi
+
+if [ "$1" = --batch ]; then
+  shift
+  echo $0 "$@" | batch
+  exit
 fi
 
 jdk="$1"
@@ -76,7 +95,7 @@ END {
 (
 echo "To: julianhyde@gmail.com"
 echo "From: julianhyde@gmail.com"
-echo "Subject: Calcite regress $(cat ${failed}) $(cat ${subject})"
+echo "Subject: Calcite regress $(awk -v ORS=' ' '{print}' ${failed} ${subject})"
 echo
 cat $out
 ) | /usr/sbin/ssmtp julianhyde@gmail.com
