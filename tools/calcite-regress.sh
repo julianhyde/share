@@ -14,6 +14,7 @@ function foo() {
   git status
   git log -n 1 --pretty=format:'%h "%s"' >> $subject
   echo $remote/$branch >> $subject
+  echo "mvn clean && mvn -Pit $flags install site"
   mvn clean
   mvn -Pit $flags install site
   status=$?
@@ -67,6 +68,12 @@ if [ "$1" = --batch ]; then
   exit
 fi
 
+if [ "$1" == --exclusive ]; then
+  shift
+  flock /tmp/calcite-regress $0 "$@"
+  exit $?
+fi
+
 jdk="$1"
 remote="$2"
 branch="$3"
@@ -74,7 +81,6 @@ flags="$4"
 
 cd /home/jhyde/open1/calcite.3
 mkdir -p logs
-bzip2 logs/regress-*.txt
 label=$(date +%Y%m%d-%H%M%S)
 out=$(pwd)/logs/regress-${label}.txt
 failed=/tmp/failed-${label}.txt
@@ -97,7 +103,12 @@ echo "To: julianhyde@gmail.com"
 echo "From: julianhyde@gmail.com"
 echo "Subject: Calcite regress $(awk -v ORS=' ' '{print}' ${failed} ${subject})"
 echo
-cat $out
+if [ -s "$failed" ]; then
+  cat $out
+else
+  echo Succeeded. Details in ${out}.bz2.
+fi
 ) | /usr/sbin/ssmtp julianhyde@gmail.com
+bzip2 $out
 
 # End

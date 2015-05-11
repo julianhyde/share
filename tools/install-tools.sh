@@ -7,6 +7,7 @@ if [ $(pwd) = /usr/local/bin ]; then
 fi
 for i in \
   calcite-regress.sh \
+  checkKeys.sh \
   emacsValidate \
   extra.awk \
   extra.sh \
