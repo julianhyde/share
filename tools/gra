@@ -1,0 +1,4 @@
+#!/bin/bash
+# git remote add <name>
+git remote add "$1" git@github.com:"$1"/incubator-calcite.git && git fetch "$1"
+# End
