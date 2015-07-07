@@ -68,6 +68,9 @@ off {
     err(FILENAME, FNR, "Javadoc line too long (" + length($0) + " chars)");
   }
 }
+/@param +[^ ]+ *$/ {
+  err(FILENAME, FNR, "Parameter with no description");
+}
 FILENAME ~ /\.java/ && (/\(/ || /\)/) {
   s = $0;
   if ($0 ~ /"/) {
