@@ -1,0 +1,16 @@
+#!/bin/bash
+# Reads from stdin and sends an email to myself
+
+SELF=julianhyde@gmail.com
+(
+  echo "To: ${SELF}"
+  echo "From: ${SELF}"
+  echo "Subject: Note to self at $(date)"
+  echo
+  while IFS= read -r line; do
+    echo $line
+  done
+) | /usr/sbin/ssmtp ${SELF}
+
+# End mailself
+

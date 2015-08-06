@@ -1,14 +1,14 @@
 #!/bin/bash
 # Generates emails for Apache release votes
 
-export REL=1.2.0-incubating
-export REL2="1.2.0 (incubating)"
+export REL=1.3.0-incubating
+export REL2="1.3.0 (incubating)"
 export RC=1
-export BR=branch-1.2
-export NEXUS=1007
-export HASH=d60f2aa3aa9ce7cda7c4f6986af5729d50a28679
+export BR=branch-1.3
+export NEXUS=1008
+export HASH=495f1859f84b41ae70b2099c3d15c696a49a5100
 
-export RELNOTES_URL=https://github.com/apache/incubator-calcite/blob/${BR}/doc/HISTORY.md
+export RELNOTES_URL=https://github.com/apache/incubator-calcite/blob/${BR}/doc/history.md
 export COMMIT_URL=http://git-wip-us.apache.org/repos/asf/incubator-calcite/commit/${HASH}
 export NEXUS_URL=https://repository.apache.org/content/repositories/orgapachecalcite-${NEXUS}
 export ARTIFACTS_URL=https://dist.apache.org/repos/dist/dev/incubator/calcite/apache-calcite-${REL}-rc${RC}

@@ -13,10 +13,11 @@ function foo() {
   fi
   git status
   git log -n 1 --pretty=format:'%h "%s"' >> $subject
+  mvn_flags="-Dmaven.repo.local=$HOME/.m2/other-repository"
   echo $remote/$branch >> $subject
-  echo "mvn clean && mvn -Pit $flags install site"
-  mvn clean
-  mvn -Pit $flags install site
+  echo "mvn $mvn_flags clean && mvn $mvn_flags -Pit $flags install site"
+  mvn $mvn_flags clean
+  timeout 20m mvn $mvn_flags -Pit $flags install site
   status=$?
   echo
   echo status $status
@@ -106,9 +107,9 @@ echo
 if [ -s "$failed" ]; then
   cat $out
 else
-  echo Succeeded. Details in ${out}.bz2.
+  echo "Succeeded (jdk: ${jdk}, remote: ${remote}, branch: ${branch}, flags: ${flags}). Details in ${out}.xz."
 fi
 ) | /usr/sbin/ssmtp julianhyde@gmail.com
-bzip2 $out
+xz $out
 
 # End

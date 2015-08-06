@@ -12,7 +12,8 @@ for i in \
   extra.awk \
   extra.sh \
   gra \
-  relNotes
+  relNotes \
+  mailself
 do
   ln -s $(pwd)/$i /usr/local/bin
 done
