@@ -2,11 +2,14 @@
 # Extra code style checking.
 # Invoked from extra.sh.
 
+function isProto(filename) {
+  return filename ~ /\/proto\//;
+}
 function afterFile() {
   if (prevFileName ~ /.java$/) {
     b = prevFileName;
     gsub(/.*\//, "", b);
-    if (prevLine != "// End " b) {
+    if (prevLine != "// End " b && !isProto(prevFileName)) {
       err(prevFileName, prevFnr, sprintf("Last line should be '%s'\n", "// End " b));
     }
   }
