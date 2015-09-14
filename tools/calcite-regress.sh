@@ -92,9 +92,11 @@ foo $label > $out 2>&1
 
 awk '
 /^Tests run:/ {f+=$5;e+=$7}
+/SIGSEGV/ {++c}
+/Tag @link: reference not found/ {++j}
 END {
-  if (f + e > 0) {
-    printf "failures: %d errors: %d\n", f, e;
+  if (f + e + c + j > 0) {
+    printf "(%d failures, %d errors, %d crashes, %d javadoc)\n", f, e, c, j;
   }
 }
     ' $out >> $failed
