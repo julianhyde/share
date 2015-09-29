@@ -1,6 +1,9 @@
 #!/bin/bash
 # Runs the calcite test suite and emails the results
 
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
+export PATH="${PATH}:${ORACLE_HOME}/bin"
+
 function foo() {
   cd /home/jhyde/open1
   . ./env ${jdk}
@@ -14,10 +17,21 @@ function foo() {
   git status
   git log -n 1 --pretty=format:'%h "%s"' >> $subject
   mvn_flags="-Dmaven.repo.local=$HOME/.m2/other-repository"
+  (
+    cd ${ORACLE_HOME}/jdbc/lib;
+    mvn install:install-file \
+      $mvn_flags \
+      -DgroupId=com.oracle \
+      -DartifactId=ojdbc6 \
+      -Dversion=11.2.0.2.0 \
+      -Dpackaging=jar \
+      -Dfile=ojdbc6.jar \
+      -DgeneratePom=true
+  )
   echo $remote/$branch >> $subject
-  echo "mvn $mvn_flags clean && mvn $mvn_flags -Pit $flags install site"
+  echo "mvn $mvn_flags clean && mvn $mvn_flags -P it,it-oracle $flags install site"
   mvn $mvn_flags clean
-  timeout 20m mvn $mvn_flags -Pit $flags install site
+  timeout 20m mvn $mvn_flags -P it,it-oracle $flags install site
   status=$?
   echo
   echo status $status
