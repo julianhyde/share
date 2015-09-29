@@ -74,6 +74,11 @@ off {
 /@param +[^ ]+ *$/ {
   err(FILENAME, FNR, "Parameter with no description");
 }
+/href=.*CALCITE-/ {
+  if ($0 !~ /<a href="https:\/\/issues.apache.org\/jira\/browse\/CALCITE-[0-9]+">\[CALCITE-[0-9]+\]/) {
+    err(FILENAME, FNR, "Bad JIRA reference");
+  }
+}
 FILENAME ~ /\.java/ && (/\(/ || /\)/) {
   s = $0;
   if ($0 ~ /"/) {
