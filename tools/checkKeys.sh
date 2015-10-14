@@ -45,6 +45,14 @@ function checkHash() {
     fi
 
     if [ -f $i.asc ]; then
+      # If verify fails with the message
+      #   gpg: Signature made Fri 09 Oct 2015 03:06:51 AM PDT using RSA key ID <key hash>
+      #   gpg: Can't check signature: public key not found
+      # you need to get the key, as follows:
+      #   curl -O https://people.apache.org/keys/committer/committer-name.asc
+      #   head committer-name.asc
+      #   gpg --recv-keys <key hash>
+      # Then re-try verification.
       gpg --verify $i.asc $i
     else
       echo "$i.asc missing"
