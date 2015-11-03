@@ -6,6 +6,7 @@ if [ $(pwd) = /usr/local/bin ]; then
   exit
 fi
 for i in \
+  apache-svn.sh \
   calcite-regress.sh \
   checkKeys.sh \
   emacsValidate \
