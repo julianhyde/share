@@ -4,6 +4,6 @@
 #
 # Bugs:
 # * Should work on repository other than calcite
-git remote add "$1" git@github.com:"$1"/incubator-calcite.git
+git remote add "$1" git@github.com:"$1"/calcite.git
 git fetch "$1"
 # End
