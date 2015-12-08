@@ -10,7 +10,7 @@ function afterFile() {
     b = prevFileName;
     gsub(/.*\//, "", b);
     if (prevLine != "// End " b && !isProto(prevFileName)) {
-      err(prevFileName, prevFnr, sprintf("Last line should be '%s'\n", "// End " b));
+      err(prevFileName, prevFnr, sprintf("Last line should be '%s'", "// End " b));
     }
   }
 }
