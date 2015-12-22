@@ -31,7 +31,7 @@ function foo() {
   echo $remote/$branch >> $subject
   echo "mvn $mvn_flags clean && mvn $mvn_flags -P it,it-oracle $flags install site"
   mvn $mvn_flags clean
-  timeout 20m mvn $mvn_flags -P it,it-oracle $flags install site
+  timeout 20m mvn $mvn_flags -P it,it-oracle $flags install javadoc:javadoc site
   status=$?
   echo
   echo status $status
@@ -118,12 +118,12 @@ END {
 (
 echo "To: julianhyde@gmail.com"
 echo "From: julianhyde@gmail.com"
-echo "Subject: Calcite regress $(awk -v ORS=' ' '{print}' ${failed} ${subject})"
+echo "Subject: Calcite regress $(awk -v ORS=' ' '{print}' ${failed} ${subject})" | tee -a $out
 echo
 if [ -s "$failed" ]; then
   cat $out
 else
-  echo "Succeeded (jdk: ${jdk}, remote: ${remote}, branch: ${branch}, flags: ${flags}). Details in ${out}.xz."
+  echo "Succeeded (jdk: ${jdk}, remote: ${remote}, branch: ${branch}, flags: ${flags}). Details in ${out}.xz." | tee -a $out
 fi
 ) | /usr/sbin/ssmtp julianhyde@gmail.com
 xz $out

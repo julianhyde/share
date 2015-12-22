@@ -93,7 +93,7 @@ FILENAME ~ /\.java/ && (/\(/ || /\)/) {
       --o;
     }
   }
-  if (o > 1) {
+  if (o > 1 && FILENAME !~ /proto\/Common.java/) {
     err(FILENAME, FNR, "Open parentheses exceed closes by 2 or more");
   }
 }

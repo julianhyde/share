@@ -14,6 +14,7 @@ for i in \
   extra.sh \
   gra \
   relNotes \
+  remove-javadoc-timestamps \
   mailself
 do
   ln -s $(pwd)/$i /usr/local/bin
