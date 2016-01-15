@@ -1,17 +1,16 @@
 #!/bin/bash
 # Generates emails for Apache release votes
 
-export REL=1.3.0-incubating
-export REL2="1.3.0 (incubating)"
-export RC=1
-export BR=branch-1.3
-export NEXUS=1008
-export HASH=495f1859f84b41ae70b2099c3d15c696a49a5100
+export REL=1.6.0
+export RC=0
+export BR=branch-1.6
+export NEXUS=1011
+export HASH=3d12a4f0dddb51e8f8468d4d9b65f9880e25609a
 
-export RELNOTES_URL=https://github.com/apache/incubator-calcite/blob/${BR}/doc/history.md
-export COMMIT_URL=http://git-wip-us.apache.org/repos/asf/incubator-calcite/commit/${HASH}
+export RELNOTES_URL=https://github.com/apache/calcite/blob/${BR}/site/_docs/history.md
+export COMMIT_URL=http://git-wip-us.apache.org/repos/asf/calcite/commit/${HASH}
 export NEXUS_URL=https://repository.apache.org/content/repositories/orgapachecalcite-${NEXUS}
-export ARTIFACTS_URL=https://dist.apache.org/repos/dist/dev/incubator/calcite/apache-calcite-${REL}-rc${RC}
+export ARTIFACTS_URL=https://dist.apache.org/repos/dist/dev/calcite/apache-calcite-${REL}-rc${RC}
 export KEY_URL=https://people.apache.org/keys/committer/jhyde.asc
 
 checkUrl() {
@@ -37,7 +36,7 @@ foo() {
 }
 
 mail1() {
-  echo "To: dev@calcite.incubator.apache.org"
+  echo "To: dev@calcite.apache.org"
   echo "Subject: [VOTE] Release apache-calcite-${REL} (release candidate ${RC})"
   echo ""
   echo "Hi all,"
@@ -45,7 +44,8 @@ mail1() {
   echo "I have created a build for Apache Calcite ${REL}, release candidate ${RC}."
   echo ""
   echo "Thanks to everyone who has contributed to this release."
-  echo "<Further details about release.> You can read the release notes here:"
+  echo "<Further details about release.>"
+  echo "You can read the release notes here:"
   echo "${RELNOTES_URL}"
   echo ""
   echo "The commit to be voted upon:"
@@ -71,7 +71,7 @@ mail1() {
   echo "Please vote on releasing this package as Apache Calcite ${REL}."
   echo ""
   echo "The vote is open for the next 72 hours and passes if a majority of"
-  echo "at least three +1 PPMC votes are cast."
+  echo "at least three +1 PMC votes are cast."
   echo ""
   echo "[ ] +1 Release this package as Apache Calcite ${REL}"
   echo "[ ]  0 I don't feel strongly about it, but I'm okay with the release"
@@ -87,7 +87,7 @@ mail1() {
 
 mail2() {
   echo "Subject: [RESULT] [VOTE] Release apache-calcite-${REL} (release candidate ${RC})"
-  echo "To: dev@calcite.incubator.apache.org"
+  echo "To: dev@calcite.apache.org"
   echo ""
   echo "Thanks to everyone who has tested the release candidate and given"
   echo "their comments and votes."
@@ -105,69 +105,6 @@ mail2() {
   echo "Therefore I am delighted to announce that the proposal to release"
   echo "Apache Calcite ${REL} has passed."
   echo ""
-  echo "I'll now start a vote on the general list. Those of you in the IPMC,"
-  echo "please recast your vote on the new thread."
-  echo ""
-  echo "Julian"
-}
-
-mail3() {
-  echo "To: general@incubator.apache.org"
-  echo "Subject: [VOTE] Release apache-calcite-${REL}"
-  echo ""
-  echo "Hi all,"
-  echo ""
-  echo "The Calcite community has voted on and approved a proposal to release"
-  echo "Apache Calcite ${REL}."
-  echo ""
-  echo "Proposal:"
-  echo "http://mail-archives.apache.org/mod_mbox/incubator-calcite-dev/201408.mbox/MESSAGE-URI"
-  echo ""
-  echo "Vote result:"
-  echo "N binding +1 votes"
-  echo "N non-binding +1 votes"
-  echo "No -1 votes"
-  echo "http://mail-archives.apache.org/mod_mbox/incubator-calcite-dev/201408.mbox/MESSAGE-URI"
-  echo ""
-  echo "The commit to be voted upon:"
-  echo "${COMMIT_URL}"
-  echo ""
-  echo "Its hash is ${HASH}."
-  echo ""
-  echo "The artifacts to be voted on are located here:"
-  echo "${ARTIFACTS_URL}"
-  echo ""
-  echo "The hashes of the artifacts are as follows:"
-  echo "src.tar.gz.md5 $(foo src.tar.gz.md5)"
-  echo "src.tar.gz.sha1 $(foo src.tar.gz.sha1)"
-  echo "src.zip.md5 $(foo src.zip.md5)"
-  echo "src.zip.sha1 $(foo src.zip.sha1)"
-  echo ""
-  echo "A staged Maven repository is available for review at:"
-  echo "${NEXUS_URL}"
-  echo ""
-  echo "Release artifacts are signed with the following key:"
-  echo "${KEY_URL}"
-  echo ""
-  echo "Pursuant to the Releases section of the Incubation Policy and with"
-  echo "the endorsement of NNN of our mentors we would now like to request"
-  echo "the permission of the Incubator PMC to publish the release. The vote"
-  echo "is open for 72 hours, or until the necessary number of votes (3 +1)"
-  echo "is reached."
-  echo ""
-  echo "[ ] +1 Release this package as Apache Calcite ${REL}"
-  echo "[ ] -1 Do not release this package because..."
-  echo ""
-  echo "Julian Hyde, on behalf of Apache Calcite PPMC"
-}
-
-mail4() {
-  echo "To: general@incubator.apache.org"
-  echo "Subject: [RESULT] [VOTE] Release apache-calcite-${REL}"
-  echo ""
-  echo "This vote passes with N +1s and no 0 or -1 votes:"
-  echo "+1 <name> (mentor)"
-  echo ""
   echo "There was some feedback during voting. I shall open a separate"
   echo "thread to discuss."
   echo ""
@@ -176,12 +113,12 @@ mail4() {
   echo "Julian"
 }
 
-mail5() {
+mail3() {
   echo "To: announce@apache.org"
-  echo "Subject: [ANNOUNCE] Apache Calcite ${REL2} released"
+  echo "Subject: [ANNOUNCE] Apache Calcite ${REL} released"
   echo ""
   echo "The Apache Calcite team is pleased to announce the release of"
-  echo "Apache Calcite ${REL2}."
+  echo "Apache Calcite ${REL}."
   echo ""
   echo "Calcite is a dynamic data management framework. Its cost-based"
   echo "optimizer converts queries, represented in relational algebra,"
@@ -191,29 +128,18 @@ mail5() {
   echo ""
   echo "The release is available here:"
   echo ""
-  echo "   http://www.apache.org/dyn/closer.cgi/incubator/calcite/apache-calcite-${REL}/"
+  echo "   http://www.apache.org/dyn/closer.cgi/calcite/apache-calcite-${REL}/"
   echo ""
   echo "We welcome your help and feedback. For more information on how to"
   echo "report problems, and to get involved, visit the project website at"
   echo ""
-  echo "   http://calcite.incubator.apache.org"
+  echo "   http://calcite.apache.org"
   echo ""
   echo "Julian Hyde, on behalf of the Apache Calcite Team"
-  echo ""
-  echo ""
-  echo "Disclaimer: Apache Calcite is an effort undergoing incubation at The"
-  echo "Apache Software Foundation (ASF), sponsored by Apache Incubator."
-  echo "Incubation is required of all newly accepted projects until a further"
-  echo "review indicates that the infrastructure, communications, and decision"
-  echo "making process have stabilized in a manner consistent with other"
-  echo "successful ASF projects. While incubation status is not necessarily a"
-  echo "reflection of the completeness or stability of the code, it does"
-  echo "indicate that the project has yet to be fully endorsed by the ASF."
 }
 
 mail1 > mail1.txt
 mail2 > mail2.txt
 mail3 > mail3.txt
-mail4 > mail4.txt
-mail5 > mail5.txt
 
+# End relMail.sh
