@@ -16,8 +16,9 @@ svn-co https://svn.apache.org/repos/private/committers/board ~/apache/private/co
 svn-co https://svn.apache.org/repos/private/committers/info ~/apache/private/committers/info
 
 svn co https://svn.apache.org/repos/asf/incubator/public/trunk ~/apache/asf/incubator
+svn co https://svn.apache.org/repos/asf/infrastructure/site/trunk ~/apache/asf/infrastructure/site
 
-for i in incubator/kylin incubator/concerted incubator/eagle calcite # drill
+for i in kylin incubator/concerted incubator/eagle calcite # drill
 do
   svn-co https://dist.apache.org/repos/dist/dev/$i ~/apache/dist/dev/$i
   svn-co https://dist.apache.org/repos/dist/release/$i ~/apache/dist/release/$i
