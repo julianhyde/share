@@ -1,0 +1,76 @@
+#!/bin/bash
+#
+# Script to scrape Barclay's beer list
+
+cd ~/web/barclays
+(
+f=beers-$(date +%Y%m%d).html
+echo
+echo ::: Download barclays beer list at $(date) to ${f} :::
+rm -f Beers.php*
+wget http://app.barclayspub.com/Beers.php &&
+  mv Beers.php $f
+
+ls beers-*.html |
+  awk '
+function times(s,n) {
+    ss = ""
+    for (i = 0; i < n; i++) ss = ss s;
+    return ss;
+}
+function endWeek(dow) {
+    if (z++) print times("<td>&nbsp;</td>", (7 - dow) % 7) "</tr>"
+}
+function startMonth(y,m) {
+    print "<tr><td colspan=7>" y "/" m "</td></tr>"
+}
+function startWeek(dow) {
+    print "<tr>" times("<td>&nbsp;</td>", dow % 7)
+}
+function julian(y,m,d) {
+    j = y * 365;
+    if (m > 2 && y % 4 == 0) ++j;
+    for (i = 1; i < m; i++) j += dim[i];
+    j += d;
+    return j;
+}
+BEGIN {
+    print "<html><head>Barclays beer archive</head><body><table border=1>"
+    dim[1] = dim[3] = dim[5] = dim[7] = dim[8] = dim[10] = dim[12] = 31;
+    dim[9] = dim[4] = dim[6] = dim[11] = 30;
+    dim[2] = 28;
+    prevDay = 31;
+}
+{
+    y = substr($0, 7, 4) + 0;
+    m = substr($0, 11, 2) + 0;
+    d = substr($0, 13, 2) + 0;
+    j = julian(y, m, d);
+    dow = (j + 4) % 7;
+    if (z++ == 0) {
+        startMonth(y, m);
+        startWeek(dow);
+    } else if (d == 1 || d <= prevDay) {
+        endWeek(prevdow + 1);
+        startMonth(y, m);
+        startWeek(dow);
+    } else if (dow != prevdow + 1) {
+        endWeek(prevdow + 1);
+        startWeek(dow);
+    } else if (dow % 7 == 0) {
+        print "</tr><tr>"
+    }
+    printf "<td width=30><a href=%c%s%c>%s</a></td>\n", \
+        34, $0, 34, d;
+    prevdow = dow;
+    prevDay = d;
+}
+END {
+    endWeek(dow + 1)
+    print "</table></body></html>"
+}' > index.html
+
+) >> job.log # 2>&1
+
+
+# End barclay

@@ -15,7 +15,8 @@ function foo() {
     git checkout -b b-$label $remote/$branch
   fi
   git status
-  git log -n 1 --pretty=format:'%h "%s"' >> $subject
+  git log -n 1 --pretty=format:'"%s"' >> $subject
+  commit_id=$(git log -n 1 --pretty=format:'%h')
   mvn_flags="-Dmaven.repo.local=$HOME/.m2/other-repository"
   (
     cd ${ORACLE_HOME}/jdbc/lib;
@@ -28,10 +29,9 @@ function foo() {
       -Dfile=ojdbc6.jar \
       -DgeneratePom=true
   )
-  echo $remote/$branch >> $subject
   echo "mvn $mvn_flags clean && mvn $mvn_flags -P it,it-oracle $flags install site"
   mvn $mvn_flags clean
-  timeout 20m mvn $mvn_flags -P it,it-oracle $flags install javadoc:javadoc site
+  timeout 30m mvn $mvn_flags -P it,it-oracle $flags install javadoc:javadoc site
   status=$?
   echo
   echo status $status
@@ -99,9 +99,10 @@ mkdir -p logs
 label=$(date +%Y%m%d-%H%M%S)
 out=$(pwd)/logs/regress-${label}.txt
 failed=/tmp/failed-${label}.txt
+succeeded=/tmp/succeeded-${label}.txt
 subject=/tmp/subject-${label}.txt
-rm -f $subject $failed
-touch $subject $failed
+rm -f $subject $failed $succeeded
+touch $subject $failed $succeeded
 foo $label > $out 2>&1
 
 awk '
@@ -110,15 +111,19 @@ awk '
 /Tag @link: reference not found/ {++j}
 END {
   if (f + e + c + j > 0) {
-    printf "(%d failures, %d errors, %d crashes, %d javadoc)\n", f, e, c, j;
+    printf "fecj: %d%d%d%d\n", f, e, c, j;
   }
 }
     ' $out >> $failed
 
+if [ -s "$failed" ]; then
+  echo "status: 0 fecj: 0000" >> $succeeded
+fi
+
 (
 echo "To: julianhyde@gmail.com"
 echo "From: julianhyde@gmail.com"
-echo "Subject: Calcite regress $(awk -v ORS=' ' '{print}' ${failed} ${subject})" | tee -a $out
+echo "Subject: Calcite regress ${commit_id} ${remote}/${branch} ${jdk} $(awk -v ORS=' ' '{print}' ${succeeded} ${failed} ${subject})" | tee -a $out
 echo
 if [ -s "$failed" ]; then
   cat $out
