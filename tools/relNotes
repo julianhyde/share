@@ -5,7 +5,7 @@ s!\(http.*\), !<a href="\1">#xxx</a>, !;
 s!\(CALCITE-[0-9]*\)!<a href="https://issues.apache.org/jira/browse/\1">\1</a>!;
 s!</a>\]!</a>]\
  !;' |
-fold -s -79 |
+fold -s -81 |
 sed -e 's/ *$//' |
 gawk '!/^\* / && !/^ / {print "  " $0;next} {print}'
 # End
