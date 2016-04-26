@@ -5,18 +5,17 @@
 
 function svn-co() {
   (
+    mkdir -p $(dirname $2)
     svn co $1 $2
     (cd $2; svn up)
   ) 2>&1 | sed -e "s!^!$2: !"
 }
 
-mkdir -p ~/apache/private/foundation
-
-svn-co https://svn.apache.org/repos/private/foundation/board ~/apache/private/foundation/board &
-svn-co https://svn.apache.org/repos/private/foundation/officers ~/apache/private/foundation/officers &
+svn-co https://svn.apache.org/repos/private/foundation ~/apache/private/foundation &
 svn-co https://svn.apache.org/repos/private/committers/board ~/apache/private/committers/board &
 svn-co https://svn.apache.org/repos/private/committers/info ~/apache/private/committers/info &
 
+svn-co https://svn.apache.org/repos/asf/comdev/projects.apache.org ~/apache/asf/comdev/projects.apache.org &
 svn co https://svn.apache.org/repos/asf/incubator/public/trunk ~/apache/asf/incubator &
 svn co https://svn.apache.org/repos/asf/infrastructure/site/trunk ~/apache/asf/infrastructure/site &
 
