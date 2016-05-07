@@ -25,4 +25,7 @@ do
   ln -s $(pwd)/$i /usr/local/bin
 done
 
+ln -s $(dirname $(pwd))/lisp ~
+ln -s $(dirname $(pwd))/lisp/_emacs ~/.emacs
+
 # End install-tools.sh

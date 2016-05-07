@@ -1,0 +1,53 @@
+(custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(c-basic-offset 4)
+ '(indent-tabs-mode nil)
+ '(nxml-section-element-name-regexp "article\\|\\(sub\\)*section\\|chapter\\|div\\|appendix\\|part\\|preface\\|reference\\|simplesect\\|bibliography\\|bibliodiv\\|glossary\\|glossdiv\\|sect[0-9]")
+ '(tab-always-indent t))
+(custom-set-faces
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ )
+
+;; ----------------------------------------------------------------------------
+(defun master-occur-buffer ()
+  (let ((b (current-buffer))
+	(ob (get-buffer "*Occur*")))
+    (and ob
+	 (save-excursion (and (set-buffer ob)
+			      (eq occur-buffer b)
+			      ob)))))
+(defun my-next-or-prev-hit (n)
+  (let ((ob (master-occur-buffer)))
+    (if ob
+	(progn (switch-to-buffer-other-window ob)
+	       (if (> n 0) (occur-next n) (occur-prev (- n)))
+	       (recenter 0)
+	       (occur-mode-goto-occurrence))
+      (next-error n))))
+(defun my-next-error () (interactive) (my-next-or-prev-hit 1))
+(define-key global-map [f4] 'my-next-error)
+(defun my-prev-error () (interactive) (my-next-or-prev-hit -1))
+(define-key global-map [S-f4] 'my-prev-error)
+(define-key global-map [S-f7] 'compile)
+(defun save-jump-compile ()
+  (interactive)
+  (save-some-buffers t)
+  (let ((b (get-buffer "*compilation*")))
+	(if b (switch-to-buffer-other-window b)))
+  (compile compile-command))
+(define-key global-map [f7] 'save-jump-compile)
+(define-key global-map [f12] 'call-last-kbd-macro)
+;; ----------------------------------------------------------------------------
+(put 'narrow-to-region 'disabled nil)
+(load-file "~/lisp/p4.el")
+;(set-variable 'utils-dir "~")
+;(load-file "~/lisp/emacs.el")
+(set-variable 'indent-tabs-mode nil)
+(put 'scroll-left 'disabled nil)
+(set-variable 'split-width-threshold nil)
