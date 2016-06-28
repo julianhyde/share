@@ -31,6 +31,9 @@ FNR == 1 {
 END {
   afterFile();
 }
+/\t/ {
+  err(FILENAME, FNR, "Tab");
+}
 /CHECKSTYLE: ON/ {
   off = 0;
 }

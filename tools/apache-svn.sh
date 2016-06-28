@@ -19,7 +19,7 @@ svn-co https://svn.apache.org/repos/asf/comdev/projects.apache.org ~/apache/asf/
 svn co https://svn.apache.org/repos/asf/incubator/public/trunk ~/apache/asf/incubator &
 svn co https://svn.apache.org/repos/asf/infrastructure/site/trunk ~/apache/asf/infrastructure/site &
 
-for i in kylin incubator/eagle calcite # drill incubator/concerted
+for i in kylin incubator/eagle incubator/quickstep incubator/beam calcite # drill incubator/concerted
 do
   svn-co https://dist.apache.org/repos/dist/dev/$i ~/apache/dist/dev/$i &
   svn-co https://dist.apache.org/repos/dist/release/$i ~/apache/dist/release/$i &
