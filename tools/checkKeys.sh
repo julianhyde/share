@@ -19,7 +19,7 @@ function checkHash() {
       continue
     fi
     if [ -f $i.md5 ]; then
-      left="$(cat $i.md5 | awk '{print $NF}')"
+      left="$(awk '{s = $0; if (s ~ /\./) s = $1; print s}' $i.md5)"
       right="$(doCheckSum md5 $i)"
       if [ "$left" = "$right" ]; then
         echo "$i.md5 present and correct"
@@ -32,7 +32,7 @@ function checkHash() {
     fi
 
     if [ -f $i.sha1 ]; then
-      left="$(cat $i.sha1 | awk '{print $NF}')"
+      left="$(awk '{s = $0; if (s ~ /\./) s = $1; print s}' $i.sha1)"
       right="$(doCheckSum sha1 $i)"
       if [ "$left" = "$right" ]; then
         echo $i.sha1 present and correct
