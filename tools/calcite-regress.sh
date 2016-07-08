@@ -7,7 +7,7 @@ export PATH="${PATH}:${ORACLE_HOME}/bin"
 function foo() {
   cd /home/jhyde/open1
   . ./env ${jdk}
-  cd /home/jhyde/open1/calcite.3
+  cd /home/jhyde/regress/${project}
   git fetch --all
   if [ "$remote" = hash ]; then
     git checkout -b b-$label $branch
@@ -29,9 +29,24 @@ function foo() {
       -Dfile=ojdbc6.jar \
       -DgeneratePom=true
   )
-  echo "mvn $mvn_flags clean && mvn $mvn_flags -P it,it-oracle $flags install site"
-  mvn $mvn_flags clean
-  timeout 30m mvn $mvn_flags -P it,it-oracle $flags install javadoc:javadoc site
+  case ${project} in
+  (mondrian)
+    touch mondrian.properties
+    timeout 60m mvn $mvn_flags $flags -Dmondrian.test.db=mysql clean install javadoc:javadoc site
+    ;;
+  (olap4j)
+    timeout 20m mvn $mvn_flags $flags -Drat.ignoreErrors -Dmondrian.test.db=mysql clean install javadoc:javadoc site
+    ;;
+  (calcite|*)
+    (
+      cd avatica
+      timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc site
+    )
+    echo "mvn $mvn_flags -P it,it-oracle $flags clean install javadoc:javadoc site"
+    #timeout 30m mvn $mvn_flags -P it,it-oracle $flags install javadoc:javadoc site
+    timeout 30m mvn $mvn_flags $flags clean install javadoc:javadoc site
+    ;;
+  esac
   status=$?
   echo
   echo status $status
@@ -42,10 +57,10 @@ function foo() {
 }
 
 function usage() {
-  remotes="$(cd /home/jhyde/open1/calcite.3; git remote)"
+  remotes="$(cd /home/jhyde/regress/${project}; git remote)"
   echo "Usage:"
-  echo "  calcite-regress.sh [ --batch ] <jdk> <remote> <branch> [flags]"
-  echo "  calcite-regress.sh [ --batch ] <jdk> hash <commit> [flags]"
+  echo "  calcite-regress.sh [ --batch ] [ --project project ] [ --exclusive ] <jdk> <remote> <branch> [flags]"
+  echo "  calcite-regress.sh [ --batch ] [ --project project ] [ --exclusive ] <jdk> hash <commit> [flags]"
   echo "  calcite-regress.sh --help"
   echo
   echo "For example, the following fetches the latest master branch from the"
@@ -83,8 +98,17 @@ if [ "$1" = --batch ]; then
   exit
 fi
 
+project=calcite
+if [ "$1" == --project ]; then
+  shift
+  project="$1"
+  shift
+fi
+
 if [ "$1" == --exclusive ]; then
   shift
+  # All projects share the same lock file because maven repositories
+  # are not thread-safe
   flock /tmp/calcite-regress $0 "$@"
   exit $?
 fi
@@ -92,9 +116,15 @@ fi
 jdk="$1"
 remote="$2"
 branch="$3"
-flags="$4"
+shift 3
+flags="$*"
 
-cd /home/jhyde/open1/calcite.3
+if [ ! -d /home/jhyde/regress/${project} ]; then
+  echo "no directory"
+  exit 1
+fi
+
+cd /home/jhyde/regress/${project}
 mkdir -p logs
 label=$(date +%Y%m%d-%H%M%S)
 out=$(pwd)/logs/regress-${label}.txt
@@ -111,19 +141,19 @@ awk '
 /Tag @link: reference not found/ {++j}
 END {
   if (f + e + c + j > 0) {
-    printf "fecj: %d%d%d%d\n", f, e, c, j;
+    printf "fecj: %d:%d:%d:%d\n", f, e, c, j;
   }
 }
     ' $out >> $failed
 
-if [ -s "$failed" ]; then
+if [ ! -s "$failed" ]; then
   echo "status: 0 fecj: 0000" >> $succeeded
 fi
 
 (
 echo "To: julianhyde@gmail.com"
 echo "From: julianhyde@gmail.com"
-echo "Subject: Calcite regress ${commit_id} ${remote}/${branch} ${jdk} $(awk -v ORS=' ' '{print}' ${succeeded} ${failed} ${subject})" | tee -a $out
+echo "Subject: ${project} regress ${commit_id} ${remote}/${branch} ${jdk} $(awk -v ORS=' ' '{print}' ${succeeded} ${failed} ${subject})" | tee -a $out
 echo
 if [ -s "$failed" ]; then
   cat $out

@@ -5,11 +5,17 @@
 function isProto(filename) {
   return filename ~ /\/proto\//;
 }
+function isJava(filename) {
+  return filename ~ /.java$/;
+}
+function prevLine(i) {
+  return prevLines[(k - i) % 5];
+}
 function afterFile() {
-  if (prevFileName ~ /.java$/) {
+  if (isJava(prevFileName) && !isProto(prevFileName)) {
     b = prevFileName;
     gsub(/.*\//, "", b);
-    if (prevLine != "// End " b && !isProto(prevFileName)) {
+    if (prevLine(1) != "// End " b || prevLine(2) != "") {
       err(prevFileName, prevFnr, sprintf("Last line should be '%s'", "// End " b));
     }
   }
@@ -42,6 +48,12 @@ END {
 }
 off {
   next
+}
+/ $/ {
+  err(FILENAME, FNR, "Trailing spaces");
+}
+/ );/ {
+  err(FILENAME, FNR, "Spaces before )");
 }
 /^\/\/ End / {
   if (endCount++ > 0) {
@@ -82,6 +94,11 @@ off {
     err(FILENAME, FNR, "Bad JIRA reference");
   }
 }
+/^package / {
+  if (prevLine(1) == "" && isJava(FILENAME) && !isProto(FILENAME)) {
+    err(FILENAME, FNR, "Blank line before 'package'");
+  }
+}
 FILENAME ~ /\.java/ && (/\(/ || /\)/) {
   s = $0;
   if ($0 ~ /"/) {
@@ -102,7 +119,7 @@ FILENAME ~ /\.java/ && (/\(/ || /\)/) {
 }
 {
   prevFnr = FNR;
-  prevLine = $0;
+  prevLines[k++ % 5] = $0;
 }
 
 # End extra.awk
