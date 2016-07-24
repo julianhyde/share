@@ -9,6 +9,7 @@ if [ $(pwd) = /usr/local/bin ]; then
   exit
 fi
 for i in \
+  add-remotes.sh \
   apache-svn.sh \
   avi2mp4 \
   calcite-regress.sh \

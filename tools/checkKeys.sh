@@ -18,6 +18,16 @@ function checkHash() {
     if [ ! -f $i ]; then
       continue
     fi
+
+    if [ -f $i.mds ]; then
+      gpg --print-mds $i > /tmp/x.mds
+      if diff $i.mds /tmp/x.mds; then
+        echo "$i.mds is present and correct"
+      else
+        echo "$.mds does not match"
+      fi
+    fi
+
     if [ -f $i.md5 ]; then
       left="$(awk '{s = $0; if (s ~ /\./) s = $1; print s}' $i.md5)"
       right="$(doCheckSum md5 $i)"
