@@ -6,8 +6,11 @@
 function svn-co() {
   (
     mkdir -p $(dirname $2)
-    svn co $1 $2
-    (cd $2; svn up)
+    svn co $1 $2 &&
+    cd $2 &&
+    svn upgrade &&
+    svn cleanup &&
+    svn update
   ) 2>&1 | sed -e "s!^!$2: !"
 }
 
