@@ -8,6 +8,7 @@ function foo() {
   cd /home/jhyde/open1
   . ./env ${jdk}
   cd /home/jhyde/regress/${project}
+  add-remotes.sh ${project}
   git fetch --all
   if [ "$remote" = hash ]; then
     git checkout -b b-$label $branch
@@ -17,7 +18,10 @@ function foo() {
   git status
   git log -n 1 --pretty=format:'"%s"' >> $subject
   commit_id=$(git log -n 1 --pretty=format:'%h')
-  mvn_flags="-Dmaven.repo.local=$HOME/.m2/other-repository"
+  case $project in
+  (mondrian) ;;
+  (*)  mvn_flags="-Dmaven.repo.local=$HOME/.m2/other-repository" ;;
+  esac
   (
     cd ${ORACLE_HOME}/jdbc/lib;
     mvn install:install-file \
@@ -109,7 +113,7 @@ if [ "$1" == --exclusive ]; then
   shift
   # All projects share the same lock file because maven repositories
   # are not thread-safe
-  flock /tmp/calcite-regress $0 "$@"
+  flock /tmp/$project-regress $0 --project $project "$@"
   exit $?
 fi
 
