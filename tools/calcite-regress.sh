@@ -143,6 +143,7 @@ awk '
 /^Tests run:/ {f+=$5;e+=$7}
 /SIGSEGV/ {++c}
 /Tag @link: reference not found/ {++j}
+/Parameter ".*" is documented more than once/ {++j}
 END {
   if (f + e + c + j > 0) {
     printf "fecj: %d:%d:%d:%d\n", f, e, c, j;
