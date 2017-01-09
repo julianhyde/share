@@ -44,6 +44,7 @@ case "$1" in
   git remote remove dremio
   git remote remove jpullok
   git remote remove bluejoe2008
+  git remote remove sreev
   git remote add origin https://git-wip-us.apache.org/repos/asf/calcite.git
   git remote add ledem git@github.com:julienledem/calcite.git
 
@@ -63,6 +64,7 @@ case "$1" in
   foo calcite d4nc00per incubator-calcite
   foo calcite devth incubator-calcite
   foo calcite dingguitao incubator-calcite
+  foo calcite docete
   foo calcite ebastien
   foo calcite F21
   foo calcite gabrielreid
@@ -84,6 +86,7 @@ case "$1" in
   foo calcite JulianFeinauer
   foo calcite julianhyde
   foo calcite jxiang
+  foo calcite KurtYoung
   foo calcite lalinsky incubator-calcite
   foo calcite laurentgo
   foo calcite Lerm
@@ -103,7 +106,6 @@ case "$1" in
   foo calcite sbcd90
   foo calcite Serhii-Harnyk
   foo calcite smola incubator-calcite
-  foo calcite sreev incubator-optiq
   foo calcite sudheeshkatkam incubator-calcite
   foo calcite tedxu
   foo calcite tzolov

@@ -4,8 +4,11 @@ case $(pwd) in
 esac
 git diff HEAD^ |
 awk '
-/^diff / {f=$3}
-/^\+/ && !/^\+\+\+/ && f ~ /.java/ && length($0) > 81 {print f " line too long"; print}
-/^\+/ && !/^\+\+\+/ && f ~ /.java/ && /for \(.*[^ ]:/ {print f " need space before colon"; print}
+/^diff / {f=substr($3,3)}
+/^@@ / {s=$0; gsub(/^[^+]*\+/,"",s); gsub(/,.*$/,"",s); line=s-1}
+/^ / {++line}
+/^\+/ {++line}
+/^\+/ && !/^\+\+\+/ && f ~ /.java/ && length($0) > 81 {printf "%s:%s:%s\n", f, line, "line too long"; print}
+/^\+/ && !/^\+\+\+/ && f ~ /.java/ && /for \(.*[^ ]:/ {printf "%s:%s:%s\n", f, line, "need space before colon"; print}
     '
 exec find $(find . -name src -type d) -type f ! -name \*~ | xargs awk -f $(dirname $0)/extra.awk

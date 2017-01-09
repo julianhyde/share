@@ -23,9 +23,7 @@ svn co https://svn.apache.org/repos/asf/incubator/public/trunk ~/apache/asf/incu
 svn co https://svn.apache.org/repos/asf/infrastructure/site/trunk ~/apache/asf/infrastructure/site &
 
 for i in kylin \
-    incubator/beam \
     incubator/carbondata \
-    incubator/eagle \
     incubator/metron \
     incubator/quickstep \
     incubator/ranger \
