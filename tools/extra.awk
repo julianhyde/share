@@ -28,6 +28,7 @@ FNR == 1 {
   off = 0;
   prev = "";
   prevFileName = FILENAME;
+  deprecated = -1;
   endCount = 0;
   maxLineLength = 80;
   if (FILENAME ~ /calcite/) {
@@ -50,7 +51,9 @@ off {
   next
 }
 / $/ {
-  err(FILENAME, FNR, "Trailing spaces");
+  if (!isProto(FILENAME)) {
+    err(FILENAME, FNR, "Trailing spaces");
+  }
 }
 / );/ {
   err(FILENAME, FNR, "Spaces before )");
@@ -99,6 +102,14 @@ off {
     err(FILENAME, FNR, "Blank line before 'package'");
   }
 }
+/subquer|SUBQUER/ {
+  if (FNR != deprecated + 1) {
+    err(FILENAME, FNR, "Subquery, should be sub-query");
+  }
+}
+/@deprecated/ || /@Deprecated/ {
+  deprecated = FNR;
+}
 FILENAME ~ /\.java/ && (/\(/ || /\)/) {
   s = $0;
   if ($0 ~ /"/) {
@@ -116,6 +127,9 @@ FILENAME ~ /\.java/ && (/\(/ || /\)/) {
   if (o > 1 && FILENAME !~ /proto\/Common.java/) {
     err(FILENAME, FNR, "Open parentheses exceed closes by 2 or more");
   }
+}
+FILENAME ~ /\.(java|xml|sh)/ && /[^\x00-\xFF]/ {
+  err(FILENAME, FNR, "Non-ASCII character");
 }
 {
   prevFnr = FNR;

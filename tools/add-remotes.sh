@@ -102,6 +102,7 @@ case "$1" in
   foo calcite ndimiduk incubator-calcite
   foo calcite pengchengxiong
   foo calcite remerge
+  foo calcite riccardotommasini
   foo calcite rmetzger optiq
   foo calcite sbcd90
   foo calcite Serhii-Harnyk
@@ -122,6 +123,7 @@ case "$1" in
   foo calcite yixinglu
   foo calcite yssharma incubator-optiq
   foo calcite zhifac
+  foo calcite Zhiqiang-He
   foo calcite zinking
   ;;
 esac

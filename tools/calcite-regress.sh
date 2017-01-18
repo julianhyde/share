@@ -9,7 +9,7 @@ function foo() {
   . ./env ${jdk}
   cd /home/jhyde/regress/${project}
   add-remotes.sh ${project}
-  git fetch --all
+  git fetch origin # don't need '--all'; add-remotes fetched everything else
   if [ "$remote" = hash ]; then
     git checkout -b b-$label $branch
   else
@@ -47,7 +47,7 @@ function foo() {
       timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc site
     )
     echo "mvn $mvn_flags -P it,it-oracle $flags clean install javadoc:javadoc site"
-    #timeout 30m mvn $mvn_flags -P it,it-oracle $flags install javadoc:javadoc site
+    #timeout 30m mvn $mvn_flags -P it $flags install # javadoc:javadoc site
     timeout 30m mvn $mvn_flags $flags clean install javadoc:javadoc site
     ;;
   esac
@@ -70,11 +70,11 @@ function usage() {
   echo "For example, the following fetches the latest master branch from the"
   echo "origin remote repository and runs the suite using JDK 1.8:"
   echo
-  echo "  calcite-regress.sh jdk1.8 origin master -DskipTests"
+  echo "  calcite-regress.sh jdk8 origin master -DskipTests"
   echo
-  echo "Or, to check out a hash and run against JDK 1.7:"
+  echo "Or, to check out a hash and run against JDK 9:"
   echo
-  echo "  calcite-regress.sh jdk1.7 hash abc123"
+  echo "  calcite-regress.sh jdk9 hash abc123"
   echo
   echo "Arguments:"
   echo "--help"
@@ -82,7 +82,7 @@ function usage() {
   echo "--batch"
   echo "     Submit this task as a batch job"
   echo "jdk"
-  echo "     One of jdk1.6, jdk1.7, jdk1.8"
+  echo "     One of jdk6, jdk7, jdk8, jdk9"
   echo "remote"
   echo "      A git remote (one of:" ${remotes} ")"
   echo "branch"
@@ -117,7 +117,7 @@ if [ "$1" == --exclusive ]; then
   exit $?
 fi
 
-jdk="$1"
+export jdk="$1"
 remote="$2"
 branch="$3"
 shift 3
