@@ -139,20 +139,11 @@ rm -f $subject $failed $succeeded
 touch $subject $failed $succeeded
 foo $label > $out 2>&1
 
-awk '
-/^Tests run:/ {f+=$5;e+=$7}
-/SIGSEGV/ {++c}
-/Tag @link: reference not found/ {++j}
-/Parameter ".*" is documented more than once/ {++j}
-END {
-  if (f + e + c + j > 0) {
-    printf "fecj: %d:%d:%d:%d\n", f, e, c, j;
-  }
-}
-    ' $out >> $failed
+D=$(cd $(dirname $(readlink $0)); pwd -P)
+awk -f ${D}/analyze-regress.awk $out >> $failed
 
 if [ ! -s "$failed" ]; then
-  echo "status: 0 fecj: 0000" >> $succeeded
+  echo "status: 0 fecjd: 00000" >> $succeeded
 fi
 
 (
