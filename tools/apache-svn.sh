@@ -23,13 +23,10 @@ svn co https://svn.apache.org/repos/asf/incubator/public/trunk ~/apache/asf/incu
 svn co https://svn.apache.org/repos/asf/infrastructure/site/trunk ~/apache/asf/infrastructure/site &
 
 for i in kylin \
-    incubator/carbondata \
     incubator/metron \
     incubator/quickstep \
-    incubator/ranger \
     arrow \
-    calcite \
-    samza
+    calcite
 do
   svn-co https://dist.apache.org/repos/dist/dev/$i ~/apache/dist/dev/$i &
   svn-co https://dist.apache.org/repos/dist/release/$i ~/apache/dist/release/$i &

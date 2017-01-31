@@ -28,8 +28,11 @@ function remoteExists {
 
 case "$1" in
 (calcite-test-dataset)
+  foo calcite-test-dataset b-slim
   foo calcite-test-dataset jcamachor
+  foo calcite-test-dataset julianhyde
   foo calcite-test-dataset michaelmior
+  foo calcite-test-dataset vlsi
   ;;
 
 (sqlline)
@@ -59,19 +62,24 @@ case "$1" in
   foo calcite batytskyy
   foo calcite bdumon optiq
   foo calcite benoyantony incubator-optiq
+  foo calcite b-slim
   foo calcite chandnisingh
   foo calcite chinmaykolhatkar
+  foo calcite chrajeshbabu
   foo calcite d4nc00per incubator-calcite
   foo calcite devth incubator-calcite
   foo calcite dingguitao incubator-calcite
   foo calcite docete
   foo calcite ebastien
+  foo calcite elilevine
+  foo calcite ex00
   foo calcite F21
   foo calcite gabrielreid
   foo calcite gaodayue
   foo calcite georgewfraser
   foo calcite gianm
   foo calcite gparai
+  foo calcite haohui
   foo calcite HeartSaVioR
   foo calcite hortonworks
   foo calcite hsuanyi incubator-calcite
@@ -86,11 +94,13 @@ case "$1" in
   foo calcite JulianFeinauer
   foo calcite julianhyde
   foo calcite jxiang
+  foo calcite kliewkliew
   foo calcite KurtYoung
   foo calcite lalinsky incubator-calcite
   foo calcite laurentgo
   foo calcite Lerm
   foo calcite mapr incubator-calcite
+  foo calcite markap14
   foo calcite maryannxue
   foo calcite michaelmior
   foo calcite mikehinchey
@@ -100,15 +110,19 @@ case "$1" in
   foo calcite mprudhom incubator-optiq
   foo calcite navis incubator-calcite
   foo calcite ndimiduk incubator-calcite
+  foo calcite nishantmonu51
   foo calcite pengchengxiong
   foo calcite remerge
   foo calcite riccardotommasini
+  foo calcite risdenk
   foo calcite rmetzger optiq
+  foo calcite rusanu
   foo calcite sbcd90
   foo calcite Serhii-Harnyk
   foo calcite smola incubator-calcite
   foo calcite sudheeshkatkam incubator-calcite
   foo calcite tedxu
+  foo calcite tmostak
   foo calcite tzolov
   foo calcite VcamX
   foo calcite vineetgarg02
@@ -117,6 +131,7 @@ case "$1" in
   foo calcite vrajat incubator-calcite
   foo calcite wgorman optiq
   foo calcite wuchong
+  foo calcite wxiang7
   foo calcite xhoong incubator-calcite
   foo calcite yeongwei incubator-calcite
   foo calcite yiming187
