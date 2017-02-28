@@ -2,7 +2,7 @@
 case $(pwd) in
 (*/hive/*) exit;;
 esac
-git diff HEAD^ |
+if [ "$1" ]; then git diff $1; else git diff HEAD; fi |
 awk '
 /^diff / {f=substr($3,3)}
 /^@@ / {s=$0; gsub(/^[^+]*\+/,"",s); gsub(/,.*$/,"",s); line=s-1}
@@ -10,5 +10,6 @@ awk '
 /^\+/ {++line}
 /^\+/ && !/^\+\+\+/ && f ~ /.java/ && length($0) > 81 {printf "%s:%s:%s\n", f, line, "line too long"; print}
 /^\+/ && !/^\+\+\+/ && f ~ /.java/ && /for \(.*[^ ]:/ {printf "%s:%s:%s\n", f, line, "need space before colon"; print}
+/^\+/ && !/^\+\+\+/ && f ~ /.java/ && /TODO/ {printf "%s:%s:%s\n", f, line, "TODO"; print}
     '
-exec find $(find . -name src -type d) -type f ! -name \*~ | xargs awk -f $(dirname $0)/extra.awk
+exec git ls-files  | grep -v /fonts/|egrep -v '\.(png|jpg|min.js|ico|scss)$' | xargs awk -f $(dirname $0)/extra.awk

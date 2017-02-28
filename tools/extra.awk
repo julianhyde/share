@@ -38,7 +38,7 @@ FNR == 1 {
 END {
   afterFile();
 }
-/\t/ {
+/\t/ && FILENAME !~ /data.*.txt/ {
   err(FILENAME, FNR, "Tab");
 }
 /CHECKSTYLE: ON/ {
@@ -71,13 +71,13 @@ off {
     err(FILENAME, FNR, "Split @link");
   }
 }
-/@Override$/ {
+/@Override$/ && FILENAME !~ /\.md/ {
     err(FILENAME, FNR, "@Override should not be on its own line");
 }
 /<p>$/ {
     err(FILENAME, FNR, "Orphan <p>. Make it the first line of a paragraph");
 }
-/@/ && !/@see/ && length($0) > maxLineLength {
+/@/ && !/@see/ && length($0) > maxLineLength && isJava(FILENAME) {
   s = $0;
   gsub(/^ *\* */, "", s);
   gsub(/ \*\/$/, "", s);
@@ -92,7 +92,7 @@ off {
 /@param +[^ ]+ *$/ {
   err(FILENAME, FNR, "Parameter with no description");
 }
-/href=.*CALCITE-/ {
+/href=.*CALCITE-/ && FILENAME !~ /\.md/ {
   if ($0 !~ /<a href="https:\/\/issues.apache.org\/jira\/browse\/CALCITE-[0-9]+">\[CALCITE-[0-9]+\]/) {
     err(FILENAME, FNR, "Bad JIRA reference");
   }
@@ -102,10 +102,10 @@ off {
     err(FILENAME, FNR, "Blank line before 'package'");
   }
 }
-/subquer|SUBQUER/ {
-  if (FNR != deprecated + 1) {
-    err(FILENAME, FNR, "Subquery, should be sub-query");
-  }
+/subquer|SUBQUER|Subquer/ \
+ && ! /subQuer|SUB_QUER|SubQuer|sub-quer|supportsSubqueries|supportsCorrelatedSubqueries/ \
+ && FNR != deprecated + 1 {
+  err(FILENAME, FNR, "Subquery, should be sub-query");
 }
 /@deprecated/ || /@Deprecated/ {
   deprecated = FNR;
