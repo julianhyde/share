@@ -21,7 +21,8 @@ for i in \
   gra \
   relNotes \
   remove-javadoc-timestamps \
-  mailself
+  mailself \
+  rat
 do
   ln -s $(pwd)/$i /usr/local/bin
 done

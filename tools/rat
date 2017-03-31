@@ -1,0 +1,12 @@
+#!/bin/bash
+# Downloads and runs Apache rat
+
+(
+cd /tmp
+rm -rf apache-rat-0.12
+curl -O http://apache.claz.org//creadur/apache-rat-0.12/apache-rat-0.12-bin.tar.gz
+tar xvfz apache-rat-0.12-bin.tar.gz
+)
+java -jar /tmp/apache-rat-0.12/apache-rat-0.12.jar "$1"
+
+# End rat
