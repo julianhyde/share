@@ -32,6 +32,7 @@ case "$1" in
   foo calcite-test-dataset jcamachor
   foo calcite-test-dataset julianhyde
   foo calcite-test-dataset michaelmior
+  foo calcite-test-dataset nishantmonu51
   foo calcite-test-dataset vlsi
   ;;
 
@@ -41,6 +42,10 @@ case "$1" in
 
 (mondrian)
   foo mondrian julianhyde
+  ;;
+
+(avatica|calcite-avatica)
+  foo calcite-avatica joshelser
   ;;
 
 (calcite)

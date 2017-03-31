@@ -1,6 +1,5 @@
 #!/bin/bash
 # Runs the calcite test suite and emails the results
-
 export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
 export PATH="${PATH}:${ORACLE_HOME}/bin"
 
@@ -8,7 +7,7 @@ function foo() {
   cd /home/jhyde/open1
   . ./env ${jdk}
   cd /home/jhyde/regress/${project}
-  add-remotes.sh ${project}
+  add-remotes.sh ${project2}
   git fetch origin # don't need '--all'; add-remotes fetched everything else
   if [ "$remote" = hash ]; then
     git checkout -b b-$label $branch
@@ -41,11 +40,16 @@ function foo() {
   (olap4j)
     timeout 20m mvn $mvn_flags $flags -Drat.ignoreErrors -Dmondrian.test.db=mysql clean install javadoc:javadoc site
     ;;
-  (calcite|*)
+  (avatica)
     (
       cd avatica
       timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc site
     )
+    ;;
+  (calcite-avatica)
+    timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc site
+    ;;
+  (calcite|*)
     echo "mvn $mvn_flags -P it,it-oracle $flags clean install javadoc:javadoc site"
     #timeout 30m mvn $mvn_flags -P it $flags install # javadoc:javadoc site
     timeout 30m mvn $mvn_flags $flags clean install javadoc:javadoc site
@@ -123,6 +127,12 @@ branch="$3"
 shift 3
 flags="$*"
 
+case ${project} in
+(avatica)
+  project2=calcite;;
+(*)
+  project2=${project};;
+esac
 if [ ! -d /home/jhyde/regress/${project} ]; then
   echo "no directory"
   exit 1
@@ -140,7 +150,7 @@ touch $subject $failed $succeeded
 foo $label > $out 2>&1
 
 D=$(cd $(dirname $(readlink $0)); pwd -P)
-awk -f ${D}/analyze-regress.awk $out >> $failed
+awk -v verbose=1 -f ${D}/analyze-regress.awk $out >> $failed
 
 if [ ! -s "$failed" ]; then
   echo "status: 0 fecjd: 00000" >> $succeeded
