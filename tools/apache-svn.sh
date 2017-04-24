@@ -20,13 +20,14 @@ svn-co https://svn.apache.org/repos/private/committers/info ~/apache/private/com
 
 svn-co https://svn.apache.org/repos/asf/comdev/projects.apache.org ~/apache/asf/comdev/projects.apache.org &
 svn co https://svn.apache.org/repos/asf/incubator/public/trunk ~/apache/asf/incubator &
+svn co https://svn.apache.org/repos/asf/incubator/donations ~/apache/asf/incubator/donations &
 svn co https://svn.apache.org/repos/asf/infrastructure/site/trunk ~/apache/asf/infrastructure/site &
 
 for i in kylin \
-    incubator/metron \
     incubator/quickstep \
     arrow \
-    calcite
+    calcite \
+    metron
 do
   svn-co https://dist.apache.org/repos/dist/dev/$i ~/apache/dist/dev/$i &
   svn-co https://dist.apache.org/repos/dist/release/$i ~/apache/dist/release/$i &

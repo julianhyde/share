@@ -52,7 +52,8 @@ function foo() {
   (calcite|*)
     echo "mvn $mvn_flags -P it,it-oracle $flags clean install javadoc:javadoc site"
     #timeout 30m mvn $mvn_flags -P it $flags install # javadoc:javadoc site
-    timeout 30m mvn $mvn_flags $flags clean install javadoc:javadoc site
+    timeout 30m mvn $mvn_flags $flags clean install
+    timeout 30m mvn $mvn_flags $flags javadoc:javadoc site
     ;;
   esac
   status=$?
