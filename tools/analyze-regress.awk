@@ -9,13 +9,14 @@ function p() {
   }
 }
 /JAVA_HOME .*jdk1.7/ {jdk7=1}
+/JAVA_HOME .*jdk1.8/ {jdk8=1}
 /^Tests run:/ {f+=$5;e+=$7; if ($5+0 > 0 || $7+0 > 0) p()}
 /SIGSEGV/ {++c; p()}
 /Tag @link: reference not found/ {++j; p()}
 /Parameter ".*" is documented more than once/ {++j; p()}
 / has been deprecated/ && !/org.apache.calcite.avatica.proto.Responses/ {
-  # Evidently @SuppressWarnings("deprecation") doesn't work until jdk1.8
-  if (!jdk7) {
+  # Evidently @SuppressWarnings("deprecation") doesn't work until jdk1.9
+  if (!jdk7 && !jdk8) {
     ++d;
     p()
   }
