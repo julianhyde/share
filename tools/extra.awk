@@ -34,6 +34,7 @@ FNR == 1 {
   if (FILENAME ~ /calcite/) {
     maxLineLength = 100;
   }
+  startJavadoc = endJavadoc = blankJavadoc = 0;
 }
 END {
   afterFile();
@@ -109,6 +110,23 @@ off {
 }
 /@deprecated/ || /@Deprecated/ {
   deprecated = FNR;
+}
+/\/\*\*/ {
+  startJavadoc = FNR;
+}
+/\*\// {
+  endJavadoc = FNR;
+}
+endJavadoc < startJavadoc \
+    && /^ *\*$/ {
+  blankJavadoc = FNR;
+}
+endJavadoc < startJavadoc \
+    && FNR == blankJavadoc + 1 \
+    && !/<\/?(p|ul|ol|li|dd|dt|h[1234]|blockquote|table)\/?>/ \
+    && !/<table / \
+    && !/ @/ {
+  err(FILENAME, FNR, "Missing <p> in javadoc");
 }
 FILENAME ~ /\.java/ && (/\(/ || /\)/) {
   s = $0;
