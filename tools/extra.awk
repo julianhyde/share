@@ -35,6 +35,7 @@ FNR == 1 {
     maxLineLength = 100;
   }
   startJavadoc = endJavadoc = blankJavadoc = 0;
+  tableOpens = tableCloses = 0;
 }
 END {
   afterFile();
@@ -103,6 +104,9 @@ off {
     err(FILENAME, FNR, "Blank line before 'package'");
   }
 }
+/\<(switch|if|for|while)\(/ {
+  err(FILENAME, FNR, "Missing space between keyword and '('");
+}
 /subquer|SUBQUER|Subquer/ \
  && ! /subQuer|SUB_QUER|SubQuer|sub-quer|supportsSubqueries|supportsCorrelatedSubqueries/ \
  && FNR != deprecated + 1 {
@@ -122,9 +126,17 @@ endJavadoc < startJavadoc \
   blankJavadoc = FNR;
 }
 endJavadoc < startJavadoc \
+    && /<table/ {
+  ++tableOpens;
+}
+endJavadoc < startJavadoc \
+    && /<\/table>/ {
+  ++tableCloses;
+}
+endJavadoc < startJavadoc \
     && FNR == blankJavadoc + 1 \
-    && !/<\/?(p|ul|ol|li|dd|dt|h[1234]|blockquote|table)\/?>/ \
-    && !/<table / \
+    && !/<\/?(p|ul|ol|dl|li|dd|dt|h[1234]|blockquote|table)\/?>/ \
+    && tableCloses >= tableOpens \
     && !/ @/ {
   err(FILENAME, FNR, "Missing <p> in javadoc");
 }

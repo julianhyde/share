@@ -12,4 +12,9 @@ awk '
 /^\+/ && !/^\+\+\+/ && f ~ /.java/ && /for \(.*[^ ]:/ {printf "%s:%s:%s\n", f, line, "need space before colon"; print}
 /^\+/ && !/^\+\+\+/ && f ~ /.java/ && /TODO/ {printf "%s:%s:%s\n", f, line, "TODO"; print}
     '
-exec git ls-files  | grep -v /fonts/|egrep -v '\.(png|jpg|min.js|ico|scss)$' | xargs awk -f $(dirname $0)/extra.awk
+git ls-files | grep -v /fonts/ | egrep -v '\.(png|jpg|min.js|ico|scss)$' | xargs awk -f $(dirname $0)/extra.awk
+for f in $(git ls-files | grep -v /fonts/ | egrep -v '\.(png|jpg|min.js|ico|scss)$'); do
+  test $(tail -c 1 "$f") && echo "$f: 1: no newline at end of file"
+done
+
+# End extra.sh
