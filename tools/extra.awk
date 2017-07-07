@@ -73,11 +73,17 @@ off {
     err(FILENAME, FNR, "Split @link");
   }
 }
+/@return$/ {
+  err(FILENAME, FNR, "Empty javadoc tag");
+}
+/@throws( *[^ ]*)?$/ {
+  err(FILENAME, FNR, "Empty javadoc tag");
+}
 /@Override$/ && FILENAME !~ /\.md/ {
-    err(FILENAME, FNR, "@Override should not be on its own line");
+  err(FILENAME, FNR, "@Override should not be on its own line");
 }
 /<p>$/ {
-    err(FILENAME, FNR, "Orphan <p>. Make it the first line of a paragraph");
+  err(FILENAME, FNR, "Orphan <p>. Make it the first line of a paragraph");
 }
 /@/ && !/@see/ && length($0) > maxLineLength && isJava(FILENAME) {
   s = $0;
