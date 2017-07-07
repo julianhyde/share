@@ -1,5 +1,5 @@
 # Generates release notes (go into HISTORY.md)
-git log --abbrev-commit --pretty=format:'* %s' ${1} |
+git log --abbrev-commit --pretty=format:'* %s' -- ${1} |
 sed -e '
 s!\(http.*\), !<a href="\1">#xxx</a>, !;
 s!\(SQLLINE-\([0-9]*\)\)!<a href="https://github.com/julianhyde/sqlline/issues/\2">\1</a>!;
