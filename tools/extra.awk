@@ -79,6 +79,9 @@ off {
 /@throws( *[^ ]*)?$/ {
   err(FILENAME, FNR, "Empty javadoc tag");
 }
+/\*   *@/ {
+  err(FILENAME, FNR, "Too many spaces before @");
+}
 /@Override$/ && FILENAME !~ /\.md/ {
   err(FILENAME, FNR, "@Override should not be on its own line");
 }
