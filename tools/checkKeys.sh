@@ -5,9 +5,8 @@
 function doCheckSum() {
   case "${1}.$(uname -s)" in
   (md5.Linux) md5sum "$2" | awk '{print $1}';;
-  (sha1.Linux) sha1sum "$2" | awk '{print $1}';;
+  (sha*.*) shasum -a $(echo $1 | sed -e s/sha//) "$2" | awk '{print $1}';;
   (md5.Darwin) md5 -q "$2";;
-  (sha1.Darwin) shasum -a 1 "$2" | awk '{print $1}';;
   (*) echo "Unknown command $1 or platform $(uname -s)" >&1; exit 1;;
   esac
 }
@@ -52,6 +51,19 @@ function checkHash() {
     else
       doCheckSum sha1 $i > $i.sha1
       echo $i.sha1 created
+    fi
+
+    if [ -f $i.sha256 ]; then
+      left="$(awk '{s = $0; if (s ~ /\./) s = $1; print s}' $i.sha256)"
+      right="$(doCheckSum sha256 $i)"
+      if [ "$left" = "$right" ]; then
+        echo $i.sha256 present and correct
+      else
+        echo "$i.sha256 does not match (left: $left, right: $right)"
+      fi
+    else
+      doCheckSum sha256 $i > $i.sha256
+      echo $i.sha256 created
     fi
 
     if [ -f $i.asc ]; then
