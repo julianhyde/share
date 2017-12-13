@@ -22,7 +22,8 @@ for i in \
   relNotes \
   remove-javadoc-timestamps \
   mailself \
-  rat
+  rat \
+  rsync-camera.sh
 do
   ln -s $(pwd)/$i /usr/local/bin
 done
