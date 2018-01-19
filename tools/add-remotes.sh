@@ -3,7 +3,7 @@
 #
 # Create as follows:
 #   git remote -v |awk '{printf "git remote add %s %s\n", $1, $2}' | sort -u
-function foo {
+function foo() {
   x=
   if test "$3"; then
     x=$3
@@ -27,41 +27,10 @@ function remoteExists {
   git remote | grep -qx "$1"
 }
 
+# Check that this file is sorted
+diff -u <(grep " foo " $0 | grep -v grep) <(grep " foo " $0 | grep -v grep | env LC_ALL=C sort -f) || exit
+
 case "$1" in
-(calcite-test-dataset)
-  foo calcite-test-dataset b-slim
-  foo calcite-test-dataset jcamachor
-  foo calcite-test-dataset julianhyde
-  foo calcite-test-dataset michaelmior
-  foo calcite-test-dataset nishantmonu51
-  foo calcite-test-dataset vlsi
-  ;;
-
-(drill)
-  foo drill cgivre
-  ;;
-
-(sqlline)
-  foo sqlline bpoweski
-  foo sqlline fineo-io
-  foo sqlline mmattozzi
-  ;;
-
-(mondrian)
-  foo mondrian julianhyde
-  ;;
-
-(avatica|calcite-avatica)
-  foo calcite-avatica joshelser
-  foo calcite-avatica julianhyde
-  foo calcite-avatica ssainz
-  ;;
-
-(calcite-avatica-go)
-  foo calcite-avatica-go Boostport
-  foo calcite-avatica-go julianhyde
-  ;;
-
 (calcite)
   git remote remove bluejoe2008
   git remote remove dremio
@@ -82,16 +51,16 @@ case "$1" in
   foo calcite arunmahadevan
   foo calcite atris
   foo calcite axeisghost
+  foo calcite b-slim
   foo calcite batytskyy
   foo calcite bdumon optiq
   foo calcite beikov
   foo calcite benoyantony incubator-optiq
-  foo calcite b-slim
+  foo calcite ch33hau
   foo calcite chandnisingh
   foo calcite chinmaykolhatkar
   foo calcite chrajeshbabu
   foo calcite Contiamo
-  foo calcite ch33hau
   foo calcite d4nc00per incubator-calcite
   foo calcite darionyaphet
   foo calcite devth incubator-calcite
@@ -159,9 +128,9 @@ case "$1" in
   foo calcite Serhii-Harnyk
   foo calcite smola incubator-calcite
   foo calcite sudheeshkatkam incubator-calcite
+  foo calcite suez1224
   foo calcite summerleafs
   foo calcite sunjincheng121
-  foo calcite suez1224
   foo calcite tedxu
   foo calcite tmostak
   foo calcite tzolov
@@ -179,12 +148,47 @@ case "$1" in
   foo calcite yeongwei incubator-calcite
   foo calcite yiming187
   #foo calcite yixinglu
-  foo calcite yuqi1129
   foo calcite yssharma incubator-optiq
+  foo calcite yuqi1129
   foo calcite zhifac
   foo calcite Zhiqiang-He
   foo calcite zinking
   ;;
+
+(avatica|calcite-avatica)
+  foo calcite-avatica joshelser
+  foo calcite-avatica julianhyde
+  foo calcite-avatica ssainz
+  ;;
+
+(calcite-avatica-go)
+  foo calcite-avatica-go Boostport
+  foo calcite-avatica-go julianhyde
+  ;;
+
+(calcite-test-dataset)
+  foo calcite-test-dataset b-slim
+  foo calcite-test-dataset jcamachor
+  foo calcite-test-dataset julianhyde
+  foo calcite-test-dataset michaelmior
+  foo calcite-test-dataset nishantmonu51
+  foo calcite-test-dataset vlsi
+  ;;
+
+(drill)
+  foo drill cgivre
+  ;;
+
+(mondrian)
+  foo mondrian julianhyde
+  ;;
+
+(sqlline)
+  foo sqlline bpoweski
+  foo sqlline fineo-io
+  foo sqlline mmattozzi
+  ;;
+
 esac
 
 wait
