@@ -18,6 +18,7 @@ for i in \
   emacsValidate \
   extra.awk \
   extra.sh \
+  fiximg.sh \
   gra \
   relNotes \
   remove-javadoc-timestamps \
