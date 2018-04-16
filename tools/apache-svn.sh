@@ -24,6 +24,7 @@ svn co https://svn.apache.org/repos/asf/incubator/donations ~/apache/asf/incubat
 svn co https://svn.apache.org/repos/asf/infrastructure/site/trunk ~/apache/asf/infrastructure/site &
 
 for i in kylin \
+    incubator/crail \
     incubator/quickstep \
     arrow \
     calcite \
