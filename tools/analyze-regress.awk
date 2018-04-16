@@ -10,7 +10,11 @@ function p() {
 }
 /JAVA_HOME .*jdk1.7/ {jdk7=1}
 /JAVA_HOME .*jdk1.8/ {jdk8=1}
-/^Tests run:/ {f+=$5;e+=$7; if ($5+0 > 0 || $7+0 > 0) p()}
+/^(\[(ERROR|INFO|WARNING)\] )?Tests run: / {
+  gsub(/^(\[(ERROR|INFO|WARNING)\] )?Tests run:/, "")
+  f+=$3; e+=$5;
+  if ($3+0 > 0 || $5+0 > 0) p()
+}
 /SIGSEGV/ {++c; p()}
 /Tag @link: reference not found/ {++j; p()}
 /Parameter ".*" is documented more than once/ {++j; p()}
