@@ -15,7 +15,6 @@ for i in \
   calcite-regress.sh \
   calcite-regress2.sh \
   checkKeys.sh \
-  emacsValidate \
   extra.awk \
   extra.sh \
   fiximg.sh \
@@ -24,7 +23,8 @@ for i in \
   remove-javadoc-timestamps \
   mailself \
   rat \
-  rsync-camera.sh
+  rsync-camera.sh \
+  validate
 do
   ln -s $(pwd)/$i /usr/local/bin
 done

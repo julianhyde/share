@@ -1,3 +1,0 @@
-# Command line tool to find and navigate to check-style errors.
-# Run it from the root directory of a project.
-exec emacs -nw --eval "(compile \"extra.sh ; mvn -B -o -DskipTests validate verify | egrep '^/|\\\[(WARNING|ERROR)\\\] /'\")"

@@ -1,0 +1,16 @@
+# Command line tool to find and navigate to check-style errors.
+# Run it from the root directory of a project.
+D=$(cd $(dirname $(readlink $0)); pwd)
+case "$1" in
+(--help)
+  echo "validate [--help | --emacs]"
+  exit 0;;
+(--emacs)
+  exec emacs -nw --eval "(compile \"extra.sh ; mvn -B -o -DskipTests validate verify | awk -f ${D}/validate.awk\")";;
+(*)
+  extra.sh
+  mvn -B -o -DskipTests validate verify | awk -f ${D}/validate.awk;;
+esac
+
+# End validate
+

@@ -34,8 +34,9 @@ FNR == 1 {
   if (FILENAME ~ /calcite/) {
     maxLineLength = 100;
   }
-  startJavadoc = endJavadoc = blankJavadoc = 0;
+  startJavadoc = endJavadoc = blankJavadoc = nonBlank = import = package = 0;
   tableOpens = tableCloses = 0;
+  startPre = endPre = 0;
 }
 END {
   afterFile();
@@ -109,8 +110,14 @@ off {
   }
 }
 /^package / {
-  if (prevLine(1) == "" && isJava(FILENAME) && !isProto(FILENAME)) {
-    err(FILENAME, FNR, "Blank line before 'package'");
+  if (FNR > nonBlank + 1 && isJava(FILENAME) && !isProto(FILENAME)) {
+    err(FILENAME, FNR, "1 or more blank lines before 'package'");
+  }
+}
+/^import / {
+  import = FNR;
+  if (FNR > nonBlank + 2) {
+    err(FILENAME, FNR, "2 or more blank lines before 'import'");
   }
 }
 /\<(switch|if|for|while)\(/ {
@@ -143,9 +150,18 @@ endJavadoc < startJavadoc \
   ++tableCloses;
 }
 endJavadoc < startJavadoc \
+  && /<pre>/ {
+    startPre = FNR;
+}
+endJavadoc < startJavadoc \
+  && /<\/pre>/ {
+    endPre = FNR;
+}
+endJavadoc < startJavadoc \
     && FNR == blankJavadoc + 1 \
     && !/<\/?(p|ul|ol|dl|li|dd|dt|h[1234]|blockquote|table)\/?>/ \
     && tableCloses >= tableOpens \
+    && endPre >= startPre \
     && !/ @/ {
   err(FILENAME, FNR, "Missing <p> in javadoc");
 }
@@ -169,6 +185,15 @@ FILENAME ~ /\.java/ && (/\(/ || /\)/) {
 }
 FILENAME ~ /\.(java|xml|sh)/ && /[^\x00-\xFF]/ {
   err(FILENAME, FNR, "Non-ASCII character");
+}
+/^./ {
+  if (nonBlank == import && FNR > nonBlank + 2) {
+    err(FILENAME, FNR, "2 or more blank lines after import");
+  }
+  if (nonBlank == package && FNR > nonBlank + 2) {
+    err(FILENAME, FNR, "2 or more blank lines after package");
+  }
+  nonBlank = FNR;
 }
 {
   prevFnr = FNR;
