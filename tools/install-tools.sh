@@ -19,6 +19,7 @@ for i in \
   extra.sh \
   fiximg.sh \
   gra \
+  gpg-export \
   relNotes \
   remove-javadoc-timestamps \
   mailself \

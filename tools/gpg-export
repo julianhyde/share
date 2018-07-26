@@ -1,0 +1,6 @@
+#!/bin/bash
+
+gpg --list-sigs "$1"
+gpg --armor --export "$1"
+
+# End
