@@ -25,6 +25,7 @@ for i in \
   mailself \
   rat \
   rsync-camera.sh \
+  te \
   validate
 do
   ln -s $(pwd)/$i /usr/local/bin

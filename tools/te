@@ -1,0 +1,6 @@
+#!/bin/bash
+# Opens a file in TextEdit (only works on macOS)
+exec open -a TextEdit "$@"
+
+# End te
+
