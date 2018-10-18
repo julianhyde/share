@@ -25,6 +25,7 @@ svn co https://svn.apache.org/repos/asf/infrastructure/site/trunk ~/apache/asf/i
 
 for i in kylin \
     incubator/crail \
+    incubator/druid \
     incubator/quickstep \
     arrow \
     calcite \
