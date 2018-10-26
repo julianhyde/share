@@ -1,0 +1,25 @@
+#!/bin/bash
+
+function backup_europa {
+  echo "Backup to europa"
+  cd ~/extra
+  options="-avP" # add c for checksum
+  echo "Copy Videos"
+  rsync ${options} Videos/ $target:backup/$source/Videos
+  echo "Copy Music"
+  rsync ${options} Music/ $target:backup/$source/Music
+  echo "Copy Downloads"
+  rsync ${options} Downloads/ $target:backup/$source/Downloads
+  echo "Copy web"
+  cd ~
+  rsync ${options} web $target:backup/$source
+}
+
+target="$1"
+source=marmite
+case "$target" in
+(europa) backup_europa;;
+(*) echo "unknown target '$target'"; exit 1;;
+esac
+
+# End backup

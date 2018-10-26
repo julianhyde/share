@@ -12,6 +12,7 @@ for i in \
   add-remotes.sh \
   apache-svn.sh \
   avi2mp4 \
+  backup \
   calcite-regress.sh \
   calcite-regress2.sh \
   checkKeys.sh \
