@@ -165,6 +165,9 @@ endJavadoc < startJavadoc \
     && !/ @/ {
   err(FILENAME, FNR, "Missing <p> in javadoc");
 }
+/<tt>/ || /<tt\/>/  || /<\/tt>/ {
+  err(FILENAME, FNR, "In HTML5, <tt> is deprecated; use <code>")
+}
 FILENAME ~ /\.java/ && (/\(/ || /\)/) {
   s = $0;
   if ($0 ~ /"/) {
