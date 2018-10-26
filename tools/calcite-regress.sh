@@ -33,6 +33,23 @@ function foo() {
       -DgeneratePom=true
   )
   case ${project} in
+  (sqlline)
+    case ${jdk} in
+    (jdk6)
+      # JDK 1.6 needs an earlier maven and hsqldb, and cannot generate docbook
+      mvn_flags="${mvn_flags} -Ddocbkx.skip=true -Dhsqldb.version=2.3.4"
+      timeout 10m /usr/local/apache-maven-3.2.5/bin/mvn $mvn_flags $flags clean install javadoc:javadoc site
+      ;;
+    (jdk7)
+      # JDK 1.7 needs an earlier hsqldb, and cannot generate docbook
+      mvn_flags="${mvn_flags} -Ddocbkx.skip=true -Dhsqldb.version=2.3.4"
+      timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc site
+      ;;
+    (*)
+      timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc site
+      ;;
+    esac
+    ;;
   (mondrian)
     touch mondrian.properties
     timeout 60m mvn $mvn_flags $flags -Dmondrian.test.db=mysql clean install javadoc:javadoc site
@@ -53,7 +70,12 @@ function foo() {
     echo "mvn $mvn_flags -P it,it-oracle $flags clean install javadoc:javadoc site"
     #timeout 30m mvn $mvn_flags -P it $flags install # javadoc:javadoc site
     timeout 30m mvn $mvn_flags $flags clean install
-    timeout 30m mvn $mvn_flags $flags javadoc:javadoc site
+    case ${jdk} in
+    (jdk11)
+      echo "Skipping javadoc due to JDK bug";;
+    (*)
+      timeout 30m mvn $mvn_flags $flags javadoc:javadoc site;;
+    esac
     ;;
   esac
   status=$?
@@ -87,7 +109,7 @@ function usage() {
   echo "--batch"
   echo "     Submit this task as a batch job"
   echo "jdk"
-  echo "     One of jdk6, jdk7, jdk8, jdk9"
+  echo "     One of jdk6, jdk7, jdk8, jdk9, jdk10, jdk11"
   echo "remote"
   echo "      A git remote (one of:" ${remotes} ")"
   echo "branch"
@@ -128,17 +150,22 @@ branch="$3"
 shift 3
 flags="$*"
 
+case ${jdk} in
+(jdk6|jdk7|jdk8|jdk9|jdk10|jdk11|openjdk10|openjdk11);;
+(*) echo "Invalid jdk ${jdk}"; exit 1;;
+esac
+
 case ${project} in
 (avatica)
   project2=calcite;;
-(*)
+(calcite-avatica|calcite|olap4j|mondrian|sqlline)
   project2=${project};;
+(*)
+  echo "Unknown project ${project}"
+  exit 1;;
 esac
-if [ ! -d /home/jhyde/regress/${project} ]; then
-  echo "no directory"
-  exit 1
-fi
 
+mkdir -p /home/jhyde/regress/${project}
 cd /home/jhyde/regress/${project}
 mkdir -p logs
 label=$(date +%Y%m%d-%H%M%S)
