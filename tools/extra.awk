@@ -58,9 +58,6 @@ off {
     err(FILENAME, FNR, "Trailing spaces");
   }
 }
-/ );/ {
-  err(FILENAME, FNR, "Spaces before )");
-}
 /^\/\/ End / {
   if (endCount++ > 0) {
     err(FILENAME, FNR, "End seen more than once");
@@ -186,6 +183,14 @@ FILENAME ~ /\.java/ && (/\(/ || /\)/) {
     err(FILENAME, FNR, "Open parentheses exceed closes by 2 or more");
   }
 }
+(s ~ / );/ || s ~ / ))/ || s ~ / ),/ || s ~ / ) {/ || s ~ / )$/) \
+    && endJavadoc >= startJavadoc \
+    && endJavadoc < FNR \
+    && s !~ /\/\// {
+    print startJavadoc
+    print endJavadoc
+  err(FILENAME, FNR, "Spaces before )");
+}
 FILENAME ~ /\.(java|xml|sh)/ && /[^\x00-\xFF]/ {
   err(FILENAME, FNR, "Non-ASCII character");
 }
@@ -201,6 +206,7 @@ FILENAME ~ /\.(java|xml|sh)/ && /[^\x00-\xFF]/ {
 {
   prevFnr = FNR;
   prevLines[k++ % 5] = $0;
+  s = "";
 }
 
 # End extra.awk
