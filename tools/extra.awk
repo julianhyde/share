@@ -120,6 +120,9 @@ off {
 /\<(switch|if|for|while)\(/ {
   err(FILENAME, FNR, "Missing space between keyword and '('");
 }
+/\<(case .*|default) :/ {
+  err(FILENAME, FNR, "Space before ':' following case/default");
+}
 /subquer|SUBQUER|Subquer/ \
  && ! /subQuer|SUB_QUER|SubQuer|sub-quer|supportsSubqueries|supportsCorrelatedSubqueries/ \
  && FNR != deprecated + 1 {
