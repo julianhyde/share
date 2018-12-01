@@ -38,15 +38,15 @@ function foo() {
     (jdk6)
       # JDK 1.6 needs an earlier maven and hsqldb, and cannot generate docbook
       mvn_flags="${mvn_flags} -Ddocbkx.skip=true -Dhsqldb.version=2.3.4"
-      timeout 10m /usr/local/apache-maven-3.2.5/bin/mvn $mvn_flags $flags clean install javadoc:javadoc site
+      timeout 10m /usr/local/apache-maven-3.2.5/bin/mvn $mvn_flags $flags clean install javadoc:javadoc javadoc:test-javadoc site
       ;;
     (jdk7)
       # JDK 1.7 needs an earlier hsqldb, and cannot generate docbook
       mvn_flags="${mvn_flags} -Ddocbkx.skip=true -Dhsqldb.version=2.3.4"
-      timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc site
+      timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc javadoc:test-javadoc site
       ;;
     (*)
-      timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc site
+      timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc javadoc:test-javadoc site
       ;;
     esac
     ;;
@@ -55,26 +55,26 @@ function foo() {
     timeout 60m mvn $mvn_flags $flags -Dmondrian.test.db=mysql clean install javadoc:javadoc site
     ;;
   (olap4j)
-    timeout 20m mvn $mvn_flags $flags -Drat.ignoreErrors -Dmondrian.test.db=mysql clean install javadoc:javadoc site
+    timeout 20m mvn $mvn_flags $flags -Drat.ignoreErrors -Dmondrian.test.db=mysql clean install javadoc:javadoc javadoc:test-javadoc site
     ;;
   (avatica)
     (
       cd avatica
-      timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc site
+      timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc javadoc:test-javadoc site
     )
     ;;
   (calcite-avatica)
-    timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc site
+    timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc javadoc:test-javadoc site
     ;;
   (calcite|*)
-    echo "mvn $mvn_flags -P it,it-oracle $flags clean install javadoc:javadoc site"
+    echo "mvn $mvn_flags -P it,it-oracle $flags clean install javadoc:javadoc javadoc:test-javadoc site"
     #timeout 30m mvn $mvn_flags -P it $flags install # javadoc:javadoc site
     timeout 30m mvn $mvn_flags $flags clean install
     case ${jdk} in
     (jdk11)
       echo "Skipping javadoc due to JDK bug";;
     (*)
-      timeout 30m mvn $mvn_flags $flags javadoc:javadoc site;;
+      timeout 30m mvn $mvn_flags $flags javadoc:javadoc javadoc:test-javadoc site;;
     esac
     ;;
   esac
