@@ -3,6 +3,9 @@
 #
 # The following scripts are in tools but we don't need them on the path:
 # barclay, relMail.sh
+#
+# We create a link for 'jenv' in /usr/local but it is not executable. This
+# reminds to source it (using '.') not run it.
 
 cd $(dirname $0)
 if [ $(pwd) = /usr/local/bin ]; then
@@ -21,6 +24,7 @@ for i in \
   fiximg.sh \
   gra \
   gpg-export \
+  jenv \
   relNotes \
   remove-javadoc-timestamps \
   mailself \

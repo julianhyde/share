@@ -1,0 +1,70 @@
+# Script for setting Java environment script.
+# Source this from bash, as follows:
+#
+# $ pushd ~/dev/share/tools; . ./jenv 9; popd
+#
+# This script is not executable. This reminds us to source it.
+#
+# On macOS, create links in /usr/local/jvm:
+#
+# jdk1.8 -> /Library/Java/JavaVirtualMachines/jdk1.8.0_161.jdk/Contents/Home
+# jdk-9 -> jdk-9.0.4
+# jdk-9.0.4 -> /Library/Java/JavaVirtualMachines/jdk-9.0.4.jdk/Contents/Home/
+# jdk-11 -> jdk-11.0.1
+# jdk-11.0.1 -> /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/
+#
+# On Linux, create links/directories in /usr/lib/jvm.
+
+. ~/.bash_profile
+
+JDK="$1"
+shift
+if [ ! "$JDK" ]; then
+    JDK=1.8
+fi
+
+case "$JDK" in
+(4|jdk4|jdk-4|1.4) export JDK=jdk1.4; v=1.4;;
+(5|jdk5|jdk-5|1.5) export JDK=jdk1.5; v=1.5;;
+(6|jdk6|jdk-6|1.6) export JDK=jdk1.6; v=1.6;;
+(7|jdk7|jdk-7|1.7) export JDK=jdk1.7; v=1.7;;
+(8|jdk8|jdk-8|1.8) export JDK=jdk1.8; v=1.8;;
+(9|jdk9|jdk-9|1.9) export JDK=jdk-9; v=9;;
+(10|jdk10|jdk-10) export JDK=jdk-10; v=10;;
+(11|jdk11|jdk-11) export JDK=jdk-11; v=11;;
+(12|jdk12|jdk-12) export JDK=jdk-12; v=12;;
+(o10|openjdk10|openjdk-10) export JDK=openjdk-10; v=10;;
+(o11|openjdk11|openjdk-11) export JDK=openjdk-11; v=11;;
+(o12|openjdk12|openjdk-12) export JDK=openjdk-12; v=12;;
+esac
+
+case $(uname) in
+(Darwin)
+  export JDK_ROOT=/usr/local/jvm;;
+(*)
+  export JDK_ROOT=/usr/lib/jvm;;
+esac
+export JAVA_HOME="${JDK_ROOT}/${JDK}"
+
+#echo Trying JAVA_HOME=$JAVA_HOME
+if [ -d "$JAVA_HOME" ]; then
+  :
+elif [ -d "${JDK_ROOT}"/"$JDK" ]; then
+  export JAVA_HOME="${JDK_ROOT}"/"$JDK"
+elif [ -d ${JDK_ROOT}/jdk"$JDK" ]; then
+  export JAVA_HOME="${JDK_ROOT}"/jdk"$JDK"
+elif [ $(uname) = Darwin ]; then
+  JAVA_HOME=$(/usr/libexec/java_home -v "${v}")
+else
+  echo "No JDK for $JDK found"
+  export JAVA_HOME=/no/jdk/found
+fi
+
+echo JAVA_HOME is $JAVA_HOME
+export IDEA_JDK=$JAVA_HOME
+export PATH
+PATH=$JAVA_HOME/bin:$PATH
+java -version
+PATH=/usr/local/bin:$PATH
+
+# End env
