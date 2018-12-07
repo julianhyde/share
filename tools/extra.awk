@@ -66,6 +66,9 @@ off {
 /\\n" \+ "/ {
   err(FILENAME, FNR, "Newline in string should be at end of line");
 }
+/^ += / {
+  err(FILENAME, FNR, "'=' must not be at start of line");
+}
 /{@link/ {
   if ($0 !~ /}/) {
     err(FILENAME, FNR, "Split @link");
