@@ -41,7 +41,7 @@ FNR == 1 {
 END {
   afterFile();
 }
-/\t/ && FILENAME !~ /data.*.txt/ {
+/\t/ && FILENAME !~ /data.*.txt/ && FILENAME !~ /.(xsl|js|css|zip)$/ {
   err(FILENAME, FNR, "Tab");
 }
 /CHECKSTYLE: ON/ {
@@ -54,7 +54,7 @@ off {
   next
 }
 / $/ {
-  if (!isProto(FILENAME)) {
+  if (!isProto(FILENAME) && FILENAME !~ /.(css|html|js|xsl|zip)$/) {
     err(FILENAME, FNR, "Trailing spaces");
   }
 }
@@ -66,8 +66,11 @@ off {
 /\\n" \+ "/ {
   err(FILENAME, FNR, "Newline in string should be at end of line");
 }
-/^ += / {
-  err(FILENAME, FNR, "'=' must not be at start of line");
+/^ +(=|->) / {
+  err(FILENAME, FNR, "'" $1 "' must not be at start of line");
+}
+FILENAME ~ /\.java/ && / [:?]$/ {
+  err(FILENAME, FNR, "'" $NF "' must not be at end of line");
 }
 /{@link/ {
   if ($0 !~ /}/) {
@@ -120,10 +123,10 @@ off {
     err(FILENAME, FNR, "2 or more blank lines before 'import'");
   }
 }
-/\<(switch|if|for|while)\(/ {
+/\<(switch|if|for|while)\(/ && FILENAME !~ /.(html|js)$/ {
   err(FILENAME, FNR, "Missing space between keyword and '('");
 }
-/\<(case .*|default) :/ {
+s ~ /\<(case .*|default) :/ {
   err(FILENAME, FNR, "Space before ':' following case/default");
 }
 /subquer|SUBQUER|Subquer/ \
@@ -165,11 +168,16 @@ endJavadoc < startJavadoc \
     && !/<\/?(p|ul|ol|dl|li|dd|dt|h[1234]|blockquote|table)\/?>/ \
     && tableCloses >= tableOpens \
     && endPre >= startPre \
-    && !/ @/ {
+    && !/ @/ \
+    && FILENAME !~ /.js$/ {
   err(FILENAME, FNR, "Missing <p> in javadoc");
 }
 /<tt>/ || /<tt\/>/  || /<\/tt>/ {
-  err(FILENAME, FNR, "In HTML5, <tt> is deprecated; use <code>")
+  if (FILENAME ~ /.md$/ && $0 ~ /`/) {
+    # ignore
+  } else {
+    err(FILENAME, FNR, "In HTML5, <tt> is deprecated; use <code>")
+  }
 }
 FILENAME ~ /\.java/ && (/\(/ || /\)/) {
   s = $0;
