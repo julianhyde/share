@@ -1,6 +1,10 @@
 #!/bin/bash
 # Opens a file in TextEdit (only works on macOS)
-exec open -a TextEdit "$@"
+case $(uname -s) in
+    (Linux) exec gedit "$@";;
+    (Darwin) exec open -a TextEdit "$@";;
+    (*) exec vi "$@";;
+esac
 
 # End te
 
