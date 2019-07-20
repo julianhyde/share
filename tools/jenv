@@ -20,7 +20,7 @@
 JDK="$1"
 shift
 if [ ! "$JDK" ]; then
-    JDK=1.8
+    JDK=11
 fi
 
 case "$JDK" in
@@ -33,9 +33,13 @@ case "$JDK" in
 (10|jdk10|jdk-10) export JDK=jdk-10; v=10;;
 (11|jdk11|jdk-11) export JDK=jdk-11; v=11;;
 (12|jdk12|jdk-12) export JDK=jdk-12; v=12;;
+(13|jdk13|jdk-13) export JDK=jdk-13; v=13;;
+(14|jdk14|jdk-14) export JDK=jdk-14; v=14;;
 (o10|openjdk10|openjdk-10) export JDK=openjdk-10; v=10;;
 (o11|openjdk11|openjdk-11) export JDK=openjdk-11; v=11;;
 (o12|openjdk12|openjdk-12) export JDK=openjdk-12; v=12;;
+(o13|openjdk13|openjdk-13) export JDK=openjdk-13; v=13;;
+(o14|openjdk14|openjdk-14) export JDK=openjdk-14; v=14;;
 esac
 
 case $(uname) in
