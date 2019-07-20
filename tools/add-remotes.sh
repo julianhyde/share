@@ -16,7 +16,7 @@ function foo() {
     if [ $x = remove ]; then
       git remote remove $2
     else
-      git fetch $2
+      : # git fetch $2
     fi
   elif [ $x = remove ]; then
     :
@@ -25,12 +25,12 @@ function foo() {
     git remote add $2 git@github.com:$2/${x}.git
     git fetch $2
   fi
-  ) 2>&1 | awk '{printf "|%s\n",$0}' | sort -k 1 -t'|' &
-  sleep 0.1 # rate-limit calls to git
+  ) 2>&1 | awk '{printf "|%s\n",$0}' | sort -k 1 -t'|'
+  # sleep 0.1 # rate-limit calls to git
 }
 
 function remoteExists {
-  git remote | grep -qx "$1"
+  grep -qx "$1" < ${remote_list_file}
 }
 
 # Check that this file is sorted
@@ -38,9 +38,12 @@ diff -u \
      <(grep " foo " $0 | grep -v grep) \
      <(grep " foo " $0 | grep -v grep | env LC_ALL=C sort -f) || exit
 
+remote_list_file=/tmp/remotes_${1}_${$}.txt
+git remote > ${remote_list_file}
+
 case "$1" in
 (calcite)
-  git remote add origin https://git-wip-us.apache.org/repos/asf/calcite.git
+  git remote add origin https://gitbox.apache.org/repos/asf/calcite.git
   git remote add ledem git@github.com:julienledem/calcite.git
   git remote add bitbucket git@bitbucket.org:julianhyde/calcite.git
 
@@ -49,6 +52,7 @@ case "$1" in
   foo calcite aleph-zero remove
   foo calcite alexeyroytman
   foo calcite alishaIBM
+  foo calcite amaliujia
   foo calcite amansinha100 incubator-calcite
   foo calcite ambition119
   foo calcite amihalik
@@ -70,6 +74,7 @@ case "$1" in
   foo calcite beyond1920
   foo calcite bluejoe2008 remove
   foo calcite ch33hau
+  foo calcite chadasa
   foo calcite chandnisingh
   foo calcite chinmaykolhatkar
   foo calcite chrajeshbabu
@@ -92,6 +97,7 @@ case "$1" in
   foo calcite eolivelli
   foo calcite ex00
   foo calcite F21
+  foo calcite Fokko
   foo calcite Functor10
   foo calcite gabrielreid
   foo calcite gaodayue
@@ -114,6 +120,7 @@ case "$1" in
   foo calcite jbalint
   foo calcite jcamachor
   foo calcite jduo
+  foo calcite jh3507
   foo calcite jiayuanv127
   foo calcite jinfengni incubator-optiq
   foo calcite joshelser incubator-calcite
@@ -125,6 +132,7 @@ case "$1" in
   foo calcite kaiwangchen
   foo calcite kennknowles
   foo calcite kgyrtkirk
+  foo calcite khaitranq calcite-1
   foo calcite kliewkliew
   foo calcite kstirman
   foo calcite KulykRoman incubator-calcite
@@ -133,6 +141,7 @@ case "$1" in
   foo calcite lalinsky incubator-calcite
   foo calcite LantaoJin
   foo calcite laurentgo
+  foo calcite leesf
   foo calcite LeoWangLZ
   foo calcite Lerm
   foo calcite lfkpoa
@@ -141,6 +150,7 @@ case "$1" in
   foo calcite markap14
   foo calcite maryannxue
   foo calcite masayuki038
+  foo calcite MGelbana
   foo calcite michaelmior
   foo calcite mikehinchey
   foo calcite milinda
@@ -154,6 +164,7 @@ case "$1" in
   foo calcite pawelruchaj
   foo calcite pengchengxiong
   foo calcite pengzhiwei2018
+  foo calcite psockali
   foo calcite ptrbojko
   foo calcite rajrahul
   foo calcite Ravindar-Munjam
@@ -170,10 +181,12 @@ case "$1" in
   foo calcite sergeysimonov
   foo calcite Serhii-Harnyk remove
   foo calcite shmushkis
+  foo calcite siddharthteotia
   foo calcite sintown
   foo calcite smola incubator-calcite
   foo calcite snuyanzin
   foo calcite sreev remove
+  foo calcite stalbot
   foo calcite sudheeshkatkam incubator-calcite
   foo calcite suez1224
   foo calcite summerleafs
@@ -193,6 +206,7 @@ case "$1" in
   foo calcite vrajat incubator-calcite
   foo calcite vvysotskyi
   foo calcite walterddr
+  foo calcite wenhuitang
   foo calcite wgorman optiq
   foo calcite wuchong
   foo calcite wxiang7
@@ -200,6 +214,7 @@ case "$1" in
   foo calcite Xpray
   foo calcite XuQianJin-Stars
   foo calcite yanghua
+  foo calcite yanlin-Lynn
   foo calcite yeongwei incubator-calcite
   foo calcite yiming187
   foo calcite yixinglu remove
@@ -255,14 +270,21 @@ case "$1" in
   foo sqlline bpoweski
   foo sqlline fineo-io
   foo sqlline kminder
+  foo sqlline liancheng
+  foo sqlline masayuki038
   foo sqlline mmattozzi
   foo sqlline mprudhom
   foo sqlline prodonjs
   foo sqlline slankka
   foo sqlline snuyanzin
+  foo sqlline swaroopak
+  foo sqlline teroz
+  foo sqlline vvysotskyi
   ;;
 
 esac
+
+rm ${remote_list_file}
 
 wait
 
