@@ -182,7 +182,7 @@ endJavadoc < startJavadoc \
 FILENAME ~ /\.java/ && (/\(/ || /\)/) {
   s = $0;
   if ($0 ~ /"/) {
-    gsub(/"([^"]|\\\")*"/, "string", s);
+    gsub(/"([^"]|\\")*"/, "string", s);
   }
   o = 0;
   for (i = 1; i <= length(s); i++) {
