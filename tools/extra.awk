@@ -89,7 +89,7 @@ FILENAME ~ /\.java/ && / [:?]$/ {
 /@Override$/ && FILENAME !~ /\.md/ {
   err(FILENAME, FNR, "@Override should not be on its own line");
 }
-/<p>$/ {
+/<p>$/ && FILENAME !~ /\.html/ {
   err(FILENAME, FNR, "Orphan <p>. Make it the first line of a paragraph");
 }
 /@/ && !/@see/ && length($0) > maxLineLength && isJava(FILENAME) {
@@ -133,6 +133,11 @@ s ~ /\<(case .*|default) :/ {
  && ! /subQuer|SUB_QUER|SubQuer|sub-quer|supportsSubqueries|supportsCorrelatedSubqueries/ \
  && FNR != deprecated + 1 {
   err(FILENAME, FNR, "Subquery, should be sub-query");
+}
+/ sql / \
+ && ! /(assert|String|StringBuilder|+|=|highlight|@param *) sql/ \
+ && ! /sql (=|+)/ {
+  # err(FILENAME, FNR, "sql, should be SQL");
 }
 /@deprecated/ || /@Deprecated/ {
   deprecated = FNR;
@@ -196,6 +201,12 @@ FILENAME ~ /\.java/ && (/\(/ || /\)/) {
   if (o > 1 && FILENAME !~ /proto\/Common.java/) {
     err(FILENAME, FNR, "Open parentheses exceed closes by 2 or more");
   }
+}
+s ~ /\.$/ \
+    && endJavadoc >= startJavadoc \
+    && endJavadoc < FNR \
+    && s !~ /\/\// {
+  err(FILENAME, FNR, "'.' must not be at end of line");
 }
 (s ~ / );/ || s ~ / ))/ || s ~ / ),/ || s ~ / ) {/ || s ~ / )$/) \
     && endJavadoc >= startJavadoc \
