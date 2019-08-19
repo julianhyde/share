@@ -2,7 +2,11 @@
 # Opens a file in TextEdit (only works on macOS)
 case $(uname -s) in
     (Linux) exec gedit "$@";;
-    (Darwin) exec open -a TextEdit "$@";;
+    (Darwin)
+        if [ ! -f "$*" ]; then
+            touch "$*"
+        fi
+        exec open -a TextEdit "$@";;
     (*) exec vi "$@";;
 esac
 
