@@ -97,6 +97,7 @@ case "$1" in
   foo calcite eolivelli
   foo calcite ex00
   foo calcite F21
+  foo calcite fib-seq
   foo calcite Fokko
   foo calcite Functor10
   foo calcite gabrielreid
@@ -123,6 +124,7 @@ case "$1" in
   foo calcite jh3507
   foo calcite jiayuanv127
   foo calcite jinfengni incubator-optiq
+  foo calcite jinxing64
   foo calcite joshelser incubator-calcite
   foo calcite jpullok remove
   foo calcite jpullokkaran
@@ -139,6 +141,7 @@ case "$1" in
   foo calcite KurtYoung
   foo calcite Kyligence
   foo calcite lalinsky incubator-calcite
+  foo calcite lameyer
   foo calcite LantaoJin
   foo calcite laurentgo
   foo calcite leesf
@@ -146,6 +149,7 @@ case "$1" in
   foo calcite Lerm
   foo calcite lfkpoa
   foo calcite lincoln-lil
+  foo calcite LiShuMing
   foo calcite mapr incubator-calcite
   foo calcite markap14
   foo calcite maryannxue
@@ -180,10 +184,12 @@ case "$1" in
   foo calcite sbcd90
   foo calcite sergeysimonov
   foo calcite Serhii-Harnyk remove
+  foo calcite shenh062326
   foo calcite shmushkis
   foo calcite siddharthteotia
   foo calcite sintown
   foo calcite smola incubator-calcite
+  foo calcite snallapa
   foo calcite snuyanzin
   foo calcite sreev remove
   foo calcite stalbot
@@ -231,6 +237,7 @@ case "$1" in
 (avatica|calcite-avatica)
   foo calcite-avatica asolimando
   foo calcite-avatica bcogrel
+  foo calcite-avatica docete
   foo calcite-avatica F21
   foo calcite-avatica haohui
   foo calcite-avatica joshelser
@@ -263,6 +270,10 @@ case "$1" in
 
 (mondrian)
   foo mondrian julianhyde
+  ;;
+
+(morel)
+  foo morel julianhyde
   ;;
 
 (sqlline)
