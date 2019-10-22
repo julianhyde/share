@@ -18,6 +18,8 @@ package net.hydromatic.scratch;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -38,6 +40,32 @@ public class PrimeGeneratorTest {
       g.next();
     }
     assertThat(g.next(), is(104_803));
+  }
+
+  @Test public void testPythagoreanTupleGenerator() {
+    try (PythagoreanTripleGenerator g =
+             new PythagoreanTripleGenerator(1, 15)) {
+      final Iterator<PythagoreanTripleGenerator.Triple> iterator =
+          g.iterator();
+      assertThat(iterator.hasNext(), is(true));
+      assertThat(iterator.next().toString(), is("3 4 5"));
+      assertThat(iterator.hasNext(), is(true));
+      assertThat(iterator.next().toString(), is("5 12 13"));
+      assertThat(iterator.hasNext(), is(false));
+    }
+  }
+
+  @Test public void testPythagoreanTupleGenerator2() {
+    try (PythagoreanTripleGenerator g =
+             new PythagoreanTripleGenerator(10, Integer.MAX_VALUE)) {
+      final Iterator<PythagoreanTripleGenerator.Triple> iterator =
+          g.iterator();
+      assertThat(iterator.hasNext(), is(true));
+      assertThat(iterator.next().toString(), is("3 4 5"));
+      assertThat(iterator.hasNext(), is(true));
+      assertThat(iterator.next().toString(), is("5 12 13"));
+      assertThat(iterator.hasNext(), is(true));
+    }
   }
 }
 
