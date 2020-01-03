@@ -16,8 +16,6 @@
  */
 package net.hydromatic.scratch;
 
-import net.hydromatic.scratch.PythagoreanTripleGenerator.Triple;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,6 +27,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import net.hydromatic.scratch.PythagoreanTripleGenerator.Triple;
 
 /**
  * Generates triples of the form (a, b, c)
@@ -64,7 +64,7 @@ public class PythagoreanTripleGenerator
     final ArrayDeque<Future<List<Triple>>> futures = new ArrayDeque<>();
     private int i;
 
-    public PythagoreanTripleIterator() {
+    PythagoreanTripleIterator() {
       i = 5;
       for (int j = 0; j < workerCount; j++) {
         addTask();
@@ -72,7 +72,7 @@ public class PythagoreanTripleGenerator
     }
 
     public boolean hasNext() {
-      for (; ;) {
+      while (true) {
         final Triple triple = triples.peek();
         if (triple != null) {
           return true;
@@ -129,7 +129,9 @@ public class PythagoreanTripleGenerator
 
   /** Command line. */
   public static void main(String[] args) {
-    try (PythagoreanTripleGenerator iterable = iterable(160, 20_000)) {
+    final int workerCount = 160;
+    final int max = 20_000;
+    try (PythagoreanTripleGenerator iterable = iterable(workerCount, max)) {
       for (Triple triple : iterable) {
         System.out.println(triple);
       }

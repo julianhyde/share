@@ -12,7 +12,7 @@ function prevLine(i) {
   return prevLines[(k - i) % 5];
 }
 function afterFile() {
-  if (isJava(prevFileName) && !isProto(prevFileName)) {
+  if (isJava(prevFileName) && !isProto(prevFileName) && needEnd) {
     b = prevFileName;
     gsub(/.*\//, "", b);
     if (prevLine(1) != "// End " b || prevLine(2) != "") {
@@ -31,8 +31,10 @@ FNR == 1 {
   deprecated = -1;
   endCount = 0;
   maxLineLength = 80;
+  needEnd = true;
   if (FILENAME ~ /calcite/) {
     maxLineLength = 100;
+    needEnd = false;
   }
   startJavadoc = endJavadoc = blankJavadoc = nonBlank = import = package = 0;
   tableOpens = tableCloses = 0;

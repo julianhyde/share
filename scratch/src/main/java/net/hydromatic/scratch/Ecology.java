@@ -16,15 +16,12 @@
  */
 package net.hydromatic.scratch;
 
-import java.io.File;
+import static java.lang.System.out;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.PriorityQueue;
 import java.util.Random;
-
-import static java.lang.System.out;
 
 /**
  * Ecology simulator.
@@ -56,7 +53,8 @@ public class Ecology {
     final double rabbitCaughtRate = 0.001;
     final double foxCatchRate = 0.00025;
     final double foxDeathRate = 0.02;
-    for (int t = 0; t < 800; t++) {
+    final int iterationCount = 800;
+    for (int t = 0; t < iterationCount; t++) {
       print(t + " " + (int) rabbits + " " + (int) foxes);
       rabbits += rabbits * rabbitBirthRate;
       rabbits -= rabbits * foxes * rabbitCaughtRate;

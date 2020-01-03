@@ -130,9 +130,15 @@ limitations under the License.
     <module name="OperatorWrap"/>
     <module name="ParenPad"/>
     <module name="WhitespaceAfter"/>
-    <module name="WhitespaceAround"/>
-    <!-- module name="MethodParamPad"/ -->
-
+    <module name="WhitespaceAround">
+        <property name="allowEmptyConstructors" value="true"/>
+        <property name="allowEmptyMethods" value="true"/>
+    </module>
+    <module name="EmptyForIteratorPad"/>
+    <module name="MethodParamPad">
+      <property name="option" value="nospace"/>
+      <property name="allowLineBreaks" value="true"/>
+     </module>
 
     <!-- Modifier Checks                                    -->
     <!-- See http://checkstyle.sf.net/config_modifiers.html -->

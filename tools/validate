@@ -4,12 +4,23 @@ D=$(cd $(dirname $(readlink $0)); pwd)
 case "$1" in
 (--help)
   echo "validate [--help | --emacs]"
-  exit 0;;
+  exit 0
+  ;;
 (--emacs)
-  exec emacs -nw --eval "(compile \"extra.sh ; mvn -B -o -DskipTests validate verify | awk -f ${D}/validate.awk\")";;
+  if [ -f pom.xml ]; then
+    exec emacs -nw --eval "(compile \"extra.sh ; mvn -B -o -DskipTests validate verify | awk -f ${D}/validate.awk\")"
+  else
+    exec emacs -nw --eval "(compile \"extra.sh ; mvn -B -o -DskipTests validate verify | awk -f ${D}/validate.awk\")"
+  fi
+  ;;
 (*)
   extra.sh
-  mvn -B -o -DskipTests validate verify | awk -f ${D}/validate.awk;;
+  if [ -f pom.xml ]; then
+    mvn -B -o -DskipTests validate verify | awk -f ${D}/validate.awk
+  else
+    ./gradlew check -x tests -x rat | awk -f ${D}/validate.awk
+  fi
+  ;;
 esac
 
 # End validate

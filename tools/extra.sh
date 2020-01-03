@@ -12,8 +12,8 @@ awk '
 /^\+/ && !/^\+\+\+/ && f ~ /.java/ && /for \(.*[^ ]:/ {printf "%s:%s:%s\n", f, line, "need space before colon"; print}
 /^\+/ && !/^\+\+\+/ && f ~ /.java/ && /TODO/ {printf "%s:%s:%s\n", f, line, "TODO"; print}
     '
-git ls-files | grep -v /fonts/ | egrep -v '\.(png|jpg|min.js|ico|scss)$' | xargs env LANG=C awk -f $(dirname $0)/extra.awk
-for f in $(git ls-files | grep -v /fonts/ | egrep -v '\.(png|jpg|min.js|ico|scss|gz)$'); do
+git ls-files | grep -v /fonts/ | egrep -v 'lisp/|\.(bz2|gz|jar|key|odg|png|ppt|pptx|jpg|min.js|pdf|ico|scss)$' | xargs env LANG=C awk -f $(dirname $0)/extra.awk
+for f in $(git ls-files | grep -v /fonts/ | egrep -v '\.(bz2|gz|jar|key|odg|png|ppt|pptx|jpg|min.js|ico|scss|zip)$'); do
   test -s "$f" && test "$(tail -c 1 "$f" | wc -l)" -eq 0 && echo "$f: 1: no newline at end of file"
 done
 

@@ -31,7 +31,7 @@ public class PrimeGenerator implements Iterator<Integer> {
     sequences.add(new SquareSeq(2));
   }
 
-  public boolean hasNext() {
+  @Override public boolean hasNext() {
     return true;
   }
 
@@ -39,7 +39,7 @@ public class PrimeGenerator implements Iterator<Integer> {
    *
    * <p>Returns the next prime number. */
   public Integer next() {
-    for (; ; ) {
+    while (true) {
       Seq seq = sequences.poll();
       int c = seq.current;
       if (c <= candidate) {
