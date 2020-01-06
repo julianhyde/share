@@ -21,6 +21,7 @@ import org.junit.Test;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -88,6 +89,31 @@ public class CoverTest {
         + "\n";
     assertThat(sw.toString(), is(expected));
     w.close();
+  }
+
+  @Test public void testPrintShapes() {
+    final StringWriter sw = new StringWriter();
+    final List<Shape> map = new ArrayList<>();
+    map.add(Shapes.Pentonimo.V.shape);
+    map.add(
+        Shapes.Pentonimo.R.shape.transform(Shapes.Transformation.R90, 5, 3));
+    final Shapes.Printer printer = new Shapes.Printer(10, 6);
+    printer.print(new PrintWriter(sw), map);
+    final String expected = ""
+        + "+--------+--------------------+\n"
+        + "|        |                    |\n"
+        + "|  +-----+                    |\n"
+        + "|  |                          |\n"
+        + "|  |                          |\n"
+        + "|  |                          |\n"
+        + "+--+        +--+              |\n"
+        + "|           |  |              |\n"
+        + "|        +--+  +--+           |\n"
+        + "|        |        |           |\n"
+        + "|        |  +-----+           |\n"
+        + "|        |  |                 |\n"
+        + "+--------+--+-----------------+\n";
+    assertThat(sw.toString(), is(expected));
   }
 }
 
