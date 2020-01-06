@@ -17,6 +17,7 @@
 package net.hydromatic.scratch;
 
 import java.io.PrintWriter;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -25,6 +26,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 import static net.hydromatic.scratch.Utilities.cons;
 
@@ -44,6 +46,9 @@ public class Cover {
   final int[] tops;
   final int[] upLinks;
   final int[] downLinks;
+
+  /** The original list of options. */
+  private final List<List<Integer>> options;
 
   /** Creates a Cover from a list of strings.
    *
@@ -76,6 +81,22 @@ public class Cover {
 
   /** Creates a Cover. */
   Cover(List<String> nameList, int rowCount, Element element) {
+    this.options = new AbstractList<List<Integer>>() {
+      @Override public int size() {
+        return rowCount;
+      }
+
+      @Override public List<Integer> get(int index) {
+        final List<Integer> items = new ArrayList<>();
+        for (int i = 0; i < names.length; i++) {
+          if (element.test(i, index)) {
+            items.add(i);
+          }
+        }
+        return items;
+      }
+    };
+
     final int columnCount = nameList.size();
     names = cons(null, nameList).toArray(new String[0]);
     leftLinks = new int[names.length];
@@ -133,6 +154,11 @@ public class Cover {
     }
   }
 
+  /** Returns the options. */
+  List<List<Integer>> getOptions() {
+    return options;
+  }
+
   void insert(int i, int c) {
     final int last = upLinks[i];
     upLinks[c] = last;
@@ -157,7 +183,54 @@ public class Cover {
   }
 
   public void solve(Consumer<Solution> solutionConsumer) {
+    // 1. Initialize
+    int n = names.length - 1; // number of items
+    int z = tops.length - 1; // last spacer address
+    int level = 0;
+    final int[] cellStack = new int[names.length];
 
+    while (true) {
+      // 2. Enter level "l"
+      if (rightLinks[0] == 0) {
+        // All items have been covered. We have a solution.
+        final List<Integer> optionOrdinals = new ArrayList<>();
+        for (int i = 0; i < level; i++) {
+          final int cell = cellStack[i];
+          optionOrdinals.add(cellOption(cell));
+        }
+        solutionConsumer.accept(() -> optionOrdinals);
+      }
+
+      // 8. Leave level "l"
+      if (level == 0) {
+        return;
+      }
+      --level;
+
+      // 6. Try again.
+
+      // 5. Try x[level].
+      if (false) {
+        // 7. Backtrack
+
+        // goto 8
+      }
+    }
+  }
+
+  /** Returns the ordinal of the option that a given cell belongs to. */
+  private int cellOption(int cell) {
+    while (tops[cell] > 0) {
+      --cell;
+    }
+    return -tops[cell];
+  }
+
+  public String optionToString(int optionOrdinal) {
+    return options.get(optionOrdinal)
+        .stream()
+        .map(item -> names[item])
+        .collect(Collectors.joining(" "));
   }
 
   /** Returns whether a given option contains a particular item. */

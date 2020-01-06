@@ -23,13 +23,14 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /** Tests for Cover. */
 public class CoverTest {
-  @Test public void testCoverInitialState() {
+  private Cover exampleCover() {
     final int[][] rows = {
         {0, 0, 1, 0, 1, 0, 0},
         {1, 0, 0, 1, 0, 0, 1},
@@ -40,16 +41,37 @@ public class CoverTest {
     };
     final List<String> names =
         Arrays.asList("a", "b", "c", "d", "e", "f", "g");
-    final Cover state = new Cover(names, rows.length,
+    return new Cover(names, rows.length,
         (i, x) -> rows[x][i] == 1);
-    checkCoverInitialState(state);
   }
 
-  @Test public void testCoverInitialState2() {
+  private Cover exampleCover2() {
     final String[] options = {
         "c e", "a d g", "b c f", "a d f", "b g", "d e g"
     };
-    checkCoverInitialState(Cover.create(Arrays.asList(options)));
+    return Cover.create(Arrays.asList(options));
+  }
+
+  @Test public void testCoverInitialState() {
+    checkCoverInitialState(exampleCover());
+  }
+
+  @Test public void testCoverInitialState2() {
+    checkCoverInitialState(exampleCover2());
+  }
+
+  @Test public void testCoverSolve() {
+    final StringWriter sw = new StringWriter();
+    final PrintWriter w = new PrintWriter(sw);
+    final Cover cover = exampleCover();
+    cover.solve(solution ->
+        w.println(
+            solution.options()
+                .stream()
+                .map(option -> option + ": " + cover.optionToString(option))
+                .collect(Collectors.joining(",", "{", "}"))));
+    w.close();
+    assertThat(sw.toString(), is("" /*"{a b, c d e f}"*/));
   }
 
   void checkCoverInitialState(Cover state) {
