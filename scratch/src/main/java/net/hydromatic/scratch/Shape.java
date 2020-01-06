@@ -23,7 +23,7 @@ class Shape {
   private final int[] coords;
 
   Shape(int... coords) {
-    this.coords = Objects.requireNonNull(coords);
+    this.coords = Objects.requireNonNull(coords).clone();
     assert coords.length % 2 == 0;
   }
 

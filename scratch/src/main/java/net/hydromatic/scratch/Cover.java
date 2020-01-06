@@ -17,7 +17,14 @@
 package net.hydromatic.scratch;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import static net.hydromatic.scratch.Utilities.cons;
 
@@ -37,6 +44,35 @@ public class Cover {
   final int[] tops;
   final int[] upLinks;
   final int[] downLinks;
+
+  /** Creates a Cover from a list of strings.
+   *
+   * <p>For example,
+   *
+   * <pre>
+   *   create(Arrays.asList("a b", "b c"))
+   * </pre>
+   *
+   * <p>creates a Cover with 3 items named "a", "b", "c"
+   * and two options (0, 1) and (1, 2).
+   */
+  static Cover create(List<String> optionList) {
+    return create(optionList, nameList ->
+      new ArrayList<>(new TreeSet<>(nameList)));
+  }
+
+  static Cover create(List<String> optionList,
+      UnaryOperator<List<String>> namesTransform) {
+    final Set<String> nameSet = new LinkedHashSet<>();
+    for (String option : optionList) {
+      nameSet.addAll(Arrays.asList(option.split(" ")));
+    }
+    final List<String> nameList =
+        namesTransform.apply(new ArrayList<>(nameSet));
+    return new Cover(nameList, optionList.size(),
+        (item, option) -> Arrays.asList(optionList.get(option).split(" "))
+            .contains(nameList.get(item)));
+  }
 
   /** Creates a Cover. */
   Cover(List<String> nameList, int rowCount, Element element) {
@@ -120,9 +156,21 @@ public class Cover {
     w.println();
   }
 
+  public void solve(Consumer<Solution> solutionConsumer) {
+
+  }
+
+  /** Returns whether a given option contains a particular item. */
   @FunctionalInterface
   interface Element {
-    boolean test(int i, int x);
+    boolean test(int item, int option);
+  }
+
+  /** A solution. */
+  interface Solution {
+    /** Returns the ordinals of the options that formed a solutio, i.e. an
+     * exact cover of the set. */
+    List<Integer> options();
   }
 }
 

@@ -42,6 +42,17 @@ public class CoverTest {
         Arrays.asList("a", "b", "c", "d", "e", "f", "g");
     final Cover state = new Cover(names, rows.length,
         (i, x) -> rows[x][i] == 1);
+    checkCoverInitialState(state);
+  }
+
+  @Test public void testCoverInitialState2() {
+    final String[] options = {
+        "c e", "a d g", "b c f", "a d f", "b g", "d e g"
+    };
+    checkCoverInitialState(Cover.create(Arrays.asList(options)));
+  }
+
+  void checkCoverInitialState(Cover state) {
     final StringWriter sw = new StringWriter();
     final PrintWriter w = new PrintWriter(sw);
     state.dump(w);
@@ -114,6 +125,10 @@ public class CoverTest {
         + "|        |  |                 |\n"
         + "+--------+--+-----------------+\n";
     assertThat(sw.toString(), is(expected));
+  }
+
+  @Test public void testSolvePentonimo() {
+    PentonimoCoverSolver.solve(new PrintWriter(System.out));
   }
 }
 
