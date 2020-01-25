@@ -1,0 +1,11 @@
+---
+layout: post
+title: Primitives collections
+date: '2010-12-20T13:56:00.001-08:00'
+author: Julian Hyde
+tags: 
+modified_time: '2010-12-20T14:40:36.234-08:00'
+blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-1183956463308686886
+---
+
+Java needs a way to efficiently manage collections of primitive values. Lists of ints, maps from (int, boolean) pairs to double values, and so forth.<br /><br />In the early days of Java, there seemed to be a lot of enthusiasm for this. Projects included apache commons primitives, joda-collections, GNU trove, .... But these projects have all fizzled. What changed? I think in those days there was a lot of paranoia about the cost of creating boxing objects (Integer to wrap an int, Double to wrap a double, and so forth). Some of the paranoia was justified. A lot of us were moving from non-garbage collected languages like C and C++, and didn't like the idea of temporary objects.<br /><br />However, the garbage collector is much better now. I think that's why the paranoia subsided.<br /><br />But other problems remain. Java collections use a lot more memory than primitive collections. Consider a HashMap<Integer, Integer> with 1 million (10^6) entries on a 32 bit machine. The array of the hash table will have 2M (2^21) entries (using the default load factor 0.75); there will be 1 million entries, each containing 3 pointers and an int; and there will be 1M keys and 1M values, each an Integer (16 bytes). Total size:

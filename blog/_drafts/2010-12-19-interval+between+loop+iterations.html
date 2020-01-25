@@ -1,0 +1,11 @@
+---
+layout: post
+title: Interval between loop iterations
+date: '2010-12-19T16:53:00.001-08:00'
+author: Julian Hyde
+tags: 
+modified_time: '2010-12-19T17:02:52.276-08:00'
+blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-4559482780128185273
+---
+
+I was curious to see how the Linux scheduler would manifest in the execution times of a single-threaded program running a loop. The loop is simple: all it does is compute the number of milliseconds since the last iteration of the loop, and store the result in a histogram. The goal was not to measure the performance of the loop, but to look at the variations in the intervals between loop iterations. Those variations would presumably be caused by the Linux scheduler.<br /><br />Here are the numbers I achieved.<br /><br /><br /><br />The vast majority of iterations occur 0 milliseconds after the previous iteration. No surprise there; Java's clock granularity, 1 millisecond, is coarse enough to contain a few million clock cycles.<br /><br />It is also no surprise that the number of <br /><br />Some details. The program is written in Java, but I don't believe the results would be much different in C. I am running Linux 2.6.32-26-generic, on a dual-core AMD processor. I ran some other tasks to ensure that the system had a load average of about 6 when I was running this test.
