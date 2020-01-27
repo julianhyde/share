@@ -10,4 +10,17 @@ blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-42372137320887866
 blogger_orig_url: https://julianhyde.blogspot.com/2009/07/introduction-to-pentaho-analysis.html
 ---
 
-Joshua Tolley has written a nice <a href="https://wiki.csinitiative.com/display/tri/Pentaho+Analysis+-+OLAP+How-To">step-by-step guide to using Pentaho Analysis</a>. The tutorial is from the end-user's point of view, which of course is the most important perspective.<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="https://wiki.csinitiative.com/download/attachments/2425482/OLAPnavigator.png?version=1&modificationDate=1247768365022"><img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 247px; height: 405px;" src="https://wiki.csinitiative.com/download/attachments/2425482/OLAPnavigator.png?version=1&modificationDate=1247768365022" border="0" alt="" /></a>If you're interested in the back-end stuff, a couple of weeks ago Joshua also wrote a nice <a href="http://blog.endpoint.com/2009/07/mdx.html">MDX primer</a>.
+Joshua Tolley has written a nice [step-by-step
+guide to using Pentaho Analysis](https://wiki.csinitiative.com/display/tri/Pentaho+Analysis+-+OLAP+How-To).
+The tutorial is from the end-user's point of view, which of course is
+the most important perspective.
+
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}"
+    href="https://wiki.csinitiative.com/download/attachments/2425482/OLAPnavigator.png?version=1&modificationDate=1247768365022">
+  <img style="float:right; margin:0 0 10px 10px;cursor:pointer; cursor:hand;width: 247px; height: 405px;"
+      src="https://wiki.csinitiative.com/download/attachments/2425482/OLAPnavigator.png?version=1&modificationDate=1247768365022"
+      border="0" alt="" />
+</a>
+
+If you're interested in the back-end stuff, a couple of weeks ago
+Joshua also wrote a nice [MDX primer](http://blog.endpoint.com/2009/07/mdx.html).

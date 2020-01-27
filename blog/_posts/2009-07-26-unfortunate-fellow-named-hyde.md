@@ -10,4 +10,13 @@ blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-45287066843140929
 blogger_orig_url: https://julianhyde.blogspot.com/2009/07/unfortunate-fellow-named-hyde.html
 ---
 
-A limerick featuring my family name and ending with a pun. What could be better?<br /><br />An unfortunate fellow named Hyde<br />fell down an outhouse and died.<br />By mischance, his brother<br />fell down another.<br />And now they're interred side-by-side.<br /><br />(Reportedly due to Johnny Carson.)
+A limerick featuring my family name and ending with a pun. What could
+be better?
+
+> An unfortunate fellow named Hyde<br/>
+> fell down an outhouse and died.<br/>
+> By mischance, his brother<br/>
+> fell down another.<br/>
+> And now they're interred side-by-side.
+
+(Reportedly due to Johnny Carson.)

@@ -10,4 +10,34 @@ blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-55203176332522268
 blogger_orig_url: https://julianhyde.blogspot.com/2008/02/nice-little-olap-viewer.html
 ---
 
-Bill Seyler and Will Gorman from <a href="http://www.pentaho.com/">Pentaho</a> have put together a nice little OLAP viewer  in their spare time, called <a href="http://code.google.com/p/halogen/">Halogen</a>. It isn't fully baked (by a long stretch) but it shows what you can do if you pair up <a href="http://code.google.com/webtoolkit/">GWT</a> with <a href="http://www.olap4j.org/">olap4j</a>.<br /><br /><a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://billandlizz.com/images/Report_Screen.jpg"><img style="margin: 0pt 0pt 10px 10px; cursor: pointer; width: 320px;" src="http://billandlizz.com/images/Report_Screen.jpg" align="right" alt="Halogen viewer" border="1" /></a> I think it shows off the strengths of both GWT and olap4j nicely. Both technologies have a strong portability message. Because of GWT, Halogen has really nice AJAX usability and can run in any browser. Because of olap4j, it can run against mondrian and an XMLA provider without changing a line of code. (I haven't tried it against against <a href="http://www.microsoft.com/sql/solutions/bi/bianalysis.mspx">Microsoft SQL Server Analysis Services</a>, for instance, but it shouldn't be hard to get it working.)<br /><br />This isn't an official Pentaho product, more of a proof of concept with the potential to grow into an alternative to <a href="http://jpivot.sourceforge.net/">JPivot</a> if the community thinks it is cool and we get some momentum behind it. To make it easier for people to contribute, we made a point of releasing it under the commercial-friendly license, namely the <a href="http://www.mozilla.org/MPL/">Mozilla Public License</a>.<br /><br />Check it out.
+Bill Seyler and Will Gorman from [Pentaho](https://www.pentaho.com/)
+have put together a nice little OLAP viewer in their spare time, called
+[Halogen](https://code.google.com/p/halogen/). It isn't fully
+baked (by a long stretch) but it shows what you can do if you pair up
+[GWT](https://code.google.com/webtoolkit/) with
+[olap4j](http://www.olap4j.org/).
+
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}"
+    href="http://billandlizz.com/images/Report_Screen.jpg">
+  <img style="margin: 0pt 0pt 10px 10px; cursor: pointer; width: 320px;"
+    src="http://billandlizz.com/images/Report_Screen.jpg"
+    align="right" alt="Halogen viewer" border="1" />
+</a>
+
+I think it shows off the strengths of both GWT and olap4j nicely. Both
+technologies have a strong portability message. Because of GWT,
+Halogen has really nice AJAX usability and can run in any
+browser. Because of olap4j, it can run against mondrian and an XMLA
+provider without changing a line of code. (I haven't tried it against
+against [Microsoft SQL Server Analysis Services](https://www.microsoft.com/sql/solutions/bi/bianalysis.mspx),
+for instance, but it shouldn't be hard to get it working.)
+
+This isn't an official Pentaho product, more of a proof of concept
+with the potential to grow into an alternative to
+[JPivot](https://jpivot.sourceforge.net/) if the community
+thinks it is cool and we get some momentum behind it. To make it
+easier for people to contribute, we made a point of releasing it under
+the commercial-friendly license, namely the
+[Mozilla Public License](http://www.mozilla.org/MPL/).
+
+Check it out.

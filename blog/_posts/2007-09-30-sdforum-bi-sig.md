@@ -10,4 +10,8 @@ blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-62123826165009506
 blogger_orig_url: https://julianhyde.blogspot.com/2007/09/sdforum-bi-sig.html
 ---
 
-I shall be giving a talk entitled "Building Scalable OLAP applications with Mondrian and Pentaho" to the Business Intelligence SIG of SDForum. The talk will be at 7pm on October 16th 2007 in the Cubberley Community Center in Palo Alto, CA. All are welcome; details <a href="http://www.sdforum.com/index.cfm?fuseaction=Calendar.eventDetail&amp;eventID=12963">at the SDForum site</a>.
+I shall be giving a talk entitled "Building Scalable OLAP applications
+with Mondrian and Pentaho" to the Business Intelligence SIG of
+SDForum. The talk will be at 7pm on October 16th 2007 in the Cubberley
+Community Center in Palo Alto, CA. All are welcome; details
+[at the SDForum site](http://www.sdforum.com/index.cfm?fuseaction=Calendar.eventDetail&amp;eventID=12963).

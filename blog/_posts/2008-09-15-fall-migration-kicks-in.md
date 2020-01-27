@@ -10,4 +10,57 @@ blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-78714912637936359
 blogger_orig_url: https://julianhyde.blogspot.com/2008/09/fall-migration-kicks-in.html
 ---
 
-You can't fault nature.<br /><br />We've been <a href="http://julianhyde.blogspot.com/2008/08/hawkwatch.html">counting raptors</a> for almost a month now, and the numbers have been really, really low. I've been promising everyone that the peak of raptor migration, will be within a day or two of the equinox, because that's how it always goes, but I was getting worried.<br /><br />We weren't seeing enough birds. In particular, the <a href="http://en.wikipedia.org/wiki/Accipiter">accipiters</a> (the Cooper's Hawk and Sharp-shinned Hawk), which form the bulk of the equinox peak, were nowhere to be seen. The counts consisted mainly of the Turkey Vultures and Red-tailed Hawks which are ubiquitous around Hawk Hill. Had something gone wrong? Had this summer's forest fires disrupted the breeding season and delayed the migration?<br /><br />Look at the <a href="http://ggro.org/hawkwatch/default.aspx">accipiter numbers</a> for last week:<br /><ul><li>Sun 8: 2 sharpies, no coops</li><li>Mon 9: no birds (fog)</li><li>Tue 10: no sharpies, 1 coop</li><li>Wed 12: 1 sharpie, 1 coop</li><li>Thu 11: 8 sharpies, 3 coops</li><li>Fri 12: 5 sharpies, 3 coops<br /></li></ul>Then came my day on the hill, Saturday. It was a slow start, foggy at first, and overcast for most of the day, but the birds started coming. We had 40 sharpies, 8 coops. We also got a juvenile <a href="http://en.wikipedia.org/wiki/Golden_Eagle">Golden Eagle</a> (at 10.30am even -- conventional wisdom has it that eagles are late risers, like the thermals they soar upon), and a couple of <a href="http://en.wikipedia.org/wiki/Broad-winged_Hawk">Broad-winged Hawks</a>. (According to the books, you won't see a broadie west of Kansas, but the <a href="http://en.wikipedia.org/wiki/Marin_Headlands#Wildlife">Marin Headlands</a> are very effective at channeling the few we do have into a narrow stream.)<br /><ul><li>Sat 13: 40 sharpies, 8 coops</li></ul>And in the last couple of days, the trend has accelerated:<br /><ul><li>Sun 14: 111 sharpies, 29 coops</li><li>Mon 15: 133 sharpies, 44 coops</li></ul>Yes folks, it looks like we have a fall migration after all. As sure as clockwork, the <a href="http://en.wikipedia.org/wiki/Bird_migration#Timing">changing day-length</a> is telling those birds to head south. <a href="http://www.hydromatic.net/ggro.xml">Check the counts</a> over the next week or two, you should see the spectacle continue.<br /><br /><span style="font-style: italic;">(Note that all statistics quoted are copyright of the GGRO and may not be reproduced without permission.)</span>
+You can't fault nature.
+
+We've been [counting raptors](https://julianhyde.blogspot.com/2008/08/hawkwatch.html)
+for almost a month now, and the numbers have been really,
+really low. I've been promising everyone that the peak of raptor
+migration, will be within a day or two of the equinox, because that's
+how it always goes, but I was getting worried.
+
+We weren't seeing enough birds. In particular, the
+[accipiters](https://en.wikipedia.org/wiki/Accipiter) (the
+Cooper's Hawk and Sharp-shinned Hawk), which form the bulk of the
+equinox peak, were nowhere to be seen. The counts consisted mainly of
+the Turkey Vultures and Red-tailed Hawks which are ubiquitous around
+Hawk Hill. Had something gone wrong? Had this summer's forest fires
+disrupted the breeding season and delayed the migration?
+
+Look at the
+[accipiter numbers](http://ggro.org/hawkwatch/default.aspx) for last week:
+
+* Sun 7: 2 sharpies, no coops
+* Mon 8: no birds (fog)
+* Tue 9: no sharpies, 1 coop
+* Wed 10: 1 sharpie, 1 coop
+* Thu 11: 8 sharpies, 3 coops
+* Fri 12: 5 sharpies, 3 coops
+
+Then came my day on the hill, Saturday. It was a slow start, foggy at
+first, and overcast for most of the day, but the birds started
+coming. We had 40 sharpies, 8 coops. We also got a juvenile
+[Golden Eagle](https://en.wikipedia.org/wiki/Golden_Eagle) (at
+10.30am even -- conventional wisdom has it that eagles are late
+risers, like the thermals they soar upon), and a couple of
+[Broad-winged Hawks](https://en.wikipedia.org/wiki/Broad-winged_Hawk).
+(According to the books, you won't see a broadie west of
+Kansas, but the
+[Marin Headlands](https://en.wikipedia.org/wiki/Marin_Headlands#Wildlife)
+are very effective at channeling the few we do have into
+a narrow stream.)
+
+* Sat 13: 40 sharpies, 8 coops
+
+And in the last couple of days, the trend has
+accelerated:
+
+* Sun 14: 111 sharpies, 29 coops
+* Mon 15: 133 sharpies, 44 coops
+
+Yes folks, it looks like we have a fall migration after all. As sure
+as clockwork, the [changing day-length](https://en.wikipedia.org/wiki/Bird_migration#Timing)
+is telling those birds to head south. [Check the counts](http://www.hydromatic.net/ggro.xml) over
+the next week or two, you should see the spectacle continue.
+
+<small>*(Note that all statistics quoted are copyright of the GGRO and
+may not be reproduced without permission.)*</small>

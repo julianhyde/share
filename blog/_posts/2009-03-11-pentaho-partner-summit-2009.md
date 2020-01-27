@@ -10,4 +10,27 @@ blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-62567123581934635
 blogger_orig_url: https://julianhyde.blogspot.com/2009/03/pentaho-partner-summit-2009.html
 ---
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://www.pentaho.com/email/partner_summit09.png"><img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 380px; " src="http://www.pentaho.com/email/partner_summit09.png" border="0" alt="" /></a><br />Are you thinking of incorporating Mondrian, or perhaps the entire Pentaho BI Suite, in your application? The Pentaho Partner Summit, on April 2nd and 3rd in Menlo Park, CA, is a good chance to get an overview of the technology.<br /><br />The first day will contain an executive overview for vendors thinking of using the technology. Chance to hear myself, Matt Casters (Kettle lead), Zack Urlocker (MySQL VP Marketing and general Open Source luminary) and Richard Daley (Pentaho CEO) hold forth, then a cocktail reception where you get to tell us what you think.<div><br /></div><div>The second day will have in depth training for OEM, reseller, and systems integrator partners who are already building apps using Pentaho technology.<br /><br />Read the agenda, get details, and register at <a href="http://www.pentaho.com/summit09/agenda.php">http://www.pentaho.com/summit09/agenda.php</a>.</div>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}"
+  href="/assets/img/partner_summit09.png">
+<img style="display:block; margin:0px auto 10px; text-align:center;cursor:pointer; cursor:hand;width: 380px; "
+  src="/assets/img/partner_summit09.png" border="0"
+  alt="Pentaho Partner Summit 2009" />
+</a>
+
+Are you thinking of incorporating Mondrian, or perhaps the entire
+Pentaho BI Suite, in your application? The Pentaho Partner Summit, on
+April 2nd and 3rd in Menlo Park, CA, is a good chance to get an
+overview of the technology.
+
+The first day will contain an executive overview for vendors thinking
+of using the technology. Chance to hear myself, Matt Casters (Kettle
+lead), Zack Urlocker (MySQL VP Marketing and general Open Source
+luminary) and Richard Daley (Pentaho CEO) hold forth, then a cocktail
+reception where you get to tell us what you think.
+
+The second day will have in depth training for OEM, reseller, and
+systems integrator partners who are already building apps using
+Pentaho technology.
+
+Read the agenda, get details, and register at
+[http://www.pentaho.com/summit09/agenda.php](https://web.archive.org/web/20090328021747/https://www.pentaho.com/summit09/agenda.php).

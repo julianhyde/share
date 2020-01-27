@@ -3,10 +3,177 @@ layout: post
 title: Improvements to Optiq's MongoDB adapter
 date: '2014-03-19T13:39:00.002-07:00'
 author: Julian Hyde
-tags: 
+tags:
 modified_time: '2014-03-19T13:39:37.039-07:00'
 blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-34624433740046933
 blogger_orig_url: https://julianhyde.blogspot.com/2014/03/improvements-to-optiqs-mongodb-adapter.html
 ---
 
-It’s been a while since I posted to this blog, but I haven’t been idle. Quite the opposite; I’ve been so busy writing code that I haven’t had time to write blog posts. A few months ago I <a href="http://hortonworks.com/blog/welcoming-julian-hyde/">joined Hortonworks</a>, and I’ve been improving Optiq on several fronts, including <a href="https://github.com/julianhyde/optiq/blob/master/RELEASE.md#05--2014-03-14">several releases</a>, <a href="https://issues.apache.org/jira/browse/HIVE-6439">adding a cost-based optimizer to Hive</a> and some other initiatives to make Hadoop faster and smarter.<br /><br />More about those other initiatives shortly. But Optiq’s mission is to improve access to all data, so here I want to talk about improvements to how Optiq accesses data in MongoDB. Optiq can now translate SQL queries to extremely efficient operations inside MongoDB.<br /><br />MongoDB 2.2 introduced the <a href="http://docs.mongodb.org/manual/core/aggregation-introduction/">aggregation framework</a>, which allows you to compose queries as pipelines of operations. They have basically implemented relational algebra, and we wanted to take advantage of this.<br /><br />As the following table shows, most of those operations map onto Optiq’s relational operators. We can exploit that fact to push SQL query logic down into MongoDB.<br /><br /><table><tbody><tr><th>MongoDB operator</th><th>Optiq operator</th></tr><tr><td>$project</td><td>ProjectRel</td></tr><tr><td>$match</td><td>FilterRel</td></tr><tr><td>$limit</td><td>SortRel.limit</td></tr><tr><td>$skip</td><td>SortRel.offset</td></tr><tr><td>$unwind</td><td>-</td></tr><tr><td>$group</td><td>AggregateRel</td></tr><tr><td>$sort</td><td>SortRel</td></tr><tr><td>$geoNear</td><td>-</td></tr></tbody></table><br />In the <a href="http://julianhyde.blogspot.com/2013/06/efficient-sql-queries-on-mongodb.html">previous iteration of Optiq’s MongoDB adapter</a>, we could push down project, filter and sort operators as <span style="font-family: Courier New, Courier, monospace;">$project</span>, <span style="font-family: Courier New, Courier, monospace;">$match</span> and <span style="font-family: Courier New, Courier, monospace;">$sort</span>. A <a href="https://github.com/julianhyde/optiq/issues/164">bug</a> pointed out that it would be more efficient if we evaluated <span style="font-family: Courier New, Courier, monospace;">$match</span> before <span style="font-family: Courier New, Courier, monospace;">$project</span>. As I fixed that bug yesterday, I decided to push down limit and offset operations. (In Optiq, these are just attributes of a <span style="font-family: Courier New, Courier, monospace;">SortRel</span>; a <span style="font-family: Courier New, Courier, monospace;">SortRel</span> sorting on 0 columns can be created if you wish to apply limit or offset without sorting.)<br /><br />That went well, so I decided to go for the prize: pushing down aggregations. This is a big performance win because the output of a <span style="font-family: Courier New, Courier, monospace;">GROUP BY</span> query is often a lot smaller than its input. It is much more efficient for MongoDB aggregate the data in memory, returning a small result, than to return a large amount of raw data to be aggregated by Optiq.<br /><br />Now queries involving <span style="font-family: Courier New, Courier, monospace;">SELECT</span>, <span style="font-family: Courier New, Courier, monospace;">FROM</span>, <span style="font-family: Courier New, Courier, monospace;">WHERE</span>, <span style="font-family: Courier New, Courier, monospace;">GROUP BY</span>, <span style="font-family: Courier New, Courier, monospace;">HAVING</span>, <span style="font-family: Courier New, Courier, monospace;">ORDER BY</span>, <span style="font-family: Courier New, Courier, monospace;">OFFSET</span>, <span style="font-family: Courier New, Courier, monospace;">FETCH</span> (or <span style="font-family: Courier New, Courier, monospace;">LIMIT</span> if you prefer the PostgreSQL-style syntax), not to mention sub-queries, can be evaluated in MongoDB. (<span style="font-family: Courier New, Courier, monospace;">JOIN</span>, <span style="font-family: Courier New, Courier, monospace;">UNION</span>, <span style="font-family: Courier New, Courier, monospace;">INTERSECT</span>, <span style="font-family: Courier New, Courier, monospace;">MINUS</span> cannot be pushed down because MongoDB does not support those relational operators; Optiq will still evaluate those queries, pushing down as much as it can.)<br /><br />Let's see some examples of push-down in action.<br /><br />Given the query:<br /><blockquote class="tr_bq"><span style="font-family: Courier New, Courier, monospace;">SELECT state, COUNT(*) AS c<br />FROM zips<br />GROUP BY state</span></blockquote>Optiq evaluates:<br /><blockquote class="tr_bq"><span style="font-family: Courier New, Courier, monospace;">db.zips.aggregate(<br />&nbsp; &nbsp;{$project: {STATE: '$state'}},<br />&nbsp; &nbsp;{$group: {_id: '$STATE', C: {$sum: 1}}},<br />&nbsp; &nbsp;{$project: {STATE: '$_id', C: '$C'}})</span></blockquote>and returns<br /><blockquote class="tr_bq"><span style="font-family: Courier New, Courier, monospace;">STATE=WV; C=659<br />STATE=WA; C=484<br />...</span></blockquote>Now let’s add a <span style="font-family: Courier New, Courier, monospace;">HAVING</span> clause to find out which states have more than 1,500 zip codes:<br /><blockquote class="tr_bq"><span style="font-family: Courier New, Courier, monospace;">SELECT state, COUNT(*) AS c<br />FROM zips<br />GROUP BY state<br />HAVING COUNT(*) &gt; 1500</span></blockquote>Optiq adds a <span style="font-family: Courier New, Courier, monospace;">$match</span> operator to the previous query's pipeline:<br /><blockquote class="tr_bq"><span style="font-family: Courier New, Courier, monospace;">db.zips.aggregate(<br />&nbsp; &nbsp;{$project: {STATE: '$state'}},<br />&nbsp; &nbsp;{$group: {_id: '$STATE', C: {$sum: 1}}},<br />&nbsp; &nbsp;{$project: {STATE: '$_id', C: ‘$C'}},<br />&nbsp; &nbsp;{$match: {C: {$gt: 1500}}})</span></blockquote>and returns<br /><blockquote class="tr_bq"><span style="font-family: Courier New, Courier, monospace;">STATE=NY; C=1596<br />STATE=TX; C=1676<br />STATE=CA; C=1523</span></blockquote>Now the <i>pièce de résistance</i>. The following query finds the top 5 states in terms of number of cities (and remember that each city can have many zip-codes).<br /><blockquote class="tr_bq"><span style="font-family: Courier New, Courier, monospace;">SELECT state, COUNT(DISTINCT city) AS cdc<br />FROM zips<br />GROUP BY state<br />ORDER BY cdc DESC<br />LIMIT 5</span></blockquote><span style="font-family: Courier New, Courier, monospace;">COUNT(DISTINCT <i>x</i>)</span> is difficult to implement because it requires the data to be aggregated twice — once to compute the set of distinct values, and once to count them within each group. For this reason, MongoDB doesn’t implement distinct aggregations. But Optiq translates the query into a pipeline with two <span style="font-family: Courier New, Courier, monospace;">$group</span> operators. For good measure, we throw in <span style="font-family: Courier New, Courier, monospace;">ORDER BY</span> and <span style="font-family: Courier New, Courier, monospace;">LIMIT</span> clauses.<br /><br />The result is an awe-inspiring pipeline that includes two <span style="font-family: Courier New, Courier, monospace;">$group</span> operators (implementing the two phases of aggregation for distinct-count), and finishes with <span style="font-family: Courier New, Courier, monospace;">$sort</span> and <span style="font-family: Courier New, Courier, monospace;">$limit</span>.<br /><br /><blockquote class="tr_bq"><span style="font-family: Courier New, Courier, monospace;">db.zips.aggregate(<br />&nbsp; {$project: {STATE: '$state', CITY: '$city'}},<br />&nbsp; {$group: {_id: {STATE: '$STATE', CITY: '$CITY'}}},<br />&nbsp; {$project: {_id: 0, STATE: '$_id.STATE', CITY: '$_id.CITY'}},<br />&nbsp; {$group: {_id: '$STATE',&nbsp;CDC: {$sum: {$cond: [ {$eq: ['CITY', null]}, 0, 1]}}}},<br />&nbsp; {$project: {STATE: '$_id', CDC: '$CDC'}},<br />&nbsp; {$sort: {CDC: -1}},  {$limit: 5})  </span></blockquote>I had to jump through some hoops to get this far, because MongoDB’s expression language can be baroque. In one case I had to generate<br /><blockquote class="tr_bq"><span style="font-family: Courier New, Courier, monospace;">{$ifNull: [null, 0]}</span></blockquote>in order to include the constant 0 in a <span style="font-family: Courier New, Courier, monospace;">$project</span> operator. And I was foiled by MongoDB bug&nbsp;<a href="https://jira.mongodb.org/browse/SERVER-4589">SERVER-4589</a> when trying to access the values inside the <span style="font-family: Courier New, Courier, monospace;">zips</span> table's&nbsp;<span style="font-family: Courier New, Courier, monospace;">loc</span> column, which contains (latitude, longitude) pairs represented as an array.<br /><br />In conclusion, Optiq on MongoDB now does a lot of really smart stuff. It can evaluate any SQL query, and push down a lot of that evaluation to be executed efficiently inside MongoDB.<br /><br />I encourage you to <a href="https://github.com/julianhyde/optiq">download Optiq</a> and try running some sophisticated SQL queries (including those generated by the OLAP engine I authored, <a href="http://community.pentaho.com/projects/mondrian/">Mondrian</a>).
+It’s been a while since I posted to this blog, but I haven’t been
+idle. Quite the opposite; I’ve been so busy writing code that I
+haven’t had time to write blog posts. A few months ago I
+[joined Hortonworks](http://hortonworks.com/blog/welcoming-julian-hyde/),
+and I’ve been improving Optiq on several fronts, including
+[several releases](https://github.com/julianhyde/optiq/blob/master/RELEASE.md#05--2014-03-14),
+[adding a cost-based optimizer to Hive](https://issues.apache.org/jira/browse/HIVE-6439)
+and some other initiatives to make Hadoop faster and smarter.
+
+More about those other initiatives shortly. But Optiq’s mission is to
+improve access to all data, so here I want to talk about improvements
+to how Optiq accesses data in MongoDB. Optiq can now translate SQL
+queries to extremely efficient operations inside MongoDB.
+
+MongoDB 2.2 introduced the
+[aggregation framework](https://docs.mongodb.org/manual/core/aggregation-introduction/),
+which allows you to compose queries as pipelines of
+operations. They have basically implemented relational algebra, and we
+wanted to take advantage of this.
+
+As the following table shows, most of those operations map onto
+Optiq’s relational operators. We can exploit that fact to push SQL
+query logic down into MongoDB.
+
+| MongoDB operator | Optiq operator
+| ---------------- | --------------
+| $project         | ProjectRel
+| $match           | FilterRel
+| $limit           | SortRel.limit
+| $skip            | SortRel.offset
+| $unwind          | -
+| $group           | AggregateRel
+| $sort            | SortRel
+| $geoNear         | -
+
+A [bug](https://issues.apache.org/jira/browse/CALCITE-164)
+pointed out that it would be more efficient if we evaluated `$match`
+before `$project`. As I fixed that bug yesterday, I decided
+to push down limit and offset operations. (In Optiq, these are just
+attributes of a `SortRel`; a `SortRel` sorting on 0 columns can be
+created if you wish to apply limit or offset without sorting.)
+
+That went well, so I decided to go for the prize: pushing down
+aggregations. This is a big performance win because the output of a
+`GROUP BY` query is often a lot smaller than its input. It is much
+more efficient for MongoDB aggregate the data in memory, returning a
+small result, than to return a large amount of raw data to be
+aggregated by Optiq.
+
+Now queries involving `SELECT`, `FROM`, `WHERE`, `GROUP BY`, `HAVING`,
+`ORDER BY`, `OFFSET`, `FETCH` (or `LIMIT` if you prefer the
+PostgreSQL-style syntax), not to mention sub-queries, can be evaluated
+in MongoDB. (`JOIN`, `UNION`, `INTERSECT`, `MINUS` cannot be pushed
+down because MongoDB does not support those relational operators;
+Optiq will still evaluate those queries, pushing down as much as it
+can.)
+
+Let's see some examples of push-down in action.
+
+Given the query:
+
+{% highlight sql %}
+SELECT state, COUNT(*) AS c
+FROM zips
+GROUP BY state
+{% endhighlight %}
+
+Optiq evaluates:
+
+{% highlight mongodb %}
+db.zips.aggregate(
+   {$project: {STATE: ‘$state’}},
+   {$group: {_id: ‘$STATE’, C: {$sum: 1}}},
+   {$project: {STATE: ‘$_id’, C: ‘$C’}})
+{% endhighlight %}
+
+and returns
+
+```
+STATE=WV; C=659
+STATE=WA; C=484
+```
+
+Now let’s add a `HAVING` clause to find out which states have more
+than 1,500 zip codes:
+
+{% highlight sql %}
+SELECT state, COUNT(*) AS c
+FROM zips
+GROUP BY state
+HAVING COUNT(*) > 1500
+{% endhighlight %}
+
+Optiq adds a `$match` operator to the previous query's pipeline:
+
+{% highlight mongodb %}
+db.zips.aggregate(
+   {$project: {STATE: ‘$state’}},
+   {$group: {_id: ‘$STATE’, C: {$sum: 1}}},
+   {$project: {STATE: ‘$_id’, C: ‘$C’}},
+   {$match: {C: {$gt: 1500}}})
+{% endhighlight %}
+
+and returns
+
+```
+STATE=NY; C=1596
+STATE=TX; C=1676
+STATE=CA; C=1523
+```
+
+Now the *pièce de résistance*. The following query finds the top 5
+states in terms of number of cities (and remember that each city can
+have many zip-codes).
+
+{% highlight sql %}
+SELECT state, COUNT(DISTINCT city) AS cdc
+FROM zips
+GROUP BY state
+ORDER BY cdc DESC
+LIMIT 5
+{% endhighlight %}
+
+`COUNT(DISTINCT {column})` is difficult to implement because it
+requires the data to be aggregated twice -- once to compute the set of
+distinct values, and once to count them within each group. For this
+reason, MongoDB doesn’t implement distinct aggregations. But Optiq
+translates the query into a pipeline with two `$group` operators. For
+good measure, we throw in `ORDER BY` and `LIMIT` clauses.
+
+The result is an awe-inspiring pipeline that includes two `$group`
+operators (implementing the two phases of aggregation for
+distinct-count), and finishes with `$sort` and `$limit`.
+
+{% highlight mongodb %}
+db.zips.aggregate(
+  {$project: {STATE: '$state', CITY: '$city'}},
+  {$group: {_id: {STATE: '$STATE', CITY: '$CITY'}}},
+  {$project: {_id: 0, STATE: '$_id.STATE', CITY: '$_id.CITY'}},
+  {$group: {_id: '$STATE', CDC: {$sum: {$cond: [ {$eq: ['CITY', null]}, 0, 1]}}}},
+  {$project: {STATE: '$_id', CDC: '$CDC'}},
+  {$sort: {CDC: -1}},
+  {$limit: 5})
+{% endhighlight %}
+
+I had to jump through some hoops to get this far, because MongoDB’s
+expression language can be baroque. In one case I had to generate
+
+{% highlight mongodb %}
+{$ifNull: [null, 0]}
+{% endhighlight %}
+
+in order to include the constant 0 in a `$project` operator. And I was
+foiled by MongoDB bug
+[SERVER-4589](https://jira.mongodb.org/browse/SERVER-4589)
+when trying to access the values inside the `zips` table's `loc`
+column, which contains (latitude, longitude) pairs represented as an
+array.
+
+In conclusion, Optiq on MongoDB now does a lot of really smart
+stuff. It can evaluate any SQL query, and push down a lot of that
+evaluation to be executed efficiently inside MongoDB.
+
+I encourage you to
+[download Optiq](https://github.com/julianhyde/optiq) and try
+running some sophisticated SQL queries (including those generated by
+the OLAP engine I authored,
+[Mondrian](https://community.pentaho.com/projects/mondrian/)).

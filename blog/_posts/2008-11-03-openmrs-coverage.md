@@ -10,4 +10,15 @@ blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-26239752108100483
 blogger_orig_url: https://julianhyde.blogspot.com/2008/11/openmrs-coverage.html
 ---
 
-A few months ago I wrote about <a href="http://julianhyde.blogspot.com/2007/09/openmrs.html">OpenMRS</a>, an excellent open-source project that is enabling hospitals and medical practices in developing countries to automate medical record-keeping, built using <a href="http://www.pentaho.org/">Pentaho</a> technology including <a href="http://mondrian.pentaho.org/">mondrian</a>.<br /><br />So it was good to hear a radio segment about OpenMRS on <a href="http://www.theworld.org/">PRI's "The World"</a> this afternoon, including an interview about how it is helping a hospital in Haiti. You can listen to it via <a href="http://clarkboyd.wordpress.com/2008/10/07/wtp-213-openmrs-open-source-medical-record-systems-for-the-developing-world/">Clark Boyd's blog</a>.
+A few months ago I wrote about
+[OpenMRS](https://julianhyde.blogspot.com/2007/09/openmrs.html),
+an excellent open-source project that is enabling hospitals and
+medical practices in developing countries to automate medical
+record-keeping, built using [Pentaho](https://www.pentaho.org/)
+technology including [mondrian](https://mondrian.pentaho.org/).
+
+So it was good to hear a radio segment about OpenMRS on
+[PRI's "The World"](http://www.theworld.org/) this afternoon,
+including an interview about how it is helping a hospital in
+Haiti. You can listen to it via
+[Clark Boyd's blog](https://clarkboyd.wordpress.com/2008/10/07/wtp-213-openmrs-open-source-medical-record-systems-for-the-developing-world/).

@@ -10,4 +10,12 @@ blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-25861608204280999
 blogger_orig_url: https://julianhyde.blogspot.com/2008/11/lost-in-translation.html
 ---
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://newsimg.bbc.co.uk/media/images/45162000/jpg/_45162744_-2.jpg"><img style="margin: 0px auto 10px; display: block; text-align: center; cursor: pointer; width: 416px; height: 300px;" src="http://newsimg.bbc.co.uk/media/images/45162000/jpg/_45162744_-2.jpg" alt="" border="0" /></a>Someone had a <a href="http://news.bbc.co.uk/2/hi/uk_news/wales/7702913.stm">bad day at the office</a>. The Welsh part of this road sign reads "I am not in the office at the moment. Please send any work to be translated."
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}"
+    href="/assets/img/45162744_-2.jpg">
+  <img style="margin: 0px auto 10px; display: block; text-align: center; cursor: pointer; width: 416px; height: 300px;"
+      src="/assets/img/45162744_-2.jpg" alt="" border="0" />
+</a>
+
+Someone had a [bad day at the office](http://news.bbc.co.uk/2/hi/uk_news/wales/7702913.stm).
+The Welsh part of this road sign reads "I am not in
+the office at the moment. Please send any work to be translated."

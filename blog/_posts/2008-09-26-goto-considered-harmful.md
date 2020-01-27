@@ -10,4 +10,8 @@ blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-51253992661173509
 blogger_orig_url: https://julianhyde.blogspot.com/2008/09/goto-considered-harmful.html
 ---
 
-<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}" href="http://imgs.xkcd.com/comics/goto.png"><img style="margin: 0px auto 10px; display: block; text-align: center; cursor: pointer; width: 350px;" src="http://imgs.xkcd.com/comics/goto.png" alt="" border="0" /></a>
+<a onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}"
+    href="/assets/img/goto.png">
+  <img style="margin: 0px auto 10px; display: block; text-align: center; cursor: pointer; width: 350px;"
+      src="/assets/img/goto.png" alt="" border="0" />
+</a>

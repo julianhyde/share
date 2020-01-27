@@ -10,4 +10,7 @@ blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-31747027005315096
 blogger_orig_url: https://julianhyde.blogspot.com/2009/01/event-driven-marketing.html
 ---
 
-David Raab writes a <a href="http://customerexperiencematrix.blogspot.com/2009/01/sqlstream-simplifies-event-stream.html">great piece</a> on <a href="http://www.sqlstream.com">SQLstream</a>, its internals, and how it can be applied to event-driven marketing.
+David Raab writes a
+[great piece](https://customerexperiencematrix.blogspot.com/2009/01/sqlstream-simplifies-event-stream.html)
+on [SQLstream](https://www.sqlstream.com), its
+internals, and how it can be applied to event-driven marketing.

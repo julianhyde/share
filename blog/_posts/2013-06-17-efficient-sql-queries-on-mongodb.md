@@ -3,10 +3,181 @@ layout: post
 title: Efficient SQL queries on MongoDB
 date: '2013-06-17T17:15:00.000-07:00'
 author: Julian Hyde
-tags: 
+tags:
 modified_time: '2013-12-30T12:25:02.267-08:00'
 blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-5125178184412212642
 blogger_orig_url: https://julianhyde.blogspot.com/2013/06/efficient-sql-queries-on-mongodb.html
 ---
 
-How do you integrate <a href="http://www.mongodb.org/" target="_blank">MongoDB</a> with other data in your organization?  MongoDB is great for building applications, and it has its own powerful query API, but it's difficult to mash up data between MongoDB and other tools, or to make tools that speak SQL, such as <a href="http://mondrian.pentaho.com/" target="_blank">Pentaho Analysis (Mondrian)</a>, connect to MongoDB.<br /><br />Building a SQL interface isn't easy, because MongoDB's data model is such a long way from SQL's model. Here are some of the challenges:<br /><ul><li>MongoDB doesn't have a schema. Each database has a number of named 'collections', which are the nearest thing to a SQL table, but each row in a collection can have a completely different set of columns.</li><li>In MongoDB, data can be nested. Each row consists of a number of fields, and each field can be a scalar value, null, a record, or an array of records.</li><li>MongoDB supports a number of relational operations, but doesn't use the same terminology as SQL: the <code>find</code> method supports the equivalent of <code>SELECT</code> and <code>WHERE</code>, while the <code>aggregate</code> method supports the equivalent of <code>SELECT</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>HAVING</code> and <code>ORDER BY</code>.</li><li>For efficiency, it's really important to push as much of the processing down to MongoDB's query engine, without the user having to re-write their SQL.</li><li>But MongoDB doesn't support anything equivalent to JOIN.</li><li>MongoDB can't access external data.</li></ul><br />I decided to tackle this using <a href="https://github.com/julianhyde/optiq" target="_blank">Optiq</a>. Optiq already has a SQL parser and a powerful query optimizer that is powered by rewrite rules. Building on Optiq's core rules, I can add rules that map tables onto MongoDB collections, and relational operations onto MongoDB's <code>find</code> and <code>aggregate</code> operators.<br /><br />What I produced is a effectively a JDBC driver for MongoDB. Behind it is a hybrid query-processing engine that pushes as much of the query processing down to MongoDB, and does whatever is left (such as joins) in the client.<br /><br />Let's give it a try. First,&nbsp;<a href="http://www.mongodb.org/downloads">install MongoDB</a>, and import MongoDB's zipcode data set:<br /><div class="highlight" style="background-color: white; border: 0px; color: #333333; font-family: Helvetica, arial, freesans, clean, sans-serif; font-size: 15px; line-height: 25px; margin: 0px; overflow-x: auto; overflow-y: hidden; padding: 0px;"><pre style="background-color: #f8f8f8; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; border-top-left-radius: 3px; border-top-right-radius: 3px; border: 1px solid rgb(221, 221, 221); font-family: Consolas, 'Liberation Mono', Courier, monospace; font-size: 13px; line-height: 19px; margin-bottom: 15px; margin-top: 15px; overflow: auto; padding: 6px 10px;"><span class="nv" style="border: 0px; color: teal; margin: 0px; padding: 0px;">$ </span>curl -o /tmp/zips.json http://media.mongodb.org/zips.json<br /><span class="nv" style="border: 0px; color: teal; margin: 0px; padding: 0px;">$ </span>mongoimport --db <span class="nb" style="border: 0px; color: #0086b3; margin: 0px; padding: 0px;">test</span> --collection zips --file /tmp/zips.json<br />Tue Jun  4 16:24:14.190 check 9 29470<br />Tue Jun  4 16:24:14.469 imported 29470 objects<br /></pre></div>Log into MongoDB to check it's there:<br /><div class="highlight" style="background-color: white; border: 0px; color: #333333; font-family: Helvetica, arial, freesans, clean, sans-serif; font-size: 15px; line-height: 25px; margin: 0px; overflow-x: auto; overflow-y: hidden; padding: 0px;"><pre style="background-color: #f8f8f8; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; border-top-left-radius: 3px; border-top-right-radius: 3px; border: 1px solid rgb(221, 221, 221); font-family: Consolas, 'Liberation Mono', Courier, monospace; font-size: 13px; line-height: 19px; margin-bottom: 15px; margin-top: 15px; overflow: auto; padding: 6px 10px;"><span class="nv" style="border: 0px; color: teal; margin: 0px; padding: 0px;">$ </span>mongo<br />MongoDB shell version: 2.4.3<br />connecting to: <span class="nb" style="border: 0px; color: #0086b3; margin: 0px; padding: 0px;">test</span><br />&gt; db.zips.find<span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">()</span>.limit<span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">(</span>3<span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">)</span><br /><span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">{</span> <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"city"</span> : <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"ACMAR"</span>, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"loc"</span> : <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">[</span> -86.51557, 33.584132 <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">]</span>, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"pop"</span> : 6055, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"state"</span> : <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"AL"</span>, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"_id"</span> : <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"35004"</span> <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">}</span><br /><span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">{</span> <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"city"</span> : <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"ADAMSVILLE"</span>, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"loc"</span> : <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">[</span> -86.959727, 33.588437 <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">]</span>, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"pop"</span> : 10616, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"state"</span> : <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"AL"</span>, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"_id"</span> : <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"35005"</span> <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">}</span><br /><span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">{</span> <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"city"</span> : <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"ADGER"</span>, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"loc"</span> : <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">[</span> -87.167455, 33.434277 <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">]</span>, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"pop"</span> : 3205, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"state"</span> : <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"AL"</span>, <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"_id"</span> : <span class="s2" style="border: 0px; color: #dd1144; margin: 0px; padding: 0px;">"35006"</span> <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">}</span><br />&gt; <span class="nb" style="border: 0px; color: #0086b3; margin: 0px; padding: 0px;">exit</span><br />bye<br /></pre></div>Now let's see the same data via SQL. Download and install Optiq:<br /><div class="highlight" style="background-color: white; border: 0px; color: #333333; font-family: Helvetica, arial, freesans, clean, sans-serif; font-size: 15px; line-height: 25px; margin-bottom: 0px !important; margin-left: 0px; margin-right: 0px; margin-top: 0px; overflow-x: auto; overflow-y: hidden; padding: 0px;"><pre style="background-color: #f8f8f8; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; border-top-left-radius: 3px; border-top-right-radius: 3px; border: 1px solid rgb(221, 221, 221); font-family: Consolas, 'Liberation Mono', Courier, monospace; font-size: 13px; line-height: 19px; margin-bottom: 15px; margin-top: 15px; overflow: auto; padding: 6px 10px;"><span class="nv" style="border: 0px; color: teal; margin: 0px; padding: 0px;">$ git clone https://github.com/julianhyde/optiq.git<br />$ </span>mvn install<br /></pre></div>Optiq comes with a sample model in JSON format, and the <a href="https://github.com/julianhyde/sqlline" target="_blank">sqlline</a> SQL shell. Connect using the&nbsp;<a href="https://github.com/julianhyde/optiq/blob/master/mongodb/src/test/resources/mongo-zips-model.json">mongo-zips-model.json</a>&nbsp;Optiq model, and use sqlline's&nbsp;<code>!tables</code>&nbsp;command to list the available tables.  <br /><pre style="background-color: #f8f8f8; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; border-top-left-radius: 3px; border-top-right-radius: 3px; border: 1px solid rgb(221, 221, 221); font-family: Consolas, 'Liberation Mono', Courier, monospace; font-size: 13px; line-height: 19px; margin-bottom: 15px; margin-top: 15px; overflow: auto; padding: 6px 10px;"><span class="nv" style="border: 0px; color: teal; margin: 0px; padding: 0px;">$ </span>./sqlline<br />sqlline&gt; !connect jdbc:optiq:model<span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">=</span>mongodb/target/test-classes/mongo-zips-model.json admin admin<br />Connecting to jdbc:optiq:model<span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">=</span>mongodb/target/test-classes/mongo-zips-model.json<br />Connected to: Optiq <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">(</span>version 0.4.13<span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">)</span><br />Driver: Optiq JDBC Driver <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">(</span>version 0.4.13<span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">)</span><br />Autocommit status: <span class="nb" style="border: 0px; color: #0086b3; margin: 0px; padding: 0px;">true</span><br />Transaction isolation: TRANSACTION_REPEATABLE_READ<br />sqlline&gt; !tables<br />+------------+--------------+-----------------+---------------+<br />| TABLE_CAT  | TABLE_SCHEM  |   TABLE_NAME    |  TABLE_TYPE   |<br />+------------+--------------+-----------------+---------------+<br />| null       | mongo_raw    | zips            | TABLE         |<br />| null       | mongo_raw    | system.indexes  | TABLE         |<br />| null       | mongo        | ZIPS            | VIEW          |<br />| null       | metadata     | COLUMNS         | SYSTEM_TABLE  |<br />| null       | metadata     | TABLES          | SYSTEM_TABLE  |<br />+------------+--------------+-----------------+---------------+<br /></pre>Each collection in MongoDB appears here as a table. There are also the <code>COLUMNS</code> and <code>TABLES</code> system tables provided by Optiq, and a view called <code>ZIPS</code> defined in <code>mongo-zips-model.json</code>.<br /><br class="Apple-interchange-newline" />Let's try a simple query. How many zip codes in America?<br /><div class="highlight" style="background-color: white; border: 0px; color: #333333; font-family: Helvetica, arial, freesans, clean, sans-serif; font-size: 15px; line-height: 25px; margin-bottom: 0px !important; margin-left: 0px; margin-right: 0px; margin-top: 0px; overflow-x: auto; overflow-y: hidden; padding: 0px;"><pre style="background-color: #f8f8f8; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; border-top-left-radius: 3px; border-top-right-radius: 3px; border: 1px solid rgb(221, 221, 221); font-family: Consolas, 'Liberation Mono', Courier, monospace; font-size: 13px; line-height: 19px; margin-bottom: 15px; margin-top: 15px; overflow: auto; padding: 6px 10px;"><span class="nv" style="border: 0px; color: teal; margin: 0px; padding: 0px;">sqlline&gt; <span class="k" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">SELECT </span>count<span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">(</span>*<span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">)</span> FROM zips;<br />+---------+<br />| EXPR<span class="nv" style="border: 0px; color: teal; margin: 0px; padding: 0px;">$0</span>  |<br />+---------+<br />| 29467   |<br />+---------+<br />1 row selected <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">(</span>0.746 seconds<span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">)&nbsp;</span><br /></span></pre></div>Now a more complex one. How many states have a city called Springfield?<br /><div class="highlight" style="background-color: white; border: 0px; color: #333333; font-family: Helvetica, arial, freesans, clean, sans-serif; font-size: 15px; line-height: 25px; margin-bottom: 0px !important; margin-left: 0px; margin-right: 0px; margin-top: 0px; overflow-x: auto; overflow-y: hidden; padding: 0px;"><pre style="background-color: #f8f8f8; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; border-top-left-radius: 3px; border-top-right-radius: 3px; border: 1px solid rgb(221, 221, 221); font-family: Consolas, 'Liberation Mono', Courier, monospace; font-size: 13px; line-height: 19px; margin-bottom: 15px; margin-top: 15px; overflow: auto; padding: 6px 10px;"><span class="nv" style="border: 0px; color: teal; margin: 0px; padding: 0px;">sqlline&gt; <b>SELECT count(DISTINCT state) AS c FROM zips WHERE city = 'SPRINGFIELD';</b><br />+-----+<br />|   C |<br />+-----+<br />| 20  |<br />+-----+<br />1 row selected <span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">(</span>0.549 seconds<span class="o" style="border: 0px; font-weight: bold; margin: 0px; padding: 0px;">)</span><br /></span></pre></div>Let's use the SQL <code>EXPLAIN</code> command to see how the query is implemented.  <br /><pre style="background-color: #f8f8f8; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; border-top-left-radius: 3px; border-top-right-radius: 3px; border: 1px solid rgb(221, 221, 221); font-family: Consolas, 'Liberation Mono', Courier, monospace; font-size: 13px; line-height: 19px; margin-bottom: 15px; margin-top: 15px; overflow: auto; padding: 6px 10px;"><span class="nv" style="border: 0px; color: teal; margin: 0px; padding: 0px;"><span style="color: teal; font-family: monospace; white-space: pre;">sqlline&gt; </span><b style="color: teal; font-family: monospace; white-space: pre;">!set outputformat csv</b><span style="color: teal; font-family: monospace; white-space: pre;"><br /></span><span style="color: teal; font-family: monospace; white-space: pre;">sqlline&gt; </span><b style="color: teal; font-family: monospace; white-space: pre;">EXPLAIN PLAN FOR</b><span style="color: teal; font-family: monospace; white-space: pre;"><br /></span><span style="color: teal; font-family: monospace; white-space: pre;">. . . .&gt; </span><b style="color: teal; font-family: monospace; white-space: pre;">SELECT count(DISTINCT state) AS c FROM zips WHERE city = 'SPRINGFIELD';</b><br /><div><br /><span style="color: teal; font-family: monospace;"><span style="white-space: pre;">'PLAN'<br />'EnumerableAggregateRel(group=[{}], C=[COUNT($0)])<br />  EnumerableAggregateRel(group=[{0}])<br />    EnumerableCalcRel(expr#0..4=[{inputs}], expr#5=['SPRINGFIELD'], expr#6=[=($t0, $t5)], STATE=[$t3], $condition=[$t6])<br />      MongoToEnumerableConverter<br />        MongoTableScan(table=[[mongo_raw, zips]], ops=[[&lt;{city: 1, state: 1, _id: 1}, {$project ...}&gt;]])<br />'<br />1 row selected </span></span><span class="o" style="border: 0px; color: teal; font-family: monospace; font-weight: bold; margin: 0px; padding: 0px; white-space: pre;">(</span><span style="color: teal; font-family: monospace; white-space: pre;">0.115 seconds</span><span class="o" style="border: 0px; color: teal; font-family: monospace; font-weight: bold; margin: 0px; padding: 0px; white-space: pre;">)</span></div><br /></span></pre><br />The last line of the plan shows that Optiq calls MongoDB's find operator asking for the "city", "state" and "_id" fields. The first three lines of the plan show that the filter and aggregation are implemented using in Optiq's built-in operators, but we're working on pushing them down to MongoDB.<br /><br />Finally, quit sqlline.<br /><div class="highlight" style="background-color: white; border: 0px; color: #333333; font-family: Helvetica, arial, freesans, clean, sans-serif; font-size: 15px; line-height: 25px; margin-bottom: 0px !important; margin-left: 0px; margin-right: 0px; margin-top: 0px; overflow-x: auto; overflow-y: hidden; padding: 0px;"><pre style="background-color: #f8f8f8; border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; border-top-left-radius: 3px; border-top-right-radius: 3px; border: 1px solid rgb(221, 221, 221); font-family: Consolas, 'Liberation Mono', Courier, monospace; font-size: 13px; line-height: 19px; margin-bottom: 15px; margin-top: 15px; overflow: auto; padding: 6px 10px;"><span class="nv" style="border: 0px; color: teal; margin: 0px; padding: 0px;"><span style="color: teal;">sqlline&gt; !quit</span><br />Closing: net.hydromatic.optiq.jdbc.FactoryJdbc41<span class="nv" style="border: 0px; color: teal; margin: 0px; padding: 0px;">$OptiqConnectionJdbc41</span></span></pre></div><br />Optiq and its MongoDB adapter shown here are available on github. If you are interested in writing your own adapter, check out <a href="https://github.com/julianhyde/optiq-csv" target="_blank">optiq-csv</a>, a sample adapter for Optiq that makes CSV files appear as tables. It has own <a href="https://github.com/julianhyde/optiq-csv/blob/master/TUTORIAL.md" target="_blank">tutorial</a>&nbsp;on writing adapters.<br /><br />Check back at this blog over the next few months, and I'll show how to write views and advanced queries using Optiq, and how to use Optiq's other adapters.
+How do you integrate [MongoDB](https://www.mongodb.org/)
+with other data in your organization?
+MongoDB is great for building applications, and it has its own
+powerful query API, but it's difficult to mash up data between MongoDB
+and other tools, or to make tools that speak SQL, such as
+[Pentaho Analysis (Mondrian)](https://mondrian.pentaho.com/), connect to MongoDB.
+
+Building a SQL interface isn't easy, because MongoDB's data model is
+such a long way from SQL's model. Here are some of the challenges:
+* MongoDB doesn't have a schema. Each database has a number of named
+  'collections', which are the nearest thing to a SQL table, but each
+  row in a collection can have a completely different set of
+  columns.
+* In MongoDB, data can be nested. Each row consists of a number of
+  fields, and each field can be a scalar value, null, a record, or an
+  array of records.
+* MongoDB supports a number of relational operations, but doesn't use
+  the same terminology as SQL: the `find` method supports the
+  equivalent of `SELECT` and `WHERE`, while the `aggregate` method
+  supports the equivalent of `SELECT`, `WHERE`, `GROUP BY`, `HAVING`
+  and `ORDER BY`.
+* For efficiency, it's really important to push as much of the
+  processing down to MongoDB's query engine, without the user having
+  to re-write their SQL.
+* But MongoDB doesn't support anything equivalent to
+  `JOIN`.
+* MongoDB can't access external data.
+
+I decided to tackle this using
+[Optiq](https://github.com/julianhyde/optiq).
+Optiq already has a SQL parser and a
+powerful query optimizer that is powered by rewrite rules. Building on
+Optiq's core rules, I can add rules that map tables onto MongoDB
+collections, and relational operations onto MongoDB's `find` and
+`aggregate` operators.
+
+What I produced is a effectively a JDBC driver for MongoDB. Behind it
+is a hybrid query-processing engine that pushes as much of the query
+processing down to MongoDB, and does whatever is left (such as joins)
+in the client.
+
+Let's give it a try. First, [install MongoDB](https://www.mongodb.org/downloads),
+and import MongoDB's zipcode data set:
+
+{% highlight bash %}
+$ curl -o /tmp/zips.json https://media.mongodb.org/zips.json
+$ mongoimport --db test --collection zips --file /tmp/zips.json
+Tue Jun  4 16:24:14.190 check 9 29470
+Tue Jun  4 16:24:14.469 imported 29470 objects
+{% endhighlight %}
+
+Log into MongoDB to check it's there:
+
+{% highlight bash %}
+$ mongo
+MongoDB shell version: 2.4.3
+connecting to: test
+> db.zips.find().limit(3)
+{ "city" : "ACMAR", "loc" : [ -86.51557, 33.584132 ], "pop" : 6055, "state" : "AL", "_id" : "35004" }
+{ "city" : "ADAMSVILLE", "loc" : [ -86.959727, 33.588437 ], "pop" : 10616, "state" : "AL", "_id" : "35005" }
+{ "city" : "ADGER", "loc" : [ -87.167455, 33.434277 ], "pop" : 3205, "state" : "AL", "_id" : "35006" }
+> exit
+bye
+{% endhighlight %}
+
+Now let's see the same data via SQL. Download and install Optiq:
+
+{% highlight bash %}
+$ git clone https://github.com/julianhyde/optiq.git
+$ mvn install
+{% endhighlight %}
+
+
+Optiq comes with a sample model in JSON format, and the
+[sqlline](https://github.com/julianhyde/sqlline) SQL shell.
+Connect using the [mongo-zips-model.json](https://github.com/julianhyde/optiq/blob/master/mongodb/src/test/resources/mongo-zips-model.json)
+Optiq model, and use sqlline's `!tables` command to list the available tables.
+
+{% highlight bash %}
+$ ./sqlline
+sqlline> !connect jdbc:optiq:model=mongodb/target/test-classes/mongo-zips-model.json admin admin
+Connecting to jdbc:optiq:model=mongodb/target/test-classes/mongo-zips-model.json
+Connected to: Optiq (version 0.4.13)
+Driver: Optiq JDBC Driver (version 0.4.13)
+Autocommit status: true
+Transaction isolation: TRANSACTION_REPEATABLE_READ
+sqlline> !tables
++------------+--------------+-----------------+---------------+
+| TABLE_CAT  | TABLE_SCHEM  |   TABLE_NAME    |  TABLE_TYPE   |
++------------+--------------+-----------------+---------------+
+| null       | mongo_raw    | zips            | TABLE         |
+| null       | mongo_raw    | system.indexes  | TABLE         |
+| null       | mongo        | ZIPS            | VIEW          |
+| null       | metadata     | COLUMNS         | SYSTEM_TABLE  |
+| null       | metadata     | TABLES          | SYSTEM_TABLE  |
++------------+--------------+-----------------+---------------+
+{% endhighlight %}
+
+
+Each collection in MongoDB appears here as a table. There are also the
+`COLUMNS` and `TABLES` system tables provided by Optiq, and a view
+called `ZIPS` defined in `mongo-zips-model.json`.
+
+Let's try a simple query. How many zip codes in America?
+
+{% highlight sql %}
+sqlline> SELECT count(*) FROM zips;
++---------+
+| EXPR$0  |
++---------+
+| 29467   |
++---------+
+1 row selected (0.746 seconds)
+{% endhighlight %}
+
+Now a more complex one. How many states have a
+city called Springfield?
+
+{% highlight sql %}
+sqlline> SELECT count(DISTINCT state) AS c FROM zips WHERE city = 'SPRINGFIELD';
++-----+
+|   C |
++-----+
+| 20  |
++-----+
+1 row selected (0.549 seconds)
+{% endhighlight %}
+
+
+Let's use the SQL `EXPLAIN` command to see how the query is
+implemented.
+
+{% highlight sql %}
+sqlline> !set outputformat csv
+sqlline> EXPLAIN PLAN FOR
+. . . .> SELECT count(DISTINCT state) AS c FROM zips WHERE city = 'SPRINGFIELD';
+
+'PLAN'
+'EnumerableAggregateRel(group=[{}], C=[COUNT($0)])
+  EnumerableAggregateRel(group=[{0}])
+    EnumerableCalcRel(expr#0..4=[{inputs}], expr#5=['SPRINGFIELD'], expr#6=[=($t0, $t5)], STATE=[$t3], $condition=[$t6])
+      MongoToEnumerableConverter
+        MongoTableScan(table=[[mongo_raw, zips]], ops=[[<{city: 1, state: 1, _id: 1}, {$project ...}>]])
+'
+1 row selected (0.115 seconds)
+{% endhighlight %}
+
+
+
+The last line of the plan shows that Optiq calls MongoDB's find
+operator asking for the `city`, `state` and `_id` fields. The first
+three lines of the plan show that the filter and aggregation are
+implemented using in Optiq's built-in operators, but we're working on
+pushing them down to MongoDB.
+
+Finally, quit sqlline.
+
+{% highlight sql %}
+sqlline> !quit
+Closing: net.hydromatic.optiq.jdbc.FactoryJdbc41$OptiqConnectionJdbc41
+{% endhighlight %}
+
+Optiq and its MongoDB adapter shown here are available on github. If
+you are interested in writing your own adapter, check out
+[optiq-csv](https://github.com/julianhyde/optiq-csv),
+a sample adapter for Optiq that makes CSV files appear as tables. It has own
+[tutorial](https://github.com/julianhyde/optiq-csv/blob/master/TUTORIAL.md)
+on writing adapters.
+
+Check back at this blog over the next few months, and I'll show how to
+write views and advanced queries using Optiq, and how to use Optiq's
+other adapters.
