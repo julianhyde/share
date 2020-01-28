@@ -25,6 +25,7 @@ for i in \
   gra \
   gpg-export \
   jenv \
+  lastLog.sh \
   relNotes \
   remove-javadoc-timestamps \
   mailself \
