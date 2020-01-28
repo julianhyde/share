@@ -4,14 +4,14 @@ export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe
 export PATH="${PATH}:${ORACLE_HOME}/bin"
 
 function foo() {
-  cd /home/jhyde/open1
-  . ./env ${jdk}
+  . /usr/local/bin/jenv ${jdk}
   cd /home/jhyde/regress/${project}
-  add-remotes.sh ${project2}
+  /usr/local/bin/add-remotes.sh ${project2}
   git fetch origin # don't need '--all'; add-remotes fetched everything else
   if [ "$remote" = hash ]; then
     git checkout -b b-$label $branch
   else
+    git fetch $remote
     git checkout -b b-$label $remote/$branch
   fi
   git status
@@ -54,27 +54,30 @@ function foo() {
     touch mondrian.properties
     timeout 60m mvn $mvn_flags $flags -Dmondrian.test.db=mysql clean install javadoc:javadoc site
     ;;
+  (morel)
+    timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc
+    ;;
   (olap4j)
     timeout 20m mvn $mvn_flags $flags -Drat.ignoreErrors -Dmondrian.test.db=mysql clean install javadoc:javadoc javadoc:test-javadoc site
     ;;
   (avatica)
     (
       cd avatica
-      timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc javadoc:test-javadoc site
+      timeout 10m ./gradlew $mvn_flags $flags clean build javadocAggregateIncludingTests
     )
     ;;
   (calcite-avatica)
-    timeout 10m mvn $mvn_flags $flags clean install javadoc:javadoc javadoc:test-javadoc site
+    timeout 10m ./gradlew $mvn_flags $flags clean build javadocAggregateIncludingTests
     ;;
   (calcite|*)
     echo "mvn $mvn_flags -P it,it-oracle $flags clean install javadoc:javadoc javadoc:test-javadoc site"
     #timeout 30m mvn $mvn_flags -P it $flags install # javadoc:javadoc site
-    timeout 30m mvn $mvn_flags $flags clean install
+    timeout 30m ./gradlew $mvn_flags $flags clean build
     case ${jdk} in
-    (jdk11)
+    (*jdk9|*jdk10)
       echo "Skipping javadoc due to JDK bug";;
     (*)
-      timeout 30m mvn $mvn_flags $flags javadoc:javadoc javadoc:test-javadoc site;;
+      timeout 30m ./gradlew $mvn_flags $flags javadocAggregateIncludingTests
     esac
     ;;
   esac
@@ -151,31 +154,38 @@ shift 3
 flags="$*"
 
 case ${jdk} in
-(jdk6|jdk7|jdk8|jdk9|jdk10|jdk11|openjdk10|openjdk11);;
+(jdk6|jdk7|jdk8|jdk9|jdk10|jdk11|jdk12|jdk13|openjdk10|openjdk11|openjdk12|openjdk13);;
 (*) echo "Invalid jdk ${jdk}"; exit 1;;
 esac
 
 case ${project} in
 (avatica)
   project2=calcite;;
-(calcite-avatica|calcite|olap4j|mondrian|sqlline)
+(calcite-avatica|calcite|olap4j|mondrian|morel|sqlline)
   project2=${project};;
 (*)
   echo "Unknown project ${project}"
   exit 1;;
 esac
 
-mkdir -p /home/jhyde/regress/${project}
+if [ ! -d /home/jhyde/regress/${project} ]; then
+  cd /home/jhyde/regress
+  git clone git@github.com:julianhyde/${project}.git
+fi
 cd /home/jhyde/regress/${project}
-mkdir -p logs
+logdir=/home/jhyde/regress/${project}-logs
+mkdir -p ${logdir}
 label=$(date +%Y%m%d-%H%M%S)
-out=$(pwd)/logs/regress-${label}.txt
+out=${logdir}/regress-${label}.txt
 failed=/tmp/failed-${label}.txt
 succeeded=/tmp/succeeded-${label}.txt
 subject=/tmp/subject-${label}.txt
 rm -f $subject $failed $succeeded
 touch $subject $failed $succeeded
+start_time=$(date +%s)
 foo $label > $out 2>&1
+end_time=$(date +%s)
+duration=$(expr ${end_time} - ${start_time})
 
 D=$(cd $(dirname $(readlink $0)); pwd -P)
 awk -v verbose=1 -f ${D}/analyze-regress.awk $out >> $failed
@@ -192,7 +202,7 @@ echo
 if [ -s "$failed" ]; then
   cat $out
 else
-  echo "Succeeded (jdk: ${jdk}, remote: ${remote}, branch: ${branch}, flags: ${flags}). Details in ${out}.xz." | tee -a $out
+  echo "Succeeded (jdk: ${jdk}, remote: ${remote}, branch: ${branch}, flags: ${flags}, duration: ${duration}s). Details in ${out}.xz." | tee -a $out
 fi
 ) | /usr/sbin/ssmtp julianhyde@gmail.com
 xz $out
