@@ -26,7 +26,7 @@ There are two exciting new projects using Optiq:
 * I have been working in private with [Chris Wensel](https://twitter.com/cwensel)
   on a project to use Optiq to provide a SQL interface to
   [Cascading](https://www.cascading.org/), and last week we
-  [announced Lingual](https://julianhyde.blogspot.com/2013/02/announcing-lingual.html).
+  [announced Lingual]({% post_url 2013-02-26-announcing-lingual %}).
 * I am working a SQL interface for the
   [Apache Drill](https://incubator.apache.org/drill/) project.
 

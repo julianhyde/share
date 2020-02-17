@@ -116,8 +116,8 @@ to olap4j. Use of the query model and MDX parser is
 optional: if you have an MDX query string, you can just execute it.
 
 We have recently added more advanced features such as
-[scenarios (write-back)](https://julianhyde.blogspot.com/2009/06/cell-writeback-in-mondrian.html)
-and [notifications](https://julianhyde.blogspot.com/2010/06/olap-change-notification-and.html).
+[scenarios (write-back)]({% post_url 2009-06-11-cell-writeback-in-mondrian %})
+and [notifications]({% post_url 2010-06-15-olap-change-notification-and %}).
 These features are still experimental (unlike the rest of the API, they may
 change post-1.0) and are optional for any olap4j provider. But we hope
 to see more providers implementing them, and clients making use of

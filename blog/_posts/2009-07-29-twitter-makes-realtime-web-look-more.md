@@ -88,7 +88,7 @@ interest occur. These queries cache their working sets in memory, so
 the response time is a few milliseconds, and throughput tens or
 hundreds of thousands of records per second.
 
-The [data sources that SQLstream can handle](https://julianhyde.blogspot.com/2008/02/streaming-sql-meets-olap.html)
+The [data sources that SQLstream can handle]({% post_url 2008-02-27-streaming-sql-meets-olap %})
 are diverse. Some of the data
 comes from traditional sources, like corporate transaction processing
 systems. Some sources are often considered too high-volume to process

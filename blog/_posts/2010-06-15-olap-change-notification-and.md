@@ -32,7 +32,7 @@ they bring together my interests in [SQLstream](https://www.sqlstream.com)
 and [mondrian](https://mondrian.pentaho.org/). 'Push-based'
 computing is challenging, because every link in the chain needs to
 propagate the events to the next link. In a previous post
-[I described](https://julianhyde.blogspot.com/2008/02/streaming-sql-meets-olap.html)
+[I described]({% post_url 2008-02-27-streaming-sql-meets-olap %})
 how SQLstream could do continuous ETL, populate fact and
 aggregate tables incrementally, and notify mondrian that data items in
 its cache were out of date.
@@ -52,5 +52,5 @@ within seconds of the data changing in the operational system, would
 be truly spectacular.
 
 There are several links in the chain to make that happen. Two of the
-links, SQLstream and [mondrian's cache control API](https://julianhyde.blogspot.com/2007/02/mondrian-cache-control.html),
+links, SQLstream and [mondrian's cache control API]({% post_url 2007-02-13-mondrian-cache-control %}),
 are already complete. We've just begun forging the next link.

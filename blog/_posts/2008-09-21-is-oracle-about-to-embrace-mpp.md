@@ -89,7 +89,7 @@ for your ETL process, and many servers to be populated, SQLstream can
 act as a cross-hatch, load-balancing the data, aggregating, and
 routing each row to the correct database engine with low latency. And
 because SQLstream's SQL encompasses both data at rest and
-[data in flight](https://julianhyde.blogspot.com/2008/02/streaming-sql-meets-olap.html),
+[data in flight]({% post_url 2008-02-27-streaming-sql-meets-olap %}),
 it can correlate data in the warehouse with arriving data.
 
 SQLstream is partnering with companies that are building

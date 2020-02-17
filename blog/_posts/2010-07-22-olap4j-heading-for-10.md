@@ -33,8 +33,8 @@ undertake a review of what is in the API.
 Some parts of olap4j (such as the
 [query model](http://www.olap4j.org/api/org/olap4j/query/Query.html),
 [advanced drill through](https://forums.pentaho.org/showthread.php?t=69327),
-[cell write back](https://julianhyde.blogspot.com/2009/06/cell-writeback-in-mondrian.html)
-and [notifications](https://julianhyde.blogspot.com/2010/06/olap-change-notification-and.html))
+[cell write back]({% post_url 2009-06-11-cell-writeback-in-mondrian %})
+and [notifications]({% post_url 2010-06-15-olap-change-notification-and %}))
 are still under active development, and it is not in anyone's
 interests to freeze these parts of the API just yet. So, sections such
 as these will be marked 'experimental', and likely to change (with

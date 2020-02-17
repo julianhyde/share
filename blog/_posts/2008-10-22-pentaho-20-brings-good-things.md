@@ -47,7 +47,7 @@ The chief advantage of ROLAP is its simplicity. A ROLAP engine does
 not have its own storage engine: everything is in the RDBMS. In
 particular, the load process is simply a matter of loading the RDBMS,
 and if the contents of the RDBMS change you just need to
-[flush mondrian's cache](https://julianhyde.blogspot.com/2007/02/mondrian-cache-control.html)
+[flush mondrian's cache]({% post_url 2007-02-13-mondrian-cache-control %})
 to see the up to date contents. Provided that the
 RDBMS scales, you can scale mondrian to greater numbers of concurrent
 users by having multiple instances of mondrian in a farm of web

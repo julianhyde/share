@@ -11,7 +11,7 @@ blogger_orig_url: https://julianhyde.blogspot.com/2008/06/mainz-community-meet-u
 
 Just one week til the Pentaho community meet-up in Mainz, Germany,
 that I blogged about
-[earlier](https://julianhyde.blogspot.com/2008/04/mondrian-in-mainz.html).
+[earlier]({% post_url 2008-04-15-mondrian-in-mainz %}).
 
 If you're coming, please
 [register](https://pentaho2008mainz.eventbrite.com/). (Just so

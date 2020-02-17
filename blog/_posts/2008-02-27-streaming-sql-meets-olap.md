@@ -132,7 +132,7 @@ the entire cache every time there is an update negates the value of
 the cache.
 
 Fortunately mondrian has an
-[API to let you notify mondrian of changes that affect its cache contents](https://julianhyde.blogspot.com/2007/02/mondrian-cache-control.html).
+[API to let you notify mondrian of changes that affect its cache contents]({% post_url 2007-02-13-mondrian-cache-control %}).
 You can tell mondrian specifically which data changed;
 for example, you can say 'there was just a sale of beer in Texas', and
 mondrian will mark precisely these entries in the cache as invalid, so

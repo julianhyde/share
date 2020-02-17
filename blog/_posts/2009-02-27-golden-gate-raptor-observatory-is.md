@@ -12,7 +12,7 @@ blogger_orig_url: https://julianhyde.blogspot.com/2009/02/golden-gate-raptor-obs
 ---
 
 Every fall, I
-[volunteer with the Golden Gate Raptor Observatory](https://julianhyde.blogspot.com/2008/08/hawkwatch.html),
+[volunteer with the Golden Gate Raptor Observatory]({% post_url 2008-08-27-hawkwatch %}),
 identifying and counting migrating hawks. The location is spectacular
 -- Hawk Hill overlooks the Golden Gate Bridge -- and the hawks even
 more so.

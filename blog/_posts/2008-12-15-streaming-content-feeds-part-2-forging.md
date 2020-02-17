@@ -12,7 +12,7 @@ blogger_orig_url: https://julianhyde.blogspot.com/2008/12/streaming-content-feed
 
 My previous blog post
 "[Streaming analytics over content feeds (and how content feeds could be
-better)](https://julianhyde.blogspot.com/2008/12/streaming-analytics-over-content-feeds.html)"
+better)]({% post_url 2008-12-12-streaming-analytics-over-content-feeds %})"
 drew some excellent comments, so I thought I'd follow up
 with some more thoughts about a protocol for streaming web content,
 and a vision that I'll dub the "Streaming Web".

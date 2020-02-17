@@ -10,7 +10,7 @@ blogger_id: tag:blogger.com,1999:blog-5672165237896126100.post-23147034596384138
 blogger_orig_url: https://julianhyde.blogspot.com/2010/08/olap4j-now-talks-to-palo-and-sap-bw.html
 ---
 
-As [olap4j heads towards release 1.0](https://julianhyde.blogspot.com/2010/07/olap4j-heading-for-10.html),
+As [olap4j heads towards release 1.0]({% post_url 2010-07-22-olap4j-heading-for-10 %}),
 there are further signs that it is
 coming of age, in the form of drivers for the
 [Palo MOLAP engine](https://en.wikipedia.org/wiki/Palo_(OLAP_database)) and

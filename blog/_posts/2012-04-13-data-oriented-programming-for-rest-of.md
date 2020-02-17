@@ -65,8 +65,8 @@ What problems benefit from this approach? Problems whose runtime
 systems are complex, and where the decisions involve large
 factors. For example, “Is it worth writing my data to a network
 connection, which has 10,000x the latency of memory, if this will
-allow me to use 1000x more CPUs to process it?”. Yes, there are a lot
-of [problems like that these days](https://julianhyde.blogspot.com/2012/04/big-data-is-dead-long-live-big-data.html).
+allow me to use 1000x more CPUs to process it?”. Yes, there are a lot of
+[problems like that these days]({% post_url 2012-04-11-big-data-is-dead-long-live-big-data %}).
 
 ### Composability
 

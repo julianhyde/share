@@ -12,7 +12,7 @@ blogger_orig_url: https://julianhyde.blogspot.com/2008/09/fall-migration-kicks-i
 
 You can't fault nature.
 
-We've been [counting raptors](https://julianhyde.blogspot.com/2008/08/hawkwatch.html)
+We've been [counting raptors]({% post_url 2008-08-27-hawkwatch %})
 for almost a month now, and the numbers have been really,
 really low. I've been promising everyone that the peak of raptor
 migration, will be within a day or two of the equinox, because that's

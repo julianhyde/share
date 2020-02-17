@@ -50,7 +50,7 @@ systems were an attempt to extend the database model to handle
 federated data, but only work well for a proscribed set of
 distribution patterns.
 
-I [wrote recently](https://julianhyde.blogspot.com/2008/02/streaming-sql-meets-olap.html)
+I [wrote recently]({% post_url 2008-02-27-streaming-sql-meets-olap %})
 about how [SQLstream](https://www.sqlstream.com/) can implement
 trickle-feed [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load)
 and use the knowledge it gleans from the passing data to proactively manage the

@@ -19,7 +19,7 @@ It's a good question, and comes up often. Let's look at some ways that you could
 ### Attempt #1: CurrentDateMember
 
 One might think that 'today' would suffice (using Mondrian's
-[CurrentDateMember](https://julianhyde.blogspot.com/2006/10/mondrian-22-cube-designer-and.html)
+[CurrentDateMember]({% post_url 2006-10-15-mondrian-22-cube-designer-and %})
 MDX function), but since many enterprises only run the ETL process
 overnight, it isn't always the right answer. Some nights (gasp!) the
 ETL process fails, so even 'yesterday' may not be right answer.

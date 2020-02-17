@@ -71,7 +71,7 @@ something is almost as important as what it is.)
 * NoSQL systems are indeed databases, but they throw out several of
   the key assumptions of traditional databases.
 * I'm steering clear of the term "Big data" for
-  [reasons I've already made clear](https://julianhyde.blogspot.com/2012/04/big-data-is-dead-long-live-big-data.html).
+  [reasons I've already made clear]({% post_url 2012-04-11-big-data-is-dead-long-live-big-data %}).
 
 ## The good stuff
 
@@ -347,7 +347,7 @@ always an integer) then it may be able to optimize.
 Optiq's type system allows records to contain nested records, and
 provides operators to construct and destruct nested
 collections. Whereas SQL/JDBC queries do not stretch the type system,
-[linq4j](https://julianhyde.blogspot.com/2012/04/first-look-at-linq4j.html)
+[linq4j]({% post_url 2012-04-23-first-look-at-linq4j %})
 gives Optiq a workout: it needs to support the Java type system and
 operations such as selectMany and groupBy that operate on collection
 types.
@@ -355,7 +355,7 @@ types.
 Lastly, on breaking down the rigid boundary between database and
 application code.
 
-My goal in [data-oriented programming](https://julianhyde.blogspot.com/2012/04/data-oriented-programming-for-rest-of.html)
+My goal in [data-oriented programming]({% post_url 2012-04-13-data-oriented-programming-for-rest-of %})
 is to allow applications, queries, and extension
 functions and operators to be written in the same language -- and
 if possible using the same programming model, and on the same page of

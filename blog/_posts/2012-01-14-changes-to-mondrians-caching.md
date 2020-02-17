@@ -21,7 +21,7 @@ First the executive summary:
 Now the longer version.
 
 Since we
-[introduced external caches in Mondrian 3.3](https://julianhyde.blogspot.com/2011/02/scalable-caching-in-mondrian.html),
+[introduced external caches in Mondrian 3.3]({% post_url 2011-02-04-scalable-caching-in-mondrian %}),
 we were aware that we were putting a strain on the caching
 architecture. The caching architecture has needed modernization for a
 while, but external caches made it worse. First, a call to an external
@@ -93,7 +93,7 @@ data structure becomes miraculously faster. How can that be? The data
 structure now resides in the thread's cache, and when you removed the
 concurrency controls, you were also removing memory barriers that
 forced changes to be written through L1 and L2 cache to RAM, which is
-[up to 200 times slower](https://julianhyde.blogspot.com/2010/11/numbers-everyone-should-know.html).
+[up to 200 times slower]({% post_url 2010-11-17-numbers-everyone-should-know %}).
 
 Migrating to the Actor Model wasn't without its challenges. First of
 all, you need to decide which data structures and actions should be

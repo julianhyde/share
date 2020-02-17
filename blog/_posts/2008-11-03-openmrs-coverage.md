@@ -11,7 +11,7 @@ blogger_orig_url: https://julianhyde.blogspot.com/2008/11/openmrs-coverage.html
 ---
 
 A few months ago I wrote about
-[OpenMRS](https://julianhyde.blogspot.com/2007/09/openmrs.html),
+[OpenMRS]({% post_url 2007-09-27-openmrs %}),
 an excellent open-source project that is enabling hospitals and
 medical practices in developing countries to automate medical
 record-keeping, built using [Pentaho](https://www.pentaho.org/)
