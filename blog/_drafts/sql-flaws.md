@@ -50,13 +50,14 @@ high-level rewrites and optimizations are possible.
 
 Here are the kinds of deficiencies we find:
 
+* SQL queries contain two sub-languages -- table and column
+  expressions -- that are not easy to mix
+* Nested collections are cumbersome
 * Cannot create temporary functions or values
 * No higher-order functions or function values
 * Cannot loop or recurse (except limited cases via `WITH RECURSIVE`)
-* Poor handling of nested collections
 * Limited type system (no polymorphism, no algebraic types, and
   anachronisms like length-limited strings)
-* Table and column expressions are different sub-languages
 
 We'll address the question 'Is SQL a functional programming language?'
 in a later post. But for now let's look at the flaws in more detail.
@@ -129,9 +130,18 @@ SELECT dept.deptno, ARRAY (TABLE hr.emps) AS emps
 FROM hr.depts
 {% endhighlight %}
 
-The magic is reversible; you can convert a collection-valued column
-into a table expression using `UNNEST`. For example, if the `depts`
-table has a `printers` field, you can write
+You might think that the following would work:
+
+{% highlight sql %}
+SELECT dept.deptno, (SELECT * FROM hr.emps) AS emps
+FROM hr.depts
+{% endhighlight %}
+
+It is valid
+
+There is magic to go in the other direction as well; you can convert a
+collection-valued column into a table expression using `UNNEST`. For
+example, if the `depts` table has a `printers` field, you can write
 
 {% highlight sql %}
 SELECT dept.deptno, printer.manufacturer
