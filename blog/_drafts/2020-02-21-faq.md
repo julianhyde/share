@@ -167,7 +167,7 @@ group emp.deptno
   compute sum of emp.sal as sumSal;
 {% endhighlight %}
 
-# Comments
+## Comments
 
 If you have comments, please reply on Twitter:
 
