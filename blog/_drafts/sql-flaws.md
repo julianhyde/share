@@ -261,7 +261,6 @@ but you cannot include a `NOT NULL` constraint in the target of a
 CAST(commission AS INTEGER NOT NULL)
 {% endhighlight %}
 
-
 # A functional language with relational extensions
 
 These flaws can all be fixed, and SQL continues to evolve, they
@@ -273,32 +272,16 @@ windowed aggregate functions and nested collections.)
 So, how about digging the tunnel from the other end? Rather than
 extending SQL (adding function-values, a type system with polymorphism
 and algebraic types, type inference, and looping), how about taking a
-simple functional programming langauge and adding support for
-relational data? This is the experiment that is [Morel](TODO:ref).
+simple functional programming language and adding support for
+relational data?
 
-The biggest danger is that we make a language that is too
-powerful. Why? When we give a language the ability to loop, or call
-functions recursively, it becomes
-[Turing complete](https://en.wikipedia.org/wiki/Turing_completeness),
-and not all programs in such a language programs can be reasoned
-about. (See, for example, the
-[Halting Problem](https://en.wikipedia.org/wiki/Halting_problem).)
+Morel is that language, and it is a work in progress.
 
-I suspect that Morel avoids that problem in practice. When used as a
-query language, Morel programs are often small, and if they are
-computing something that SQL could compute, then they are very similar
-in size and structure to that SQL. For larger programs there will be
-recognizable patterns such as 'define a local function and use it in a
-query' or 'execute a query iteratively, using its output as the input
-of the next iteration, until it reaches fixed point'. In these
-patterns, we should be able to recognize the 'query' parts and
-optimize them. If we cannot recognize any 'query' parts, nothing is
-lost; we can still execute the whole as a functional program.
-
-These claims are as yet unproven, but proving them is the point of the
-experiment. If we succeed, the reward is great: a query language that
-is Turing-complete and general-purpose but still admits high-level
-optimizations.
+Will people find it useful as a functional language, a query language,
+or both?  Will we succeed in making a language that is [Turing
+complete](https://en.wikipedia.org/wiki/Turing_completeness) but still
+allows global optimizations? I don't know, but it's going to be fun
+finding out.
 
 # Comments
 
