@@ -54,7 +54,7 @@ For example, here is a query in Morel:
 
 {% highlight sml %}
 from e in hr.emps,
-    d in depts
+    d in hr.depts
 where e.deptno = d.deptno
 yield {e.id, e.deptno, ename = e.name, dname = d.name};
 {% endhighlight %}
