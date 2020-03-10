@@ -3,7 +3,7 @@ layout: post
 title:  "Morel: The basic language"
 date:   2020-03-03 12:00:00 -0800
 author: Julian Hyde
-image:  /assets/img/OldDesignShop_MushroomSpringMorel-180x275.jpg
+image:  /assets/img/OldDesignShop_MushroomSpringMorel-240x240.jpg
 tweet:  https://twitter.com/julianhyde/status/1234746906779119616
 ---
 

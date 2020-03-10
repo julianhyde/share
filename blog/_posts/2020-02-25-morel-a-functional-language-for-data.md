@@ -3,7 +3,7 @@ layout: post
 title:  "Morel: A functional language for data"
 date:   2020-02-25 23:24:00 -0800
 author: Julian Hyde
-image:  /assets/img/OldDesignShop_MushroomSpringMorel-180x275.jpg
+image:  /assets/img/OldDesignShop_MushroomSpringMorel-240x240.jpg
 tweet:  https://twitter.com/julianhyde/status/1232572869315444736
 ---
 
