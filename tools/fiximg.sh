@@ -75,7 +75,10 @@ fiximg() {
             (2015*) linkDir=/home/jhyde/web/pix/pix2015/raw;;
             (2016*) linkDir=/home/jhyde/web/pix/pix2016/raw;;
             (2017*) linkDir=/home/jhyde/web/pix/pix2017/raw;;
-            (*)  linkDir=/home/jhyde/web/pix/pix2018/raw;;
+            (2018*) linkDir=/home/jhyde/web/pix/pix2018/raw;;
+            (2019*) linkDir=/home/jhyde/web/pix/pix2019/raw;;
+            (2020*) linkDir=/home/jhyde/web/pix/pix2020/raw;;
+            (*)  linkDir=/home/jhyde/web/pix/pix2020/raw;;
             esac
             mkdir -p "$linkDir"
             if [ -f "${linkDir}/P${label}_${prefix}_${b}" ]; then
