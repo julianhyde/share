@@ -154,7 +154,7 @@ shift 3
 flags="$*"
 
 case ${jdk} in
-(jdk6|jdk7|jdk8|jdk9|jdk10|jdk11|jdk12|jdk13|openjdk10|openjdk11|openjdk12|openjdk13);;
+(jdk[0-9]|jdk1[0-9]|openjdk[0-9]|openjdk1[0-9]);;
 (*) echo "Invalid jdk ${jdk}"; exit 1;;
 esac
 
