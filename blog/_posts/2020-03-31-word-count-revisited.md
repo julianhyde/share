@@ -7,7 +7,7 @@ image:  /assets/img/OldDesignShop_MushroomSpringMorel-240x240.jpg
 tweet:  https://twitter.com/julianhyde/status/1245158958366482432
 ---
 
-WordCount is an problem that has been used to showcase several
+WordCount is a problem that has been used to showcase several
 generations of data engines. It was introduced in
 [MapReduce](https://research.google.com/archive/mapreduce-osdi04.pdf),
 and followed by many others, including
@@ -77,7 +77,9 @@ programmers, `map` and `reduce` are well-known higher-order functions
 that are built into the system; Dean and Ghemawat's `map` and `reduce`
 functions are just the arguments to those.
 
-In the following Standard ML example, you'll see that I rename their
+In the following example in
+[Standard ML](https://en.wikipedia.org/wiki/Standard_ML), a
+functional programming language, you'll see that I rename their
 `map` and `reduce` functions to `wc_mapper` and `wc_reducer`, and pass
 them as arguments to a higher-order function called `mapReduce`. It
 illustrates the connection between MapReduce and functional
