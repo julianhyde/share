@@ -1,21 +1,26 @@
 ---
 layout: post
 title:  "Aggregate functions"
-date:   2020-03-31 12:00:00 -0800
+date:   2020-04-09 12:00:00 -0800
 author: Julian Hyde
 image:  /assets/img/OldDesignShop_MushroomSpringMorel-240x240.jpg
 tweet:  https://twitter.com/julianhyde/status/todo
 ---
 
-Last week I wrote about solving the
-[WordCount](http://research.google.com/archive/mapreduce-osdi04-slides/index-auto-0004.html)
-problem in Morel.  The solution used a user-defined function, `split`,
+Last week I wrote about
+[solving the WordCount problem in Morel](/2020/03/31/word-count-revisited.html).
+The solution used a user-defined function, `split`,
 unnested the resulting array of words into a relation, and then used
 the `group` operator to count the occurrences of each word.
 
-But getting the right design for the `group` operator wasn't
-straightforward.  To see why, let's let's take a quick tour through
-the history of aggregate functions in databases.
+In this post, I want to describe in more detail how that `group`
+operator works, and the thinking that went into it.
+
+I think that what we came up with is elegant, powerful and concise,
+and I hope that you will agree.  But getting the right design wasn't
+straightforward.  To see why, we'll take a quick tour through the
+history of aggregate functions in databases and functional programming
+languages.
 
 # Aggregate functions and relational algebra
 
@@ -38,30 +43,85 @@ He remarked
 
 Aggregation does not fit easily into relational algebra because
 relational algebra works in terms of sets. If you project the `deptno`
-column from the `Emps` relation, you do not get 5 records for
+column from the `Emp` relation, you do not get 5 records for
 department 10 (one for each employee) but just one. If you try to
 compute the average salary for employees in each department, the most
 natural formulation would compute the set of salary values in
 department 10, and therefore if two employees have the same salary
 value they would be counted only once.
 
-The commercial systems (System R and INGRES) had fewer problems
-because they were based on multisets (bags) rather than sets. Still,
-they arrived at an uneasy truce. SQL's `GROUP BY` operation performs a
-project (of the key columns) and aggregation simultaneously. The bag
-of values being passed to the aggregate function exist only
-fleetingly; if you're sqeamish, it's best to look away.
+The commercial systems Klug referred to, System R and INGRES, had
+fewer problems because they were based on multisets (bags) rather than
+sets. Still, they arrived at an uneasy truce. SQL's `GROUP BY` works
+by sleight of hand, simultaneously performing a project (of the key
+columns) and aggregation. The bag of values being passed to the
+aggregate function exist only fleetingly; if you're squeamish, it's
+best to look away.
+
+Shoe-horning aggregate behavior into the existing `SELECT` expression
+was another compromise, and it left its mark on SQL's
+semantics. Consider the following statement:
+
+```sql
+SELECT deptno, age, SUM(salary), MIN(age)
+FROM Emp
+GROUP BY deptno
+```
+
+There are two references to the `age` column. The first reference is
+illegal (because `age` is not a `GROUP BY` key), but the second
+reference (inside the `MIN` function) is legal. The semantic context,
+determining what columns are available, is very different if you are
+inside or outside and aggregate function, and both of those contexts
+exist in just the first line of that query.
+
+SQL had to invent a new clause, `HAVING`, that does the same as
+`WHERE` but in the post-aggregation context. (As we shall see, Morel
+does not have that problem. The semantic rules after a `group` are the
+same as before it, so you can intermix `group` and `where`
+[any way you like](https://github.com/julianhyde/morel/issues/21).)
+
+Aggregate functions create other semantic problems. Assuming that the
+`Emp` table contains 100 rows, how many rows does the following
+statement return?
+
+```sql
+SELECT foo(age)
+FROM Emp
+```
+
+Unless you know whether `foo` is an aggregate function, it is
+impossible to say.  If `foo` is an aggregate function, the query
+returns 1 row (implicitly totaling all `Emp` records), but if `foo` is
+an ordinary scalar function the query returns 100 rows.
+
+The underlying problem is that aggregate functions in SQL have the
+same syntax as scalar functions but very different semantics. This
+makes the language fragile, and makes queries difficult to understand
+unless you are familiar with all of the library functions in use.
 
 # Nested collections
 
-By the early 1990s, the database research community was turning its
-attention to another sacred cow: nested collections.
+Having incorporated aggregate functions into relational algebra, by
+the early 1990s, the database research community was turning its
+attention to another sacred cow: nested collections, formally known as
+[Non First Normal Form (NF<sup>2</sup>) relations](https://dl.acm.org/doi/10.1145/588111.588133).
 
-With nested collections, you can aggregate in two steps: first create
-a set (or multiset) of rows that share the same key, then apply a
-function to collapse those rows to a single value.
+Nested collections are a major extension to the relational model
+(though purists would say a corruption) that allow rich
+representations of data, but we are interested in them here because
+they allow a new approach to aggregation.  With nested collections,
+you can aggregate in two steps: first create a set (or multiset) of
+rows that share the same key, then apply a function to collapse those
+rows to a single value.
 
-This is how it works in Pig Latin:
+As we saw in
+[our discussion of WordCount](/2020/03/31/word-count-revisited.html#wordcount-in-pig),
+one of the languages that embraced nested collections is
+[Apache Pig](https://pig.apache.org).
+
+Consider the following aggregate query in Pig Latin:
+
 ```
 emps = LOAD '/data/emps' using PigStorage()
   as (empno: int, name: chararray, deptno: int, salary: int);
@@ -70,7 +130,10 @@ dept_stats = FOREACH by_deptno
   GENERATE group as deptno, COUNT(emps), AVG(emps.salary);
 ```
 
-The `by_deptno` relation looks like this:
+The `by_deptno` relation is the intermediate step, after `GROUP` has
+created a collection for each `deptno` value, and before `GENERATE`
+has applied `COUNT` and `AVG` aggregate functions to collapse the
+collections into scalar values. `by_deptno` looks like this:
 
 | group | emps
 | ----- | -----
@@ -91,10 +154,11 @@ effort.
 The accumulator approach is how aggregate functions are usually
 implemented in functional programming languages.
 
-# Functional languages: foldl and foldr
+# Functional languages: foldl
 
-In Standard ML, the language from which Morel is derived, the
-[`List` structure](http://sml-family.org/Basis/list.html) has a
+In Standard ML, the
+[language from which Morel is derived](/2020/03/03/morel-basics.html),
+the [`List` structure](http://sml-family.org/Basis/list.html) has a
 higher-order function `foldl` (meaning 'fold left'). `foldl` starts
 with an initial accumulator value, then uses a "combiner" function
 supplied by the caller to combine the initial value with the first
@@ -118,6 +182,13 @@ val it = 32 : int
 ```
 
 # Choices, choices...
+
+To recap, we have seen how grouping and aggregation are implemented in
+three languages: SQL, Pig and Standard ML.  SQL calculates aggregates
+as it groups, whereas Pig forms collections first. Pig's aggregate
+functions work on entire collections, whereas ML's `foldl`
+higher-order function reduces collections by incrementally adding to
+accumulator.
 
 In Morel, we had to choose whether our `group` operation would
 generate lists (like Pig) that would be reduced in a subsequent step,
@@ -154,14 +225,17 @@ where:
 * <code>'a list -> 'b</code> is the aggregate function that converts a list of arguments to a result
 * <code>('k * 'b) list</code> is the output, a list of (key, result) pairs
 
-(And this is just the version for one aggregate function!)
+Yes, this is complicated! And this variant only allows one aggregate function.
 
-But Morel provides a lot of syntactic sugar so that `group` is simple
-to use in practice. For example:
+But Morel provides syntactic sugar so that `group` is simple to use in
+practice, while remaining strongly typed. For example:
 
 ```sml
-from e in emps
-  group e.deptno compute sumSal = sum of e.sal
+- from e in emps
+    group e.deptno compute sumEmpno = sum of e.empno;
+val it =
+  [{deptno=20,sumEmpno=38501},{deptno=10,sumEmpno=23555},
+   {deptno=30,sumEmpno=46116}] : {deptno:int, sumEmpno:int} list
 ```
 
 (This example, and a few others, uses the new `=` syntax for renaming
@@ -169,18 +243,17 @@ group keys and aggregate functions that was introduced in
 [[MOREL-24](https://github.com/julianhyde/morel/issues/24)], rather
 than the old `as` syntax used in morel-0.2.)
 
-
 The key extractor (`e.deptno`) and argument extractor (`e.sal`) are
 not functions but expressions that are evaluated in the environment of
 the current row (the variable `e` holds current member of the `emps`
 relation). Expressions are as powerful as functions but are more
 concise.
 
-The aggregate function is a function - or, in fact, an expression that
-yields a function. In this case, we use the constant `sum`, which is a
-built-in function value of type `int list -> int`.
+The aggregate function is a function - or, more precisely, an
+expression that yields a function. In this case, we use the constant
+`sum`, which is a built-in function value of type `int list -> int`.
 
-The following example illustrates several complexities:
+Here is another example:
 
 ```sml
 from e in emps,
@@ -188,7 +261,7 @@ from e in emps,
   where e.deptno = d.deptno
   group e.deptno, d.dname, e.job
     compute sumSal = sum of e.sal,
-      minRemuneration = min of e.sal + e.commission
+      minRemuneration = min of e.sal + e.commission;
 ```
 
 Several things are more complex than the previous example. The key is
@@ -226,11 +299,30 @@ function:
   in
     from e in emps
       group e.deptno
-      compute sum_id = my_sum of e.id
+      compute sumEmpno = my_sum of e.empno
   end;
 val it =
-  [{deptno=20,sum_id=101},{deptno=10,sum_id=100},{deptno=30,sum_id=205}]
-  : {deptno:int, sum_id:int} list
+  [{deptno=20,sumEmpno=38501},{deptno=10,sumEmpno=23555},
+   {deptno=30,sumEmpno=46116}] : {deptno:int, sumEmpno:int} list
+```
+
+Aggregate functions are invoked on a collection of values formed by
+applying their argument expression to all of the records in the
+current group.  SQL's
+[COLLECT](https://docs.oracle.com/cd/B28359_01/server.111/b28286/functions024.htm#SQLRF06304)
+aggregate function, which creates a collection of its arguments, is
+therefore trivial in Morel: we just use the identity operator (`fn x
+=> x`) as the aggregate function, and it returns its argument:
+
+```sml
+- from e in emps
+    group e.deptno
+    compute names = (fn x => x) of e.ename;
+val it =
+  [{deptno=20,names=["SMITH","JONES","SCOTT","ADAMS","FORD"]},
+   {deptno=10,names=["CLARK","KING","MILLER"]},
+   {deptno=30,names=["ALLEN","WARD","MARTIN","BLAKE","TURNER","JAMES"]}]
+  : {deptno:int, names:string list} list
 ```
 
 # Computing aggregate functions efficiently
@@ -261,13 +353,19 @@ properties of built-in and user-defined aggregate functions (such as
 whether they are monoids). Then it will be able to choose more
 efficient plans.
 
-# Not used
+# Summary
 
-In 1987, Özsoyoğlu, Özsoyoğlu and Matos proposed
-[set-valued attributes and aggregregate functions](https://dl.acm.org/doi/abs/10.1145/32204.32219).
+Morel's `group` operator is elegant and powerful. The syntax is simple
+and concise when used with built-in aggregate functions, but you can
+easily write user-defined aggregate functions.
 
+Aggregate functions behave as if they are acting on collections, but
+in practice they can frequently be computed more efficiently, using
+accumulators or by composing sub-totals.
 
-# Conclusion
+Unlike the complicated semantics of aggregation in SQL, `group`
+composes easily with other Morel relational operators such as `where`
+and `order`.
 
 If you have comments, please reply on Twitter:
 
