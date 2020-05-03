@@ -102,7 +102,7 @@ variable called `it`, and prints the value and its type.  You can use
 ```sml
 = "morel";
 val it = "morel" : string
-= String_size it;
+= String.size it;
 val it = 5 : int
 = it + 4;
 val it = 9 : int
@@ -245,9 +245,9 @@ type variables.  This means that if `f` has type `'a -> 'b`, for any
 types `'a` and `'b`, then `map f` will transform a list of '`a' to a
 list of '`b'.
 
-For example, if `f` is the built-in function `String_length` of type
+For example, if `f` is the built-in function `String.size` of type
 `string -> int`, then `'a` is `string` and `'b` is `int`, and `map
-String_length` will convert a `string list` to an `int list`.
+String.size` will convert a `string list` to an `int list`.
 
 Notice that we did not declare any types; the type system deduced
 everything for us. Type inference is perhaps ML's greatest feature. In
@@ -463,3 +463,6 @@ If you have comments, please reply on Twitter:
 <div data_dnt="true">
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
+
+This article
+[has been updated](https://github.com/julianhyde/share/commits/master/blog/_posts/2020-03-03-morel-basics.md).

@@ -390,8 +390,8 @@ fun wordCount lines =
   let
     fun split0 [] word words = word :: words
       | split0 (#" " :: s) word words = split0 s "" (word :: words)
-      | split0 (c :: s) word words = split0 s (word ^ (String_str c)) words
-    fun split s = List_rev (split0 (String_explode s) "" [])
+      | split0 (c :: s) word words = split0 s (word ^ (String.str c)) words
+    fun split s = List.rev (split0 (String.explode s) "" [])
   in
     from line in lines,
         word in split line
@@ -446,3 +446,6 @@ If you have comments, please reply on Twitter:
 <div data_dnt="true">
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
+
+This article
+[has been updated](https://github.com/julianhyde/share/commits/master/blog/_posts/2020-03-31-word-count-revisited.md).
