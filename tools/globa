@@ -1,0 +1,62 @@
+#!/bin/bash
+
+function usage {
+cat <<EOF
+Usage: globa [--help] path
+
+Convert between paths of reference and actual files.
+
+Options:
+  --help Print help
+EOF
+}
+
+case "$1" in
+(--help) usage; exit 0;;
+esac
+
+if [ $# -ne 2 ]; then
+  echo "Require 2 arguments"; exit 1
+fi
+
+function foo {
+  echo "$2" | awk -v flags=$1 '
+{
+  for (k = 0; k < length(flags); k++) {
+    if (k > 0) {
+      printf " "
+    }
+    flag = substr(flags, k + 1, 1)
+    s = $0
+    if (flag == "o") {
+      # leave s as is
+    } else if (flag == "r") {
+      if (s ~ /_actual/) {
+        if (s ~ /build\/resources\/test/) {
+          gsub(/build\/resources\/test/, "src/test/resources", s)
+        } else {
+          s = "unknown"
+        }
+        gsub(/_actual/, "", s)
+      } else if (s ~ /surefire/) {
+        gsub(/test\/.*\/surefire/, "test", s)
+        gsub(/build\/resources\/test/, "src/test/resources", s)
+      } else {
+        s = "unknown"
+      }
+    } else {
+      s = "unknown"
+    }
+    printf "%s", s
+  }
+  printf "\n"
+}
+'
+}
+
+case "$1" in
+(or) foo "$1" "$2";;
+(*) echo "Unknown flag '$1'";;
+esac
+
+# End globa

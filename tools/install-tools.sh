@@ -22,8 +22,9 @@ for i in \
   extra.awk \
   extra.sh \
   fiximg.sh \
-  gra \
+  globa \
   gpg-export \
+  gra \
   jenv \
   lastLog.sh \
   relNotes \

@@ -1,0 +1,70 @@
+#!/bin/bash
+#
+# Unit tests for tools.
+
+TOOLS=$(cd $(dirname $0); pwd -P)
+OUT=/tmp/$(basename $0)_out_$$.txt
+REF=/tmp/$(basename $0)_ref_$$.txt
+
+# Compares REF with OUT
+function compare {
+  if [ ! "$1" ]; then
+    echo "Failed: no description for test."
+    exit 1
+  fi
+  if ! diff $REF $OUT; then
+    echo "Failed test $1."
+    exit 1
+  fi
+}
+
+# Test globa
+
+# help
+TNAME=globa-help
+${TOOLS}/globa --help > $OUT
+cat > $REF <<EOF
+Usage: globa [--help] path
+
+Convert between paths of reference and actual files.
+
+Options:
+  --help Print help
+EOF
+compare $TNAME
+
+# 2 arguments
+TNAME=globa-0-args
+${TOOLS}/globa > $OUT
+cat > $REF <<EOF
+Require 2 arguments
+EOF
+compare $TNAME
+
+# from actual 0
+TNAME=globa-or-0
+${TOOLS}/globa or core/build/resources/test/foo_actual.xml > $OUT
+cat > $REF <<EOF
+core/build/resources/test/foo_actual.xml core/src/test/resources/foo.xml
+EOF
+compare $TNAME
+
+# from actual 1
+TNAME=globa-or-1
+${TOOLS}/globa or ./core/build/resources/test/org/apache/calcite/test/RelOptRulesTest_actual.xml > $OUT
+cat > $REF <<EOF
+./core/build/resources/test/org/apache/calcite/test/RelOptRulesTest_actual.xml ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml
+EOF
+compare $TNAME
+
+# from actual 2
+TNAME=globa-or-2
+${TOOLS}/globa or ./core/build/resources/test/sql/surefire/sql/spatial.iq > $OUT
+cat > $REF <<EOF
+./core/build/resources/test/sql/surefire/sql/spatial.iq ./core/src/test/resources/sql/spatial.iq
+EOF
+compare $TNAME
+
+echo Succeeded.
+
+# End
