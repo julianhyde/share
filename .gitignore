@@ -3,4 +3,12 @@
 *~
 .DS_Store
 
+# do not commit the following
+foodbench
+tools/mail1.txt
+tools/mail2.txt
+tools/mail3.txt
+tools/mail4.txt
+data/target
+
 # End

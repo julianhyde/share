@@ -1,0 +1,159 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to you under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+version: 1.0
+defaultSchema: GGRO
+schemas:
+- name: GGRO
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/web2/ggro/web
+- name: GGRO2
+  tables:
+  - name: SIGHTINGS
+    type: view
+    sql: |
+      select cast(substring("date" from 1 for 4)
+              || '-' || substring("date" from 5 for 2)
+              || '-' || substring("date" from 7 for 2) as date) as "date",
+          cast("author" as varchar(20)) as "author",
+          cast("total_sightings" as integer) as "total_sightings",
+          cast("hours_counted" as real) as "hours_counted",
+          cast("hph" as real) as "hph",
+          cast("total_species" as integer) as "total_species",
+          cast("tuvu" as integer) as "tuvu",
+          cast("ospr" as integer) as "ospr",
+          cast("wtki" as integer) as "wtki",
+          cast("baea" as integer) as "baea",
+          cast("noha" as integer) as "noha",
+          cast("ssha" as integer) as "ssha",
+          cast("coha" as integer) as "coha",
+          cast("gosh" as integer) as "gosh",
+          cast("rsha" as integer) as "rsha",
+          cast("bwha" as integer) as "bwha",
+          cast("swha" as integer) as "swha",
+          cast("rtha" as integer) as "rtha",
+          cast("feha" as integer) as "feha",
+          cast("rlha" as integer) as "rlha",
+          cast("goea" as integer) as "goea",
+          cast("amke" as integer) as "amke",
+          cast("merl" as integer) as "merl",
+          cast("pefa" as integer) as "pefa",
+          cast("prfa" as integer) as "prfa",
+          cast("unid_accipiter" as integer) as "unid_accipiter",
+          cast("unid_buteo" as integer) as "unid_buteo",
+          cast("unid_eagle" as integer) as "unid_eagle",
+          cast("unid_falcon" as integer) as "unid_falcon",
+          cast("unid_raptor" as integer) as "unid_raptor"
+      from ggro."data"
+  - name: SPECIES
+    type: view
+    sql: |
+      select "ordinal",
+          cast("species" as varchar(14)) as "species",
+          cast("species_name" as varchar(25)) as "species_name"
+      from (values (1, 'TUVU', 'Turkey Vulture'),
+                   (2, 'OSPR', 'Osprey'),
+                   (3, 'WTKI', 'White-tailed Kite'),
+                   (4, 'BAEA', 'Bald Eagle'),
+                   (5, 'NOHA', 'Northern Harrier'),
+                   (6, 'SSHA', 'Sharp-shinned Hawk'),
+                   (7, 'COHA', 'Cooper''s Hawk'),
+                   (8, 'GOSH', 'Northern Goshawk'),
+                   (9, 'RSHA', 'Red-shouldered Hawk'),
+                   (10, 'BWHA', 'Broad-winged Hawk'),
+                   (11, 'SWHA', 'Swainson''s Hawk'),
+                   (12, 'RTHA', 'Red-tailed Hawk'),
+                   (13, 'FEHA', 'Ferruginous Hawk'),
+                   (14, 'RLHA', 'Rough-legged Hawk'),
+                   (15, 'GOEA', 'Golden Eagle'),
+                   (16, 'AMKE', 'American Kestrel'),
+                   (17, 'MERL', 'Merlin'),
+                   (18, 'PEFA', 'Peregrine Falcon'),
+                   (19, 'PRFA', 'Prairie Falcon'),
+                   (20, 'UNID_ACCIPITER', 'Unidentified Accipiter'),
+                   (21, 'UNID_BUTEO', 'Unidentified Buteo'),
+                   (22, 'UNID_EAGLE', 'Unidentified Eagle'),
+                   (23, 'UNID_FALCON', 'Unidentified Falcon'),
+                   (24, 'UNID_RAPTOR', 'Unidentified Raptor'))
+        as t ("ordinal", "species", "species_name")
+  - name: SPECIES_SIGHTINGS
+    type: view
+    sql: |
+      select "date",
+        "author",
+        "total_sightings",
+        "hours_counted",
+        "hph",
+        "total_species",
+        "species",
+        "species_name",
+        "ordinal" as "species_ordinal",
+        cast(case trim(trailing from "species")
+          when 'TUVU' then "tuvu"
+          when 'OSPR' then "ospr"
+          when 'WTKI' then "wtki"
+          when 'BAEA' then "baea"
+          when 'NOHA' then "noha"
+          when 'SSHA' then "ssha"
+          when 'COHA' then "coha"
+          when 'GOSH' then "gosh"
+          when 'RSHA' then "rsha"
+          when 'BWHA' then "bwha"
+          when 'SWHA' then "swha"
+          when 'RTHA' then "rtha"
+          when 'FEHA' then "feha"
+          when 'RLHA' then "rlha"
+          when 'GOEA' then "goea"
+          when 'AMKE' then "amke"
+          when 'MERL' then "merl"
+          when 'PEFA' then "pefa"
+          when 'PRFA' then "prfa"
+          when 'UNID_ACCIPITER' then "unid_accipiter"
+          when 'UNID_BUTEO' then "unid_buteo"
+          when 'UNID_EAGLE' then "unid_eagle"
+          when 'UNID_FALCON' then "unid_falcon"
+          when 'UNID_RAPTOR' then "unid_raptor"
+          end as integer) as "sighting_count"
+      from sightings
+      cross join species
+  - name: SPECIES_SUMMARY
+    type: view
+    sql: |
+      select "species",
+          "species_ordinal",
+      sum("sighting_count") as "count",
+      sum("sighting_count") / sum("hours_counted") as "per hour",
+      sum("sighting_count") filter (where "date"
+          > (select max("date") from ggro2.species_sightings)
+              - interval '7' day) as "last week"
+      from ggro2.species_sightings
+      group by "species", "species_ordinal"
+  - name: SEASON_SUMMARY
+    type: view
+    sql: |
+      select sum("sighting_count") as "sightings",
+      sum("sighting_count") filter (where "date"
+          > (select max("date") from ggro2.species_sightings)
+          - interval '7' day) as "sightings last week",
+      count(distinct "species") filter (where "sighting_count" > 0
+          and "species" not like 'UNID%') as "species count",
+      count(distinct "species") filter (where "sighting_count" > 0
+          and "species" not like 'UNID%'
+          and "date" > (select max("date") from ggro2.species_sightings)
+              - interval '7' day) as "species count last week"
+      from ggro2.species_sightings

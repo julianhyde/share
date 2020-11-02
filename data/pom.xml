@@ -25,6 +25,7 @@
     <top.dir>${project.basedir}</top.dir>
 
     <!-- The following list is sorted. -->
+    <calcite.version>1.26.0</calcite.version>
     <chinook-data-hsqldb.version>0.1</chinook-data-hsqldb.version>
     <flight-data-hsqldb.version>0.1</flight-data-hsqldb.version>
     <foodmart-data-hsqldb.version>0.4</foodmart-data-hsqldb.version>
@@ -185,6 +186,16 @@
       <groupId>net.hydromatic</groupId>
       <artifactId>steelwheels-data-hsqldb</artifactId>
       <version>${steelwheels-data-hsqldb.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.calcite</groupId>
+      <artifactId>calcite-core</artifactId>
+      <version>${calcite.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.calcite</groupId>
+      <artifactId>calcite-file</artifactId>
+      <version>${calcite.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hsqldb</groupId>
