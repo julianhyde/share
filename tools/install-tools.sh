@@ -33,6 +33,7 @@ for i in \
   rat \
   rsync-camera.sh \
   te \
+  update-dns.sh \
   validate
 do
   ln -s $(pwd)/$i /usr/local/bin
