@@ -41,6 +41,7 @@ function foo {
       } else if (s ~ /surefire/) {
         gsub(/test\/.*\/surefire/, "test", s)
         gsub(/build\/resources\/test/, "src/test/resources", s)
+        gsub(/target\/test-classes\/.*\/surefire/, "src/test/resources", s)
       } else {
         s = "unknown"
       }

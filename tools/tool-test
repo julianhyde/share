@@ -65,6 +65,14 @@ cat > $REF <<EOF
 EOF
 compare $TNAME
 
+# from actual 3
+TNAME=globa-or-3
+${TOOLS}/globa or target/test-classes/script/surefire/script/foreign.sml.out > $OUT
+cat > $REF <<EOF
+target/test-classes/script/surefire/script/foreign.sml.out src/test/resources/script/foreign.sml.out
+EOF
+compare $TNAME
+
 echo Succeeded.
 
 # End
