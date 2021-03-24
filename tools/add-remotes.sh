@@ -36,7 +36,7 @@ function remoteExists {
 # Check that this file is sorted
 diff -u \
      <(grep " foo " $0 | grep -v grep) \
-     <(grep " foo " $0 | grep -v grep | env LC_ALL=C sort -f) || exit
+     <(grep " foo " $0 | grep -v grep | env LC_ALL=C sort -f -u) || exit
 
 remote_list_file=/tmp/remotes_${1}_${$}.txt
 git remote > ${remote_list_file}
@@ -84,6 +84,7 @@ case "$1" in
   foo calcite d4nc00per incubator-calcite
   foo calcite danny0405
   foo calcite darionyaphet
+  foo calcite dasch-1
   foo calcite datametica
   foo calcite devth incubator-calcite
   foo calcite diandu remove
@@ -91,6 +92,7 @@ case "$1" in
   foo calcite dingguitao incubator-calcite
   foo calcite dkadams
   foo calcite docete
+  foo calcite DonnyZone
   foo calcite dremio remove
   foo calcite ebastien
   foo calcite elilevine
@@ -106,8 +108,11 @@ case "$1" in
   foo calcite gianm
   foo calcite Gkairi
   foo calcite godfreyhe
+  foo calcite gooddata
   foo calcite gparai
+  foo calcite hannerwang
   foo calcite haohui
+  foo calcite hbtoo
   foo calcite HeartSaVioR
   foo calcite hequn8128
   foo calcite hortonworks
@@ -128,6 +133,7 @@ case "$1" in
   foo calcite joshelser incubator-calcite
   foo calcite jpullok remove
   foo calcite jpullokkaran
+  foo calcite jswett77
   foo calcite JulianFeinauer
   foo calcite julianhyde
   foo calcite jxiang
@@ -150,6 +156,7 @@ case "$1" in
   foo calcite lfkpoa
   foo calcite lincoln-lil
   foo calcite LiShuMing
+  foo calcite liyafan82
   foo calcite mapr incubator-calcite
   foo calcite markap14
   foo calcite maryannxue
@@ -164,11 +171,11 @@ case "$1" in
   foo calcite msydoron
   foo calcite navis incubator-calcite
   foo calcite ndimiduk incubator-calcite
+  foo calcite neoremind
   foo calcite nishantmonu51
   foo calcite pawelruchaj
   foo calcite pengchengxiong
   foo calcite pengzhiwei2018
-  foo calcite psockali
   foo calcite ptrbojko
   foo calcite rajrahul
   foo calcite Ravindar-Munjam
@@ -180,6 +187,7 @@ case "$1" in
   foo calcite rtudoran
   foo calcite rubenada
   foo calcite rusanu
+  foo calcite sambekar15
   foo calcite samwagg
   foo calcite sbcd90
   foo calcite sergeysimonov
@@ -201,6 +209,7 @@ case "$1" in
   foo calcite tmostak
   foo calcite twalthr incubator-calcite
   foo calcite tzolov
+  foo calcite vaibhavjain-dm
   foo calcite VcamX
   foo calcite vdiravka
   foo calcite vijayk
@@ -237,6 +246,7 @@ case "$1" in
 (avatica|calcite-avatica)
   foo calcite-avatica asolimando
   foo calcite-avatica bcogrel
+  foo calcite-avatica devozerov
   foo calcite-avatica docete
   foo calcite-avatica F21
   foo calcite-avatica haohui
@@ -281,7 +291,9 @@ case "$1" in
   foo sqlline bpoweski
   foo sqlline fineo-io
   foo sqlline kminder
+  foo sqlline laurentedel
   foo sqlline liancheng
+  foo sqlline madeye-matt
   foo sqlline masayuki038
   foo sqlline mmattozzi
   foo sqlline mprudhom
