@@ -14,6 +14,8 @@ function svn-co() {
   ) 2>&1 | sed -e "s!^!$2: !"
 }
 
+svn-co https://svn.apache.org/repos/asf/infrastructure/site ~/apache/asf/infrastructure/site &
+
 svn-co https://svn.apache.org/repos/private/foundation ~/apache/private/foundation &
 svn-co https://svn.apache.org/repos/private/committers/board ~/apache/private/committers/board &
 svn-co https://svn.apache.org/repos/private/committers/info ~/apache/private/committers/info &
@@ -23,13 +25,13 @@ svn co https://svn.apache.org/repos/asf/incubator/public/trunk ~/apache/asf/incu
 svn co https://svn.apache.org/repos/asf/incubator/donations ~/apache/asf/incubator/donations &
 svn co https://svn.apache.org/repos/asf/infrastructure/site/trunk ~/apache/asf/infrastructure/site &
 
-for i in kylin \
-    incubator/crail \
-    incubator/druid \
-    incubator/quickstep \
+for i in \
     arrow \
     calcite \
-    metron
+    druid \
+    incubator/crail \
+    incubator/hop \
+    kylin
 do
   svn-co https://dist.apache.org/repos/dist/dev/$i ~/apache/dist/dev/$i &
   svn-co https://dist.apache.org/repos/dist/release/$i ~/apache/dist/release/$i &
