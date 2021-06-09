@@ -48,8 +48,8 @@
 
   <licenses>
     <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -62,7 +62,7 @@
   <scm>
     <connection>scm:git:git://github.com/julianhyde/share.git</connection>
     <developerConnection>scm:git:git@github.com:julianhyde/share.git</developerConnection>
-    <url>https://github.com/julianhyde/share/tree/master</url>
+    <url>https://github.com/julianhyde/share/tree/main</url>
     <tag>HEAD</tag>
   </scm>
 

@@ -28,7 +28,7 @@ Some highlights of release 0.2:
 * Add [Morel language reference](docs/reference.md).
 
 For more information, see the
-[release notes](https://github.com/julianhyde/morel/blob/master/HISTORY.md#02--2020-03-10).
+[release notes](https://github.com/julianhyde/morel/blob/main/HISTORY.md#02--2020-03-10).
 
 If you have comments, please reply on Twitter:
 

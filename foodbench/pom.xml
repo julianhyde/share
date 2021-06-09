@@ -11,7 +11,7 @@
   <!-- More project information. -->
   <name>foodbench</name>
   <description>Benchmark that runs the FoodMart queries.</description>
-  <url>http://github.com/julianhyde/share/foodbench</url>
+  <url>https://github.com/julianhyde/share/foodbench</url>
   <inceptionYear>2013</inceptionYear>
   <organization>
     <name>Julian Hyde</name>
@@ -19,8 +19,8 @@
   </organization>
   <licenses>
     <license>
-      <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
 
@@ -45,7 +45,7 @@
       <subscribe>optiq-dev-subscribe@googlegroups.com</subscribe>
       <unsubscribe>optiq-dev-unsubscribe@googlegroups.com</unsubscribe>
       <post>optiq-dev@googlegroups.com</post>
-      <archive>http://groups.google.com/group/optiq-dev</archive>
+      <archive>https://groups.google.com/group/optiq-dev</archive>
     </mailingList>
   </mailingLists>
 
@@ -61,7 +61,7 @@
   <scm>
     <connection>scm:git:git://github.com/julianhyde/share.git</connection>
     <developerConnection>scm:git:git@github.com:julianhyde/share.git</developerConnection>
-    <url>http://github.com/julianhyde/share/foodbench/tree/master</url>
+    <url>https://github.com/julianhyde/share/tree/main/foodbench</url>
   </scm>
 
   <!-- Dependencies. -->
@@ -91,7 +91,7 @@
         <version>2.8.1</version>
         <configuration>
           <links>
-            <link>http://docs.oracle.com/javase/7/docs/api/</link>
+            <link>https://docs.oracle.com/javase/7/docs/api/</link>
           </links>
         </configuration>
       </plugin>
@@ -107,7 +107,7 @@
       </releases>
       <id>pentaho</id>
       <name>Pentaho</name>
-      <url>http://repo.pentaho.org/artifactory/repo</url>
+      <url>https://repo.pentaho.org/artifactory/repo</url>
       <layout>default</layout>
     </repository>
     <repository>
@@ -118,7 +118,7 @@
       </releases>
       <id>conjars</id>
       <name>Conjars</name>
-      <url>http://conjars.org/repo</url>
+      <url>https://conjars.org/repo</url>
       <layout>default</layout>
     </repository>
   </repositories>

@@ -8,7 +8,7 @@ Shared files, presentations, and other materials.
 ```
 rvm use 2.7.1
 cd blog
-git checkout master
+git checkout main
 bundle install
 bundle exec jekyll build
 rm -rf ~/web/blog

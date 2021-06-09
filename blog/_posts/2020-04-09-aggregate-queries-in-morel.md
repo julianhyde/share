@@ -398,4 +398,4 @@ If you have comments, please reply on Twitter:
 </div>
 
 This article
-[has been updated](https://github.com/julianhyde/share/commits/master/blog/_posts/2020-04-09-aggregate-queries-in-morel.md).
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/_posts/2020-04-09-aggregate-queries-in-morel.md).

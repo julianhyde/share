@@ -25,7 +25,7 @@ and the conversations started by the posts can all happen on
 I've ported all of the previous posts to
 [Jekyll](https://jekyllrb.com/),
 [Markdown](https://kramdown.gettalong.org/) and stored them in
-[GitHub](https://github.com/julianhyde/share/tree/master/blog).
+[GitHub](https://github.com/julianhyde/share/tree/main/blog).
 They're available in the [index](/). I must say, having full control
 over my content is quite a relief.
 

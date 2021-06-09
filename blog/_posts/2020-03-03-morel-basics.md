@@ -32,7 +32,7 @@ val it = "hello, world!" : string
 
 (To build Morel and start the shell for yourself, follow the
 instructions on
-[GitHub](https://github.com/julianhyde/morel/blob/master/README.md).
+[GitHub](https://github.com/julianhyde/morel/blob/main/README.md).
 To exit the shell, type Ctrl+D.)
 
 # Primitive types and simple expressions
@@ -465,4 +465,4 @@ If you have comments, please reply on Twitter:
 </div>
 
 This article
-[has been updated](https://github.com/julianhyde/share/commits/master/blog/_posts/2020-03-03-morel-basics.md).
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/_posts/2020-03-03-morel-basics.md).

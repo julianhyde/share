@@ -175,9 +175,9 @@ aspects of database query languages and functional programming.
 In this brief introduction, I have not gone into the details of
 Morel's syntax, semantics or implementation, but examples can be found
 on the
-[Morel site](https://github.com/julianhyde/morel/blob/master/README.md)
+[Morel site](https://github.com/julianhyde/morel/blob/main/README.md)
 and in
-[Morel's test suite](https://github.com/julianhyde/morel/tree/master/src/test/resources/script),
+[Morel's test suite](https://github.com/julianhyde/morel/tree/main/src/test/resources/script),
 and I plan to write more blog posts over the following months.
 
 If you have comments, please reply on Twitter:
