@@ -16,18 +16,18 @@
  */
 package net.hydromatic.scratch;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Tests for prime number generator.
  */
 public class PrimeGeneratorTest {
-  @Test public void testPrimeGenerator() {
+  @Test void testPrimeGenerator() {
     final PrimeGenerator g = new PrimeGenerator();
     assertThat(g.next(), is(2));
     assertThat(g.next(), is(3));
@@ -42,7 +42,7 @@ public class PrimeGeneratorTest {
     assertThat(g.next(), is(104_803));
   }
 
-  @Test public void testPythagoreanTupleGenerator() {
+  @Test void testPythagoreanTupleGenerator() {
     try (PythagoreanTripleGenerator g =
              new PythagoreanTripleGenerator(1, 15)) {
       final Iterator<PythagoreanTripleGenerator.Triple> iterator =
@@ -55,7 +55,7 @@ public class PrimeGeneratorTest {
     }
   }
 
-  @Test public void testPythagoreanTupleGenerator2() {
+  @Test void testPythagoreanTupleGenerator2() {
     try (PythagoreanTripleGenerator g =
              new PythagoreanTripleGenerator(10, Integer.MAX_VALUE)) {
       final Iterator<PythagoreanTripleGenerator.Triple> iterator =
