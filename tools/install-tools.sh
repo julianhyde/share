@@ -23,6 +23,7 @@ for i in \
   extra.awk \
   extra.sh \
   fiximg.sh \
+  fullMake \
   globa \
   gpg-export \
   gra \
