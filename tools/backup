@@ -2,7 +2,7 @@
 
 function backup_europa {
   echo "Backup to europa"
-  cd ~/extra
+  cd /home/jhyde/extra
   options="-avP" # add c for checksum
   echo "Copy Videos"
   rsync ${options} Videos/ $target:backup/$source/Videos
@@ -10,10 +10,25 @@ function backup_europa {
   rsync ${options} Music/ $target:backup/$source/Music
   echo "Copy Downloads"
   rsync ${options} Downloads/ $target:backup/$source/Downloads
+  cd /home/jhyde
   echo "Copy web"
-  cd ~
   rsync ${options} web $target:backup/$source
+  echo "Copy time-machine on Mondays"
+  if [ "$TIME_MACHINE" ]; then
+    rsync ${options} time-machine/ $target:backup/$source/time-machine
+  fi
 }
+
+case "$1" in
+(--time-machine)
+  shift
+  export TIME_MACHINE=true;;
+(--no-time-machine)
+  shift
+  export TIME_MACHINE=;;
+(*)
+  export TIME_MACHINE=$(test $(date +%u) -eq 1 && echo true);;
+esac
 
 target="$1"
 source=marmite
