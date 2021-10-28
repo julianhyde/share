@@ -19,6 +19,7 @@ for i in \
   calcite-regress.sh \
   calcite-regress2.sh \
   checkKeys.sh \
+  ediff \
   extra.awk \
   extra.sh \
   fiximg.sh \

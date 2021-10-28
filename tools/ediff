@@ -1,0 +1,7 @@
+#!/bin/bash
+# ediff - Emacs difference
+# Launches emacs in difference mode with two files.
+DQ=\"
+echo emacs -nw --eval "(ediff-files '$1' '$2')"
+exec emacs -nw --eval "(ediff-files ${DQ}$1${DQ} ${DQ}$2${DQ})"
+# End ediff
