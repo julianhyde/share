@@ -30,8 +30,7 @@ for i in \
     calcite \
     druid \
     incubator/crail \
-    incubator/hop \
-    kylin
+    incubator/hop
 do
   svn-co https://dist.apache.org/repos/dist/dev/$i ~/apache/dist/dev/$i &
   svn-co https://dist.apache.org/repos/dist/release/$i ~/apache/dist/release/$i &
