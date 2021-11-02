@@ -47,11 +47,10 @@ function doAvatica {
     SKIP=" -x :standalone-server:licenseCopySpec -x :tck:licenseCopySpec -x :tck:getLicenses -x :tck:license -x :standalone-server:getLicenses -x :standalone-server:license"
   fi
   SKIP="$SKIP -x rat"
-  java -version &&
-  echo "Guava version ${GUAVA_VERSION}" &&
+  echo "::version:: $(java -version 2>&1 | head -1) guava ${GUAVA_VERSION}" &&
   ./gradlew clean build -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
   echo ::test:: &&
-  ./gradlew test -x rat &&
+  ./gradlew test -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
   echo ::checkerFramework:: &&
   ./gradlew --no-parallel --no-daemon -PenableCheckerframework :core:classes :server:classes &&
   echo ::errorProne:: &&
@@ -73,23 +72,23 @@ function doCalcite {
     GUAVA_VERSION=$1
     shift
   fi
-  SKIP="-x rat"
+  SKIP=
   GUAVA_MAJOR=$(echo $GUAVA_VERSION | cut -d. -f 1)
   if [ $GUAVA_MAJOR -lt 19 ]; then
-    echo ::skip::
-    echo "Guava version is too low"
+    echo ::skip:: "(Guava version $GUAVA_VERSION is too low)"
     return
   fi
-  java -version &&
-  ./gradlew clean build -Pguava.version=19.0 ${SKIP} &&
+  SKIP="$SKIP -x rat"
+  echo "::version:: $(java -version 2>&1 | head -1) guava ${GUAVA_VERSION}" &&
+  ./gradlew clean build -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
   echo ::test:: &&
-  ./gradlew test ${SKIP} &&
+  ./gradlew test -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
   echo ::checkerFramework:: &&
   ./gradlew --no-parallel --no-daemon -PenableCheckerframework :linq4j:classes :core:classes && # :arrow:classes &&
   echo ::errorProne:: &&
   ./gradlew --no-parallel --no-daemon -PenableErrorprone -Pguava.version=${MAX_GUAVA_VERSION} classes &&
   echo ::testSlow:: &&
-  ./gradlew testSlow ${SKIP} &&
+  ./gradlew testSlow -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
   echo ::done::
 }
 
