@@ -46,11 +46,11 @@ function doAvatica {
   if [ "$GUAVA_MAJOR" -ge 22 -a "$GUAVA_MAJOR" -le 29 ]; then
     SKIP=" -x :standalone-server:licenseCopySpec -x :tck:licenseCopySpec -x :tck:getLicenses -x :tck:license -x :standalone-server:getLicenses -x :standalone-server:license"
   fi
-  java -version &&
-  echo "Guava version ${GUAVA_VERSION}" &&
-  ./gradlew clean build -Pguava.version=${GUAVA_VERSION} -x rat ${SKIP} &&
+  SKIP="$SKIP -x rat"
+  echo "::version:: $(java -version 2>&1 | head -1) guava ${GUAVA_VERSION}" &&
+  ./gradlew clean build -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
   echo ::test:: &&
-  ./gradlew test -x rat &&
+  ./gradlew test -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
   echo ::checkerFramework:: &&
   ./gradlew --no-parallel --no-daemon -PenableCheckerframework :core:classes :server:classes &&
   echo ::errorProne:: &&
@@ -75,20 +75,25 @@ function doCalcite {
   SKIP=
   GUAVA_MAJOR=$(echo $GUAVA_VERSION | cut -d. -f 1)
   if [ $GUAVA_MAJOR -lt 19 ]; then
-    echo ::skip::
-    echo "Guava version is too low"
+    echo ::skip:: "(Guava version $GUAVA_VERSION is too low)"
     return
   fi
-  java -version &&
-  ./gradlew clean build -Pguava.version=19.0 -x rat &&
+  SKIP="$SKIP -x rat"
+  DO_CHECKER=$(java -version 2>&1 | awk 'FNR == 1 && ($3 ~ /.8/ || $3 ~ /.11/) {print "true"}')
+  echo "::version:: $(java -version 2>&1 | head -1) guava ${GUAVA_VERSION}" &&
+  ./gradlew clean build -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
   echo ::test:: &&
-  ./gradlew test -x rat &&
-  echo ::checkerFramework:: &&
-  ./gradlew --no-parallel --no-daemon -PenableCheckerframework :linq4j:classes :core:classes && # :arrow:classes &&
+  ./gradlew test -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
+  if test "$DO_CHECKER"; then
+    echo ::checkerFramework::
+    ./gradlew --no-parallel --no-daemon -PenableCheckerframework :linq4j:classes :core:classes # :arrow:classes
+  else
+    echo ::skip checkerFramework::
+  fi &&
   echo ::errorProne:: &&
-  ./gradlew --no-parallel --no-daemon -PenableErrorprone -Pguava.version=30.1.1-jre classes &&
+  ./gradlew --no-parallel --no-daemon -PenableErrorprone -Pguava.version=${MAX_GUAVA_VERSION} classes &&
   echo ::testSlow:: &&
-  ./gradlew testSlow -x rat &&
+  ./gradlew testSlow -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
   echo ::done::
 }
 
