@@ -46,9 +46,10 @@ function doAvatica {
   if [ "$GUAVA_MAJOR" -ge 22 -a "$GUAVA_MAJOR" -le 29 ]; then
     SKIP=" -x :standalone-server:licenseCopySpec -x :tck:licenseCopySpec -x :tck:getLicenses -x :tck:license -x :standalone-server:getLicenses -x :standalone-server:license"
   fi
+  SKIP="$SKIP -x rat"
   java -version &&
   echo "Guava version ${GUAVA_VERSION}" &&
-  ./gradlew clean build -Pguava.version=${GUAVA_VERSION} -x rat ${SKIP} &&
+  ./gradlew clean build -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
   echo ::test:: &&
   ./gradlew test -x rat &&
   echo ::checkerFramework:: &&
@@ -72,7 +73,7 @@ function doCalcite {
     GUAVA_VERSION=$1
     shift
   fi
-  SKIP=
+  SKIP="-x rat"
   GUAVA_MAJOR=$(echo $GUAVA_VERSION | cut -d. -f 1)
   if [ $GUAVA_MAJOR -lt 19 ]; then
     echo ::skip::
@@ -80,15 +81,15 @@ function doCalcite {
     return
   fi
   java -version &&
-  ./gradlew clean build -Pguava.version=19.0 -x rat &&
+  ./gradlew clean build -Pguava.version=19.0 ${SKIP} &&
   echo ::test:: &&
-  ./gradlew test -x rat &&
+  ./gradlew test ${SKIP} &&
   echo ::checkerFramework:: &&
   ./gradlew --no-parallel --no-daemon -PenableCheckerframework :linq4j:classes :core:classes && # :arrow:classes &&
   echo ::errorProne:: &&
-  ./gradlew --no-parallel --no-daemon -PenableErrorprone -Pguava.version=30.1.1-jre classes &&
+  ./gradlew --no-parallel --no-daemon -PenableErrorprone -Pguava.version=${MAX_GUAVA_VERSION} classes &&
   echo ::testSlow:: &&
-  ./gradlew testSlow -x rat &&
+  ./gradlew testSlow ${SKIP} &&
   echo ::done::
 }
 
