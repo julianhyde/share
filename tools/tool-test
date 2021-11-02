@@ -49,9 +49,25 @@ core/build/resources/test/foo_actual.xml core/src/test/resources/foo.xml
 EOF
 compare $TNAME
 
+# from ref 0
+TNAME=globa-ref-0
+${TOOLS}/globa or core/src/test/resources/foo.xml > $OUT
+cat > $REF <<EOF
+core/build/resources/test/foo_actual.xml core/src/test/resources/foo.xml
+EOF
+compare $TNAME
+
 # from actual 1
 TNAME=globa-or-1
 ${TOOLS}/globa or ./core/build/resources/test/org/apache/calcite/test/RelOptRulesTest_actual.xml > $OUT
+cat > $REF <<EOF
+./core/build/resources/test/org/apache/calcite/test/RelOptRulesTest_actual.xml ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml
+EOF
+compare $TNAME
+
+# from ref 1
+TNAME=globa-ref-1
+${TOOLS}/globa or ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml > $OUT
 cat > $REF <<EOF
 ./core/build/resources/test/org/apache/calcite/test/RelOptRulesTest_actual.xml ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml
 EOF
@@ -65,9 +81,25 @@ cat > $REF <<EOF
 EOF
 compare $TNAME
 
+# from ref 2
+TNAME=globa-ref-2
+${TOOLS}/globa or core/src/test/resources/sql/spatial.iq > $OUT
+cat > $REF <<EOF
+core/build/resources/test/sql/surefire/sql/spatial.iq core/src/test/resources/sql/spatial.iq
+EOF
+compare $TNAME
+
 # from actual 3
 TNAME=globa-or-3
 ${TOOLS}/globa or target/test-classes/script/surefire/script/foreign.sml.out > $OUT
+cat > $REF <<EOF
+target/test-classes/script/surefire/script/foreign.sml.out src/test/resources/script/foreign.sml.out
+EOF
+compare $TNAME
+
+# from ref 3
+TNAME=globa-ref-3
+${TOOLS}/globa or src/test/resources/script/foreign.sml.out > $OUT
 cat > $REF <<EOF
 target/test-classes/script/surefire/script/foreign.sml.out src/test/resources/script/foreign.sml.out
 EOF
