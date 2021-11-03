@@ -1,5 +1,8 @@
 # Generates release notes (go into HISTORY.md)
-git log --abbrev-commit --pretty=format:'* %s' -- ${1} |
+# In case release notes are required since a specific commit 
+# - specify this commit as first argument
+[[ -z ${1} ]] && range="" || range=${1}^..HEAD
+git log --abbrev-commit ${range} --pretty=format:'* %s' -- ${2}  |
 sed -e '
 s!\(http.*\), !<a href="\1">#xxx</a>, !;
 s!\(MOREL-\([0-9]*\)\)!<a href="https://github.com/julianhyde/morel/issues/\2">\1</a>!;
