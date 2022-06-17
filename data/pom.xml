@@ -26,11 +26,12 @@
 
     <!-- The following list is sorted. -->
     <calcite.version>1.32.0</calcite.version>
-    <chinook-data-hsqldb.version>0.1</chinook-data-hsqldb.version>
-    <flight-data-hsqldb.version>0.1</flight-data-hsqldb.version>
-    <foodmart-data-hsqldb.version>0.4</foodmart-data-hsqldb.version>
-    <hsqldb.version>2.5.0</hsqldb.version>
-    <sqlline.version>1.10.0-SNAPSHOT</sqlline.version>
+    <chinook-data-hsqldb.version>0.2</chinook-data-hsqldb.version>
+    <flight-data-hsqldb.version>0.2</flight-data-hsqldb.version>
+    <foodmart-data-hsqldb.version>0.5</foodmart-data-hsqldb.version>
+    <h2.version>2.0.206</h2.version>
+    <hsqldb.version>2.5.2</hsqldb.version>
+    <sqlline.version>1.12.0</sqlline.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
@@ -42,8 +43,8 @@
     <maven-project-info-reports-plugin.version>3.1.1</maven-project-info-reports-plugin.version>
     <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
-    <scott-data-hsqldb.version>0.1</scott-data-hsqldb.version>
-    <steelwheels-data-hsqldb.version>0.1</steelwheels-data-hsqldb.version>
+    <scott-data-hsqldb.version>0.2</scott-data-hsqldb.version>
+    <steelwheels-data-hsqldb.version>0.2-SNAPSHOT</steelwheels-data-hsqldb.version>
   </properties>
 
   <licenses>
@@ -201,6 +202,11 @@
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>${hsqldb.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>${h2.version}</version>
     </dependency>
     <dependency>
       <groupId>sqlline</groupId>
