@@ -70,6 +70,7 @@ case "$project" in
   foo calcite 1m2c3t4
   foo calcite a-rafay
   foo calcite Aaaaaaron
+  foo calcite abhishek-das-gupta
   foo calcite aertoria remove
   foo calcite agajst
   foo calcite aleph-zero remove
@@ -93,6 +94,7 @@ case "$project" in
   foo calcite axeisghost
   foo calcite b-slim
   foo calcite batytskyy
+  foo calcite bchapuis
   foo calcite bdumon optiq
   foo calcite beikov
   foo calcite benoyantony incubator-optiq
@@ -105,6 +107,7 @@ case "$project" in
   foo calcite chrajeshbabu
   foo calcite chunhui-shi incubator-calcite
   foo calcite chunweilei
+  foo calcite CodingCaproni
   foo calcite Contiamo
   foo calcite d4nc00per incubator-calcite
   foo calcite danny0405
@@ -113,6 +116,7 @@ case "$project" in
   foo calcite datametica
   foo calcite devozerov
   foo calcite devth incubator-calcite
+  foo calcite dgloeckner
   foo calcite diandu remove
   foo calcite dianfu
   foo calcite dingguitao incubator-calcite
@@ -120,6 +124,7 @@ case "$project" in
   foo calcite docete
   foo calcite DonnyZone
   foo calcite dremio remove
+  foo calcite dssysolyatin
   foo calcite dugenkui03
   foo calcite ebastien
   foo calcite elilevine
@@ -132,6 +137,7 @@ case "$project" in
   foo calcite Functor10
   foo calcite gabrielreid
   foo calcite gaodayue
+  foo calcite GavinRay97
   foo calcite georgewfraser
   foo calcite gianm
   foo calcite Gkairi
@@ -165,6 +171,7 @@ case "$project" in
   foo calcite jiayuanv127
   foo calcite jinfengni incubator-optiq
   foo calcite jinxing64
+  foo calcite jnturton
   foo calcite joshelser incubator-calcite
   foo calcite jpullok remove
   foo calcite jpullokkaran
@@ -191,12 +198,14 @@ case "$project" in
   foo calcite LeoWangLZ
   foo calcite Lerm
   foo calcite lfkpoa
+  foo calcite libenchao
   foo calcite lincoln-lil
   foo calcite LiShuMing
   foo calcite liyafan82
   foo calcite looker-open-source
   foo calcite maheshk114
   foo calcite mapr incubator-calcite
+  foo calcite marcobjorge
   foo calcite markap14
   foo calcite maryannxue
   foo calcite masayuki038
@@ -206,6 +215,7 @@ case "$project" in
   foo calcite milinda
   foo calcite mindcrime
   foo calcite minji-kim
+  foo calcite mkou
   foo calcite mprudhom remove
   foo calcite msydoron
   foo calcite navis incubator-calcite
@@ -250,6 +260,8 @@ case "$project" in
   foo calcite sunjincheng121
   foo calcite tedxu
   foo calcite thomasbanghart
+  foo calcite thomasrebele
+  foo calcite tjbanghart
   foo calcite tmostak
   foo calcite twalthr incubator-calcite
   foo calcite tzolov
@@ -267,8 +279,10 @@ case "$project" in
   foo calcite vvysotskyi
   foo calcite walterddr
   foo calcite wenhuitang
+  foo calcite wenruimeng
   foo calcite wgorman optiq
   foo calcite wnob
+  foo calcite wojustme
   foo calcite wuchong
   foo calcite wxiang7
   foo calcite xhoong incubator-calcite
@@ -336,6 +350,7 @@ case "$project" in
   ;;
 
 (morel)
+  foo morel GavinRay97
   foo morel julianhyde
   ;;
 
