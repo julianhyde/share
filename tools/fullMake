@@ -97,9 +97,26 @@ function doCalcite {
   echo ::done::
 }
 
+function doFiltex {
+  java -version
+  ./mvnw clean verify -Dcheckstyle.version=9.3 javadoc:javadoc javadoc:test-javadoc
+}
+
 function doMorel {
   java -version
-  ./mvnw clean test javadoc:javadoc javadoc:test-javadoc
+  case $(java -version 2>&1 | awk 'FNR == 1 {print substr($3, 2, length($3) - 2)}') in
+  (1.8.*) args="$args -Dhsqldb.version=2.5.2 -Dguava.version=19.0 -Dcheckstyle.version=9.3";;
+  esac
+  ./mvnw $args clean test javadoc:javadoc javadoc:test-javadoc
+}
+
+function doQuidem {
+  java -version
+  args=
+  case $(java -version 2>&1 | awk 'FNR == 1 {print substr($3, 2, length($3) - 2)}') in
+  (1.8.*) args="$args -Dhsqldb.version=2.5.2 -Dguava.version=19.0 -Dcheckstyle.version=9.3";;
+  esac
+  ./mvnw $args clean test javadoc:javadoc javadoc:test-javadoc
 }
 
 case $(pwd) in
@@ -109,8 +126,14 @@ case $(pwd) in
 (*/calcite*)
   doCalcite "$@"
   ;;
+(*/filtex*)
+  doFiltex "$@"
+  ;;
 (*/morel*)
   doMorel "$@"
+  ;;
+(*/quidem*)
+  doQuidem "$@"
   ;;
 (*)
   echo "don't know how to make in $(pwd)"
