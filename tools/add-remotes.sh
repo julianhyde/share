@@ -56,6 +56,7 @@ else
   (*/morel*) project=morel;;
   (*/quidem*) project=quidem;;
   (*/share*) project=share;;
+  (*/sql-logic-test*) project=sql-logic-test;;
   (*/sqlline*) project=sqlline;;
   (*) echo "Unknown project, and cannot deduce from pwd, $(pwd)"; exit 1;;
   esac
@@ -73,6 +74,7 @@ case "$project" in
   foo calcite abhishek-das-gupta
   foo calcite aertoria remove
   foo calcite agajst
+  foo calcite akshayabd
   foo calcite aleph-zero remove
   foo calcite alexeyroytman
   foo calcite alishaIBM
@@ -89,12 +91,14 @@ case "$project" in
   foo calcite arunmahadevan
   foo calcite aryeh-looker
   foo calcite asereda-gs
+  foo calcite askarbozcan
   foo calcite asolimando
   foo calcite atris
   foo calcite axeisghost
   foo calcite b-slim
   foo calcite batytskyy
   foo calcite bchapuis
+  foo calcite bchong95
   foo calcite bdumon optiq
   foo calcite beikov
   foo calcite benoyantony incubator-optiq
@@ -105,6 +109,7 @@ case "$project" in
   foo calcite chandnisingh
   foo calcite chinmaykolhatkar
   foo calcite chrajeshbabu
+  foo calcite chucheng92
   foo calcite chunhui-shi incubator-calcite
   foo calcite chunweilei
   foo calcite CodingCaproni
@@ -149,6 +154,7 @@ case "$project" in
   foo calcite hbtoo
   foo calcite HeartSaVioR
   foo calcite hequn8128
+  foo calcite herunkang2018
   foo calcite hortonworks
   foo calcite hqx871
   foo calcite hsuanyi incubator-calcite
@@ -156,6 +162,7 @@ case "$project" in
   foo calcite hustfxj
   foo calcite hzyuemeng1
   foo calcite ILuffZhe
+  foo calcite itiels
   foo calcite jackscott6174
   foo calcite jacques-n incubator-calcite
   foo calcite jaltekruse
@@ -167,6 +174,7 @@ case "$project" in
   foo calcite jduo
   foo calcite jeremiahrhall
   foo calcite jh3507
+  foo calcite jhugomoore calcite-jhugomoore
   foo calcite JiajunBernoulli
   foo calcite jiayuanv127
   foo calcite jinfengni incubator-optiq
@@ -176,6 +184,7 @@ case "$project" in
   foo calcite jpullok remove
   foo calcite jpullokkaran
   foo calcite jswett77
+  foo calcite jtrada168
   foo calcite JulianFeinauer
   foo calcite julianhyde
   foo calcite jxiang
@@ -190,6 +199,7 @@ case "$project" in
   foo calcite KulykRoman incubator-calcite
   foo calcite KurtYoung
   foo calcite Kyligence
+  foo calcite LakeShen
   foo calcite lalinsky incubator-calcite
   foo calcite lameyer
   foo calcite LantaoJin
@@ -201,16 +211,20 @@ case "$project" in
   foo calcite libenchao
   foo calcite lincoln-lil
   foo calcite LiShuMing
+  foo calcite liuyongvs
   foo calcite liyafan82
   foo calcite looker-open-source
+  foo calcite macroguo-ghy
   foo calcite maheshk114
   foo calcite mapr incubator-calcite
   foo calcite marcobjorge
   foo calcite markap14
   foo calcite maryannxue
   foo calcite masayuki038
+  foo calcite MasseGuillaume
   foo calcite MGelbana
   foo calcite michaelmior
+  foo calcite mihaibudiu
   foo calcite mikehinchey
   foo calcite milinda
   foo calcite mindcrime
@@ -223,6 +237,7 @@ case "$project" in
   foo calcite neoremind
   foo calcite nishantmonu51
   foo calcite NobiGo
+  foo calcite olivrlee
   foo calcite pawelruchaj
   foo calcite pengchengxiong
   foo calcite pengzhiwei2018
@@ -253,16 +268,19 @@ case "$project" in
   foo calcite snuyanzin
   foo calcite sreev remove
   foo calcite stalbot
+  foo calcite strongduanmu
   foo calcite stutigupta028
   foo calcite sudheeshkatkam incubator-calcite
   foo calcite suez1224
   foo calcite summerleafs
   foo calcite sunjincheng121
+  foo calcite tanclary
   foo calcite tedxu
   foo calcite thomasbanghart
   foo calcite thomasrebele
   foo calcite tjbanghart
   foo calcite tmostak
+  foo calcite traveler-guoke
   foo calcite twalthr incubator-calcite
   foo calcite tzolov
   foo calcite vaibhavjain-dm
@@ -302,6 +320,7 @@ case "$project" in
   foo calcite zhong-j-yu
   foo calcite zhztheplayer
   foo calcite zinking
+  foo calcite zoudan
   foo calcite zstan
   ;;
 
@@ -313,8 +332,10 @@ case "$project" in
   foo calcite-avatica devozerov
   foo calcite-avatica docete
   foo calcite-avatica F21
+  foo calcite-avatica freastro
   foo calcite-avatica haohui
   foo calcite-avatica jackscott6174
+  foo calcite-avatica JiajunBernoulli
   foo calcite-avatica joshelser
   foo calcite-avatica julianhyde
   foo calcite-avatica lalinsky
@@ -325,6 +346,7 @@ case "$project" in
   foo calcite-avatica snuyanzin
   foo calcite-avatica ssainz
   foo calcite-avatica zabetak
+  foo calcite-avatica zstan
   ;;
 
 (calcite-avatica-go)
@@ -360,6 +382,12 @@ case "$project" in
 
 (share)
   foo share snuyanzin
+  ;;
+
+(sql-logic-test)
+  foo sql-logic-test julianhyde
+  foo sql-logic-test mihaibudiu
+  foo sql-logic-test zabetak
   ;;
 
 (sqlline)
