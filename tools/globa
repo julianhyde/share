@@ -28,12 +28,12 @@ function foo {
     }
     flag = substr(flags, k + 1, 1)
     s = $0
-    isOut = s ~ /_actual/ || s ~ /surefire/;
+    isOut = s ~ /_actual/ || s ~ /surefire/ || s ~ /quidem/;
     if (flag == "o") {
       if (isOut) {
         # leave s as is
       } else if (s ~ /src\/test\/resources\/sql/) {
-        gsub(/src\/test\/resources\/sql/, "build/resources/test/sql/surefire/sql", s);
+        gsub(/src\/test\/resources\/sql/, "build/quidem/test/sql", s);
       } else if (s ~ /src\/test\/resources\/script/) {
         gsub(/src\/test\/resources/, "target/test-classes/script/surefire", s);
       } else if (s ~ /src\/test\/resources/) {
@@ -58,6 +58,8 @@ function foo {
         gsub(/test\/.*\/surefire/, "test", s)
         gsub(/build\/resources\/test/, "src/test/resources", s)
         gsub(/target\/test-classes\/.*\/surefire/, "src/test/resources", s)
+      } else if (s ~ /quidem/) {
+        gsub(/build\/quidem\/test/, "src/test/resources", s)
       } else {
         s = "unknown"
       }

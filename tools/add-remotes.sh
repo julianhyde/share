@@ -161,6 +161,7 @@ case "$project" in
   foo calcite hsyuan
   foo calcite hustfxj
   foo calcite hzyuemeng1
+  foo calcite ian-bertolacci
   foo calcite ILuffZhe
   foo calcite itiels
   foo calcite jackscott6174
