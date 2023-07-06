@@ -81,11 +81,19 @@ cat > $REF <<EOF
 EOF
 compare $TNAME
 
+# from actual 2b
+TNAME=globa-or-2b
+${TOOLS}/globa or ./core/build/quidem/test/sql/spatial.iq > $OUT
+cat > $REF <<EOF
+./core/build/quidem/test/sql/spatial.iq ./core/src/test/resources/sql/spatial.iq
+EOF
+compare $TNAME
+
 # from ref 2
 TNAME=globa-ref-2
 ${TOOLS}/globa or core/src/test/resources/sql/spatial.iq > $OUT
 cat > $REF <<EOF
-core/build/resources/test/sql/surefire/sql/spatial.iq core/src/test/resources/sql/spatial.iq
+core/build/quidem/test/sql/spatial.iq core/src/test/resources/sql/spatial.iq
 EOF
 compare $TNAME
 
