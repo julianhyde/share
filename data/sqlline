@@ -46,7 +46,7 @@ root=$(cd "$(dirname "$(readlink $0)")"; pwd)
 if [ ! -d target/dependencies ]; then
     (
     cd $root
-    mvn -B -DskipTests -Dcheckfile.skip=true package
+    ./mvnw -B -DskipTests -Dcheckfile.skip=true package
     )
 fi
 
