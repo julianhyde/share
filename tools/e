@@ -1,0 +1,4 @@
+#!/bin/bash
+# Launch emacs in the terminal
+exec emacs -nw "$@"
+

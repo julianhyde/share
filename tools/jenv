@@ -39,6 +39,10 @@ case "$JDK" in
 (16|jdk16|jdk-16) export JDK=jdk-16; v=16;;
 (17|jdk17|jdk-17) export JDK=jdk-17; v=17;;
 (18|jdk18|jdk-18) export JDK=jdk-18; v=18;;
+(19|jdk19|jdk-19) export JDK=jdk-19; v=19;;
+(20|jdk20|jdk-20) export JDK=jdk-20; v=20;;
+(21|jdk21|jdk-21) export JDK=jdk-21; v=21;;
+(22|jdk22|jdk-22) export JDK=jdk-22; v=22;;
 (o10|openjdk10|openjdk-10) export JDK=openjdk-10; v=10;;
 (o11|openjdk11|openjdk-11) export JDK=openjdk-11; v=11;;
 (o12|openjdk12|openjdk-12) export JDK=openjdk-12; v=12;;
@@ -48,6 +52,10 @@ case "$JDK" in
 (o16|openjdk16|openjdk-16) export JDK=openjdk-16; v=16;;
 (o17|openjdk17|openjdk-17) export JDK=openjdk-17; v=17;;
 (o18|openjdk18|openjdk-18) export JDK=openjdk-18; v=18;;
+(o19|openjdk19|openjdk-19) export JDK=openjdk-19; v=19;;
+(o20|openjdk20|openjdk-20) export JDK=openjdk-20; v=20;;
+(o21|openjdk21|openjdk-21) export JDK=openjdk-21; v=21;;
+(o22|openjdk22|openjdk-22) export JDK=openjdk-22; v=22;;
 esac
 
 case $(uname) in

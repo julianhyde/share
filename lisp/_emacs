@@ -14,6 +14,8 @@
   ;; If there is more than one, they won't work right.
  )
 
+(define-obsolete-function-alias 'string-to-int 'string-to-number "22.1")
+
 ;; ----------------------------------------------------------------------------
 (defun master-occur-buffer ()
   (let ((b (current-buffer))
