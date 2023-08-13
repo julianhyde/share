@@ -21,9 +21,91 @@ schemas:
   type: custom
   factory: org.apache.calcite.adapter.file.FileSchemaFactory
   operand:
-    directory: /home/jhyde/web2/ggro/web
+    directory: /home/jhyde/dev/ggro/web
+- name: GGRO_2010
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2010
+- name: GGRO_2011
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2011
+- name: GGRO_2012
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2012
+- name: GGRO_2013
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2013
+- name: GGRO_2014
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2014
+- name: GGRO_2015
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2015
+- name: GGRO_2016
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2016
+- name: GGRO_2017
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2017
+- name: GGRO_2018
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2018
+- name: GGRO_2019
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2019
+- name: GGRO_2020
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2020
+- name: GGRO_2021
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2021
+- name: GGRO_2022
+  type: custom
+  factory: org.apache.calcite.adapter.file.FileSchemaFactory
+  operand:
+    directory: /home/jhyde/dev/ggro/web/archive/2022
 - name: GGRO2
   tables:
+  - name: ALL_DATA
+    type: view
+    sql: |
+      select *, '.' as location from ggro."data"
+      union all select * from ggro_2010."data"
+      union all select *, '.' as location from ggro_2011."data"
+      union all select *, '.' as location from ggro_2012."data"
+      union all select *, '.' as location from ggro_2013."data"
+      union all select *, '.' as location from ggro_2014."data"
+      union all select *, '.' as location from ggro_2015."data"
+      union all select *, '.' as location from ggro_2016."data"
+      union all select *, '.' as location from ggro_2017."data"
+      union all select *, '.' as location from ggro_2018."data"
+      union all select *, '.' as location from ggro_2019."data"
+      union all select *, '.' as location from ggro_2020."data"
+      union all select *, '.' as location from ggro_2021."data"
+      union all select *, '.' as location from ggro_2022."data"
   - name: SIGHTINGS
     type: view
     sql: |
@@ -59,7 +141,7 @@ schemas:
           cast("unid_eagle" as integer) as "unid_eagle",
           cast("unid_falcon" as integer) as "unid_falcon",
           cast("unid_raptor" as integer) as "unid_raptor"
-      from ggro."data"
+      from all_data
   - name: SPECIES
     type: view
     sql: |
@@ -134,26 +216,29 @@ schemas:
   - name: SPECIES_SUMMARY
     type: view
     sql: |
-      select "species",
+      select year("date") as "year",
+          "species",
           "species_ordinal",
-      sum("sighting_count") as "count",
-      sum("sighting_count") / sum("hours_counted") as "per hour",
-      sum("sighting_count") filter (where "date"
-          > (select max("date") from ggro2.species_sightings)
-              - interval '7' day) as "last week"
+          sum("sighting_count") as "count",
+          sum("sighting_count") / sum("hours_counted") as "per hour",
+          sum("sighting_count") filter (where "date"
+              > (select max("date") from ggro2.species_sightings)
+                  - interval '7' day) as "last week"
       from ggro2.species_sightings
-      group by "species", "species_ordinal"
+      group by year("date"), "species", "species_ordinal"
   - name: SEASON_SUMMARY
     type: view
     sql: |
-      select sum("sighting_count") as "sightings",
-      sum("sighting_count") filter (where "date"
-          > (select max("date") from ggro2.species_sightings)
-          - interval '7' day) as "sightings last week",
-      count(distinct "species") filter (where "sighting_count" > 0
-          and "species" not like 'UNID%') as "species count",
-      count(distinct "species") filter (where "sighting_count" > 0
-          and "species" not like 'UNID%'
-          and "date" > (select max("date") from ggro2.species_sightings)
-              - interval '7' day) as "species count last week"
+      select year("date") as "year",
+          sum("sighting_count") as "sightings",
+          sum("sighting_count") filter (where "date"
+              > (select max("date") from ggro2.species_sightings)
+              - interval '7' day) as "sightings last week",
+          count(distinct "species") filter (where "sighting_count" > 0
+              and "species" not like 'UNID%') as "species count",
+          count(distinct "species") filter (where "sighting_count" > 0
+              and "species" not like 'UNID%'
+              and "date" > (select max("date") from ggro2.species_sightings)
+                  - interval '7' day) as "species count last week"
       from ggro2.species_sightings
+      group by year("date")
