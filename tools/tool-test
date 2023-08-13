@@ -41,11 +41,20 @@ Require 2 arguments
 EOF
 compare $TNAME
 
-# from actual 0
-TNAME=globa-or-0
+# from actual 0.0
+# build/resources/test is deprecated; build/diffrepo/test is preferred
+TNAME=globa-or-0.0
 ${TOOLS}/globa or core/build/resources/test/foo_actual.xml > $OUT
 cat > $REF <<EOF
 core/build/resources/test/foo_actual.xml core/src/test/resources/foo.xml
+EOF
+compare $TNAME
+
+# from actual 0
+TNAME=globa-or-0
+${TOOLS}/globa or core/build/diffrepo/test/foo_actual.xml > $OUT
+cat > $REF <<EOF
+core/build/diffrepo/test/foo_actual.xml core/src/test/resources/foo.xml
 EOF
 compare $TNAME
 
@@ -53,15 +62,15 @@ compare $TNAME
 TNAME=globa-ref-0
 ${TOOLS}/globa or core/src/test/resources/foo.xml > $OUT
 cat > $REF <<EOF
-core/build/resources/test/foo_actual.xml core/src/test/resources/foo.xml
+core/build/diffrepo/test/foo_actual.xml core/src/test/resources/foo.xml
 EOF
 compare $TNAME
 
 # from actual 1
 TNAME=globa-or-1
-${TOOLS}/globa or ./core/build/resources/test/org/apache/calcite/test/RelOptRulesTest_actual.xml > $OUT
+${TOOLS}/globa or ./core/build/diffrepo/test/org/apache/calcite/test/RelOptRulesTest_actual.xml > $OUT
 cat > $REF <<EOF
-./core/build/resources/test/org/apache/calcite/test/RelOptRulesTest_actual.xml ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml
+./core/build/diffrepo/test/org/apache/calcite/test/RelOptRulesTest_actual.xml ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml
 EOF
 compare $TNAME
 
@@ -69,7 +78,7 @@ compare $TNAME
 TNAME=globa-ref-1
 ${TOOLS}/globa or ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml > $OUT
 cat > $REF <<EOF
-./core/build/resources/test/org/apache/calcite/test/RelOptRulesTest_actual.xml ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml
+./core/build/diffrepo/test/org/apache/calcite/test/RelOptRulesTest_actual.xml ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml
 EOF
 compare $TNAME
 

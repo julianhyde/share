@@ -37,7 +37,7 @@ function foo {
       } else if (s ~ /src\/test\/resources\/script/) {
         gsub(/src\/test\/resources/, "target/test-classes/script/surefire", s);
       } else if (s ~ /src\/test\/resources/) {
-        gsub(/src\/test\/resources/, "build/resources/test", s);
+        gsub(/src\/test\/resources/, "build/diffrepo/test", s);
         if (s ~ /\.xml/) {
           gsub(/\.xml/, "_actual.xml", s);
         }
@@ -48,7 +48,9 @@ function foo {
       if (!isOut) {
         # leave s as is
       } else if (s ~ /_actual/) {
-        if (s ~ /build\/resources\/test/) {
+        if (s ~ /build\/diffrepo\/test/) {
+          gsub(/build\/diffrepo\/test/, "src/test/resources", s)
+        } else if (s ~ /build\/resources\/test/) {
           gsub(/build\/resources\/test/, "src/test/resources", s)
         } else {
           s = "unknown"
