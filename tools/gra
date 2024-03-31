@@ -2,8 +2,11 @@
 # Adds a remote branch with a given name.
 # Even if remote already exists, we still fetch.
 #
-# Bugs:
-# * Should work on repository other than calcite
-git remote add "$1" git@github.com:"$1"/calcite.git
+u=$(git config --local --get remote.origin.url)
+if [ "$u" ]; then
+    git remote add "$1" $(echo $u | sed -e "s#:[^/]*/#:$1\/#")
+else
+    git remote add "$1" git@github.com:"$1"/calcite.git
+fi
 git fetch "$1"
 # End
