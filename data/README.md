@@ -27,6 +27,7 @@ Hsqldb:
 * [chinook](https://github.com/julianhyde/chinook-data-hsqldb)
 * [flight](https://github.com/julianhyde/flight-data-hsqldb)
 * [foodmart](https://github.com/julianhyde/foodmart-data-hsqldb)
+* [look](https://github.com/hydromatic/look-data-hsqldb)
 * [scott](https://github.com/julianhyde/scott-data-hsqldb)
 * [steelwheels](https://github.com/julianhyde/steelwheels-data-hsqldb)
 
@@ -41,6 +42,9 @@ Hsqldb:
 
 > !connect jdbc:hsqldb:res:foodmart sa ''
 > select count(*) from "foodmart"."employee";
+
+> !connect jdbc:hsqldb:res:look looker looker
+> select count(*) from "look"."users";
 
 > !connect jdbc:hsqldb:res:scott SCOTT TIGER
 > select * from emp;
