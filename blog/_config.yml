@@ -22,16 +22,27 @@ title: Julian Hyde on Streaming Data, Open Source OLAP. And stuff.
 email: jhyde@apache.org
 description: >- # this means to ignore newlines until "baseurl:"
   Julian Hyde's blog
-baseurl: "/" # the subpath of your site, e.g. /blog
-url: "http://blog.hydromatic.net" # the base hostname & protocol for your site, e.g. http://example.com
+
+# the subpath of your site, e.g. "/" or "/draft-blog"
+baseurl: "/"
+
+# the base hostname & protocol for your site, e.g. http://example.com
+url: "http://blog.hydromatic.net"
 twitter_username: julianhyde
 github_username:  julianhyde
+
+# Ensure that a post at '2024/04/30T1800-7' always generates a path '2024/04/30'.
+timezone: America/Los_Angeles
 
 # Build settings
 theme: minima
 plugins:
   - jekyll-feed
   - jekyll-twitter-plugin
+
+sass:
+  # Silence deprecation warnings, e.g. "lighten() is deprecated"
+  quiet_deps: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.
@@ -52,3 +63,5 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+# End _config.yml
