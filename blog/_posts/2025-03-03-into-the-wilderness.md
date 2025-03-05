@@ -3,12 +3,14 @@ layout: post
 title:  "Into the Wilderness"
 date:   2025-03-03 12:00:00 -0800
 author: Julian Hyde
+tweet:  https://x.com/julianhyde/status/1896834583947313535
 ---
 
 Today was my last day at Google.
 
-I joined Looker in 2018, and two years later Looker was acquired by
-Google. Before the acquisition closed, the company locked down for
+I joined Looker in 2018, and two years later Looker was
+[acquired by Google](https://techcrunch.com/2020/02/13/google-closes-2-6b-looker-acquisition/)).
+Before the acquisition closed, the company locked down for
 COVID, so it was almost a year before I met my Google
 colleagues. During my time at Looker/Google, I have led the team that
 validates Looker users' queries against a LookML model, expands them
@@ -51,7 +53,7 @@ In the next few months, I intend to work on four things:
    relations, or, conversely, a query language that supports functions
    and polymorphic types. Morel can solve data-engineering and
    data-intensive problems that are
-   [beyond SQL's capabilities](/2020/03/31/word-count-revisited.html)
+   [beyond SQL's capabilities]({% post_url 2020-03-31-word-count-revisited %})
    (think [Dbt](https://www.getdbt.com/) and Spark) but with the
    benefit of a single compiler/optimizer. Even problems that can be
    fully solved in SQL will, I think, benefit from the programming
@@ -80,6 +82,13 @@ In the next few months, I intend to work on four things:
    but Beethoven wrote sonatas 30, 31 and 32 for a reason: the
    challenge must not go unanswered!
 
-Please follow
-[@julianhyde.bsky.social](https://bsky.app/profile/julianhyde.bsky.social)
-for updates.
+If you have comments, please reply on
+[BlueSky @julianhyde.bsky.social](https://bsky.app/profile/julianhyde.bsky.social)
+or Twitter:
+
+<div data_dnt="true">
+{% twitter page.tweet limit=5 hide_media=true %}
+</div>
+
+This article
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/_posts/2025-03-03-into-the-wilderness.md).

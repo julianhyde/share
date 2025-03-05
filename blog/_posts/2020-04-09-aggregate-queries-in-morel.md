@@ -8,7 +8,7 @@ tweet:  https://twitter.com/julianhyde/status/1248393932129497088
 ---
 
 Last week I wrote about
-[solving the WordCount problem in Morel](/2020/03/31/word-count-revisited.html).
+[solving the WordCount problem in Morel]({% post_url 2020-03-31-word-count-revisited %}).
 The solution used a user-defined function, `split`,
 unnested the resulting array of words into a relation, and then used
 the `group` operator to count the occurrences of each word.
@@ -118,7 +118,7 @@ rows that share the same key, then apply a function to collapse those
 rows to a single value.
 
 As we saw in
-[our discussion of WordCount](/2020/03/31/word-count-revisited.html#wordcount-in-pig),
+[our discussion of WordCount]({% post_url 2020-03-31-word-count-revisited %}#wordcount-in-pig),
 one of the languages that embraced nested collections is
 [Apache Pig](https://pig.apache.org).
 
@@ -159,7 +159,7 @@ implemented in functional programming languages.
 # Functional languages: foldl
 
 In Standard ML, the
-[language from which Morel is derived](/2020/03/03/morel-basics.html),
+[language from which Morel is derived]({% post_url 2020-03-03-morel-basics %}),
 the [`List` structure](http://sml-family.org/Basis/list.html) has a
 higher-order function `foldl` (meaning 'fold left'). `foldl` starts
 with an initial accumulator value, then uses a "combiner" function
