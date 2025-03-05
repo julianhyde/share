@@ -13,11 +13,10 @@
 git log --abbrev-commit ${range} --pretty=format:'* %s' -- ${2}  |
 sed -e '
 s!\(http.*\), !<a href="\1">#xxx</a>, !;
-s!\(MOREL-\([0-9]*\)\)!<a href="https://github.com/julianhyde/morel/issues/\2">\1</a>!;
 s!\(CALCITE-[0-9]*\)!<a href="https://issues.apache.org/jira/browse/\1">\1</a>!;
-s!\(MOREL-\([0-9]*\)\)!<a href="https://github.com/julianhyde/morel/issues/\2">\1</a>!;
-s!\(QUIDEM-\([0-9]*\)\)!<a href="https://github.com/julianhyde/quidem/issues/\2">\1</a>!;
-s!\(SMLJ-\([0-9]*\)\)!<a href="https://github.com/julianhyde/morel/issues/\2">\1</a>!;
+s!\(MOREL-\([0-9]*\)\)!<a href="https://github.com/hydromatic/morel/issues/\2">\1</a>!;
+s!\(QUIDEM-\([0-9]*\)\)!<a href="https://github.com/hydromatic/quidem/issues/\2">\1</a>!;
+s!\(SMLJ-\([0-9]*\)\)!<a href="https://github.com/hydromatic/morel/issues/\2">\1</a>!;
 s!\(SQLLINE-\([0-9]*\)\)!<a href="https://github.com/julianhyde/sqlline/issues/\2">\1</a>!;
 s!</a>\]!</a>]\
  !;' |
