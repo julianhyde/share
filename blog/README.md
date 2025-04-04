@@ -13,14 +13,16 @@ is present in the [share](https://github.com/julianhyde/share) repository.
 
 ## Build site
 
-1. `cd site`
+1. `cd blog`
 2. In `_config.yml`, set the base: `baseurl: "/"`
 3. `docker compose run build-site`
-4. Move the generated `_site` directory to `/home/jhyde/web2/blog`
+4. `./after.sh` (to highlight Morel-specific keywords)
+5. Move the generated `_site` directory to `/home/jhyde/web2/blog`
 
 ## Build draft site
 
-1. `cd site`
+1. `cd blog`
 2. In `_config.yml`, set the base: `baseurl: "/draft-blog"`
 3. `docker compose run build-site`
-4. Move the generated `_site` directory to `/home/jhyde/web/draft-blog/`
+4. `./after.sh` (to highlight Morel-specific keywords)
+5. Move the generated `_site` directory to `/home/jhyde/web/draft-blog/`
