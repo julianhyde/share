@@ -8,7 +8,7 @@ s!<span class="n">(commit|from|not|union|yield)</span>!<span class="kr">\1</span
 
 # Special keywords for morel-dml only
   case "$f" in
-  (*/morel-dml.html)
+  (*/dml-in-morel.html)
     perl -p -i -e '
 s!<span class="n">(assign|delete|insert|update)</span>!<span class="kr">\1</span>!g;
 ' $f;;

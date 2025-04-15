@@ -83,7 +83,7 @@ In the next few months, I intend to work on four things:
    challenge must not go unanswered!
 
 If you have comments, please reply on
-[BlueSky @julianhyde.bsky.social](https://bsky.app/profile/julianhyde.bsky.social)
+[Bluesky @julianhyde.bsky.social](https://bsky.app/profile/julianhyde.bsky.social)
 or Twitter:
 
 <div data_dnt="true">

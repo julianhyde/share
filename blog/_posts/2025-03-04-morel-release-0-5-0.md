@@ -318,7 +318,7 @@ working on
 [tail-call optimization](https://github.com/hydromatic/morel/issues/151).
 
 If you have comments, please reply on
-[BlueSky @julianhyde.bsky.social](https://bsky.app/profile/julianhyde.bsky.social)
+[Bluesky @julianhyde.bsky.social](https://bsky.app/profile/julianhyde.bsky.social)
 or Twitter:
 
 <div data_dnt="true">

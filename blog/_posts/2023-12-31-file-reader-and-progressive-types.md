@@ -229,7 +229,7 @@ files. Progressive types give you the benefits of static typing but
 without filling your screen with useless type information.
 
 If you have comments, please reply on
-[BlueSky @julianhyde.bsky.social](https://bsky.app/profile/julianhyde.bsky.social)
+[Bluesky @julianhyde.bsky.social](https://bsky.app/profile/julianhyde.bsky.social)
 or Twitter:
 
 <div data_dnt="true">

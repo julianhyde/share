@@ -1,4 +1,9 @@
+# Provides docker commands to run a development-mode server for draft
+# blogs, and to generate the blog. Commands:
+#  * docker compose run dev
+#  * docker compose run build-site
 #
+
 services:
   dev:
     image: ruby:3.3.7-slim-bullseye
