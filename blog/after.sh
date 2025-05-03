@@ -1,9 +1,17 @@
 # Run this script after 'docker compose run build-site' to highlight
 # keywords that are in Morel but not in Standard ML.
 #
+# Morel-specific keywords such as 'from' are highlighted.
+#
+# We recommend that you enclose output lines with '(*[' ... ']*)'
+# comments. The comment markers will be removed but the lines will
+# remain grayed out.
+#
 for f in _site/*/*/*/*.html; do
   perl -p -i -e '
-s!<span class="n">(commit|from|not|union|yield)</span>!<span class="kr">\1</span>!g;
+s!<span class="n">(commit|from|join|on|not|union|yield|distinct|group|compute|order|desc|forall|exists|require|skip|take|andalso|orelse|implies|elem)</span>!<span class="kr">\1</span>!g;
+s!\(\*</span><span class="cm">\[!!g;
+s!\]\*\)!!g;
 ' $f
 
 # Special keywords for morel-dml only

@@ -47,31 +47,31 @@ For example, `sum` has type `int list -> int`, and so `into sum`
 converts a stream of `int` values into an `int` result.
 
 {% highlight sml %}
-- (* sum adds a list of integers *)
-= sum [1, 2, 4];
-val it = 7 : int
+(* "sum" adds a list of integers. *)
+sum [1, 2, 4];
+(*[> val it = 7 : int]*)
 
-- (* 'into' applies a function to its input, collected into a list. *)
-= from i in [1, 2, 4]
-=   into sum;
-val i = 7 : int
+(* "into" applies a function to its input, collected into a list. *)
+from i in [1, 2, 4]
+  into sum;
+(*[> val i = 7 : int]*)
 
-- (* Rewrite 'into' to apply the function directly. *)
-= sum (from e in [1, 2, 4]);
-val i = 7 : int
+(* Rewrite "into" to apply the function directly. *)
+sum (from e in [1, 2, 4]);
+(*[> val i = 7 : int]*)
 
-- (* 'into' is equivalent to existing keyword 'compute'. *)
-= from e in [1, 2, 4]
-=   compute sum;
-val i = 7 : int
+(* "into" is equivalent to existing keyword "compute". *)
+from e in [1, 2, 4]
+  compute sum;
+(*[> val i = 7 : int]*)
 
-- (* Actually, "a into b" is equivalent to "(b) a" for any types, not
-=    just lists. *)
-= explode "abc";
-> val it = [#"a",#"b",#"c"] : char list
+(* Actually, "a into b" is equivalent to "(b) a" for any types, not
+   just lists. *)
+explode "abc";
+(*[> val it = [#"a",#"b",#"c"] : char list]*)
 
-- "abc" into explode;
-val it = [#"a",#"b",#"c"] : char list
+"abc" into explode;
+(*[> val it = [#"a",#"b",#"c"] : char list]*)
 {% endhighlight %}
 
 Next, `through` is similar to `into`, but has a pattern so that
@@ -96,19 +96,19 @@ filled out. To stream orders through this function, we simply add the
 line `through clean_over in clean_address` to the pipeline.
 
 {% highlight sml %}
-- (* Function that converts a list of orders to a list of orders with
-=    corrected state and zipcode. *)
-= fun clean_address ...
-val clean_address = fn : order list -> order list;
+(* Function that converts a list of orders to a list of orders with
+   corrected state and zipcode. *)
+fun clean_address ...
+(*[> val clean_address = fn : order list -> order list;]*)
 
-- (* Define a function that takes a collection of orders, removes orders with
-=    more than 1,000 items, cleans addresses, and summarizes by state. *)
-= fun pipeline orders =
-=     from order in orders
-=        where order.units < 1000
-=        through clean_order in clean_address
-=        group clean_order.state compute count;
-val pipeline = fn : order list -> {count: int, state: string} list;
+(* Define a function that takes a collection of orders, removes orders with
+   more than 1,000 items, cleans addresses, and summarizes by state. *)
+fun pipeline orders =
+    from order in orders
+       where order.units < 1000
+       through clean_order in clean_address
+       group clean_order.state compute count;
+(*[> val pipeline = fn : order list -> {count: int, state: string} list;]*)
 {% endhighlight %}
 
 Note that the `pipeline` function itself takes a list argument and
@@ -140,20 +140,20 @@ FROM Emp AS e,
 
 Morel has analogous syntax:
 {% highlight sml %}
-- from e in emps,
-=     d in depts
-=   where e.deptno = d.deptno
-=   yield {e.ename, d.dname};
-val it =
-  [{dname="RESEARCH",ename="SMITH"},{dname="SALES",ename="ALLEN"},
-   {dname="SALES",ename="WARD"},...] : {dname:string, ename:string} list
+from e in emps,
+    d in depts
+  where e.deptno = d.deptno
+  yield {e.ename, d.dname};
+(*[> val it =
+>   [{dname="RESEARCH",ename="SMITH"},{dname="SALES",ename="ALLEN"},
+>    {dname="SALES",ename="WARD"},...] : {dname:string, ename:string} list]*)
 
-- from e in emps
-=   join d in depts on e.deptno = d.deptno
-=   yield {e.ename, d.dname};
-val it =
-  [{dname="RESEARCH",ename="SMITH"},{dname="SALES",ename="ALLEN"},
-   {dname="SALES",ename="WARD"},...] : {dname:string, ename:string} list
+from e in emps
+  join d in depts on e.deptno = d.deptno
+  yield {e.ename, d.dname};
+(*[> val it =
+>   [{dname="RESEARCH",ename="SMITH"},{dname="SALES",ename="ALLEN"},
+>    {dname="SALES",ename="WARD"},...] : {dname:string, ename:string} list]*)
 {% endhighlight %}
 
 but used to only allow the comma join syntax immediately after the
@@ -165,13 +165,13 @@ allows comma-separated joins later in the pipeline, and also allows
 `on` in comma-joins. The following is now legal:
 
 {% highlight sml %}
-- from a in [1, 2],
-=     b in [3, 4, 5] on a + b = 6
-=   where b < 5
-=   join c in [6, 7] on b + c = 10,
-=       d in [7, 8];
-val it = [{a=2,b=4,c=6,d=7},{a=2,b=4,c=6,d=8}]
-  : {a:int, b:int, c:int, d:int} list
+from a in [1, 2],
+    b in [3, 4, 5] on a + b = 6
+  where b < 5
+  join c in [6, 7] on b + c = 10,
+      d in [7, 8];
+(*[> val it = [{a=2,b=4,c=6,d=7},{a=2,b=4,c=6,d=8}]
+>   : {a:int, b:int, c:int, d:int} list]*)
 {% endhighlight %}
 
 This will be particularly convenient (when we have solved some
@@ -180,19 +180,19 @@ query-planning issues in
 writing queries that use unbounded variables to solve constraints:
 
 {% highlight sml %}
-- from a, b
-=   where a < b
-= join c, d, e
-=   where a > 0
-=     andalso b > 0
-=     andalso c > 0
-=     andalso d > 0
-=     andalso e > 0
-=     andalso a + b + c + d + e < 8;
-val it =
-  [{a=1,b=2,c=1,d=1,e=1},{a=1,b=2,c=1,d=1,e=2},{a=1,b=2,c=1,d=2,e=1},
-   {a=1,b=2,c=2,d=1,e=1},{a=1,b=3,c=1,d=1,e=1}]
-  : {a:int, b:int, c:int, d:int, e:int} list
+from a, b
+  where a < b
+join c, d, e
+  where a > 0
+    andalso b > 0
+    andalso c > 0
+    andalso d > 0
+    andalso e > 0
+    andalso a + b + c + d + e < 8;
+(*[> val it =
+>   [{a=1,b=2,c=1,d=1,e=1},{a=1,b=2,c=1,d=1,e=2},{a=1,b=2,c=1,d=2,e=1},
+>    {a=1,b=2,c=2,d=1,e=1},{a=1,b=3,c=1,d=1,e=1}]
+>   : {a:int, b:int, c:int, d:int, e:int} list]*)
 {% endhighlight %}
 
 # 3. Duplicate elimination (`distinct`)
@@ -203,10 +203,10 @@ val it =
 Here is a query that finds the set of distinct job titles:
 
 {% highlight sml %}
-- from e in scott.emp
-=   yield {e.job}
-=   distinct;
-val it = ["CLERK","SALESMAN","ANALYST","MANAGER","PRESIDENT"] : string list
+from e in scott.emp
+  yield {e.job}
+  distinct;
+(*[> val it = ["CLERK","SALESMAN","ANALYST","MANAGER","PRESIDENT"] : string list]*)
 {% endhighlight %}
 
 `distinct` is short-hand for `group` with all fields and no aggregate
@@ -220,13 +220,13 @@ lambda (`fn` expression) to have multiple branches, similar to `case`.
 Following this change, the following expressions are equivalent:
 
 {% highlight sml %}
-- fn [] => 0 | x :: _ => x + 1;
-val it = fn : int list -> int
+fn [] => 0 | x :: _ => x + 1;
+(*[> val it = fn : int list -> int]*)
 {% endhighlight %}
 
 {% highlight sml %}
-- fn list => case list of [] => 0 | x :: _ => x + 1;
-val it = fn : int list -> int
+fn list => case list of [] => 0 | x :: _ => x + 1;
+(*[> val it = fn : int list -> int]*)
 {% endhighlight %}
 
 Prior to this change, the first expression would give a syntax error.
@@ -269,7 +269,7 @@ val fromInt   : int -> int
 val toLarge   : int -> int
 val fromLarge : int -> int
 
-val scan      : StringCvt.radix 
+val scan      : StringCvt.radix
                 -> (char, 'a) StringCvt.reader -> (int, 'a) StringCvt.reader
 val fmt       : StringCvt.radix -> int -> string
 
@@ -279,12 +279,12 @@ val fromString : string -> int option   (* Overflow      *)
 
 Example use:
 {% highlight sml %}
-- Int.compare;
-val it = fn : int * int -> order
-- Int.compare (2, 3);
-val it = LESS : order
-- Int.maxInt;
-val it = SOME 1073741823 : int option
+Int.compare;
+(*[> val it = fn : int * int -> order]*)
+Int.compare (2, 3);
+(*[> val it = LESS : order]*)
+Int.maxInt;
+(*[> val it = SOME 1073741823 : int option]*)
 {% endhighlight %}
 
 The `Int` structure is an instance of the

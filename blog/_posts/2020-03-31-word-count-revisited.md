@@ -24,7 +24,7 @@ values (to tokenize a string into words), handling nested collections
 (because one line or document becomes a set of words), data
 parallelism (in case there are millions of documents and thousands of
 words), and reading from and writing to files.
-[Mike Stonebraker's protestations](https://cacm.acm.org/magazines/2010/1/55743-mapreduce-and-parallel-dbmss-friends-or-foes/fulltext) 
+[Mike Stonebraker's protestations](https://cacm.acm.org/magazines/2010/1/55743-mapreduce-and-parallel-dbmss-friends-or-foes/fulltext)
 notwithstanding, these are not things that an RDBMS does well.
 
 The deficiencies of RDBMS were the impetus for new data processing
