@@ -17,16 +17,16 @@ strengths, and where our priorities should be.
 
 Rust is an excellent language for building a data processing
 system. Though it is a high-level language with type safety and memory
-protection, it avoids the tax that is paid by most high-level
+protection, Rust avoids the tax that is paid by most high-level
 languages, namely garbage collection and the unpredictable pauses that
 it can cause.
 
-Rust also has a vibrant ecosystem. Enthusiasts are rebuilding the
+Rust also has a vibrant ecosystem; enthusiasts are rebuilding the
 whole stack because it seems like fun. That's mostly a good thing,
 because a rebuild is a chance to do things better. But sometimes it's
 a chance to make *different* mistakes. (I say this having been around
 for the [last revolution](https://hadoop.apache.org/), rewriting the
-DBMS as Java-based distributed system.)
+DBMS as a Java-based distributed system.)
 
 Rewriting in Rust would incur an opportunity cost. It would take away
 resources from other goals, which I describe below. (If there were no
@@ -38,7 +38,7 @@ understandably rare.) Let's remind ourselves of the goal.
 
 # Morel and its goals
 
-Morel is a language, not a framework or a library. It necesarily has a
+Morel is a language, not a framework or a library. It necessarily has a
 reference implementation -- the only implementation, at present -- and
 that happens to be written in Java. Building a language -- as opposed
 to a framework or a library -- means focusing on the design of that
@@ -67,7 +67,6 @@ programs to exploit parallelism, distributed processing, data
 organization, and pre-computed results.
 
 Some implications of this:
-
 * **Morel must support multiple runtimes**. Programs can run locally
   (using the interpreter written in Java), but also on a distributed
   framework such as Apache Spark. It also supports federated
@@ -76,7 +75,6 @@ Some implications of this:
   Morel tightly to a particular runtime, even an excellent one such as
   Rust-based [Apache DataFusion](https://datafusion.apache.org/),
   could detract from that goal.
-
 * **Morel's optimizer must be extensible in Morel**. When Morel
   connects to new data sources, these data sources have their own
   algebra (operators, transformation rules, constraints, and
@@ -90,9 +88,8 @@ Some implications of this:
   or finding sets of overlapping polygons), or transformation rule
   (pushing filters into matrices or polygon sets), you need to leave
   Morel.  Those things are all more difficult to write without Morel's
-  expressive power; Morel should allow you these kinds of
-  extensibility without leaving the language.
-
+  expressive power; Morel should allow these kinds of extensibility
+  without leaving the language.
 * **Morel should bootstrap its compiler but not its runtime**. Every
   programming language aspires to implement its own compiler and
   runtime, but those aspirations need to be matched to the actual
@@ -117,7 +114,7 @@ A few years ago
 started to look a bit like query optimizers, deciding (albeit without
 statistics) whether to inline computations.
 
-In 2010, the programming language community recently discovered
+Around 2010, the programming language community discovered
 [equality saturation](https://arxiv.org/abs/1012.1802), a program
 optimization technique that fires transformation rules and maintains
 equivalence sets of expressions that are semantically equivalent. They
@@ -136,7 +133,7 @@ Morel's support for
 allows it to take on these hard problems. Its functional programming
 language roots, in particular its strong type system with
 [algebraic data types](https://en.wikipedia.org/wiki/Algebraic_data_type)
-and polymorphism, makes it a delightful language in which to build
+and polymorphism, make it a delightful language in which to build
 compilers and optimization rules.
 
 # Conclusion
@@ -155,7 +152,5 @@ or Twitter:
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
 
-<!--
 This article
-[has been updated](https://github.com/julianhyde/share/commits/main/blog/_posts/{{ page.slug }}.md).
--->
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).
