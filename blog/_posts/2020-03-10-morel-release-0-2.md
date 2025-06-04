@@ -16,19 +16,19 @@ Some highlights of release 0.2:
   [Hindley-Milner type system](https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner_type_system);
 * Relational expressions may now include a `group` clause, so you can
   evaluate aggregate queries (similar to SQL `GROUP BY`);
-* [Foreign values](https://github.com/julianhyde/morel/issues/5) allow external
+* [Foreign values](https://github.com/hydromatic/morel/issues/5) allow external
   data, such as the contents of a JDBC database, to be handled as if it is in
   memory;
 * Add built-in functions based on the
   [`String`](http://sml-family.org/Basis/string.html) and
   [`List`](http://sml-family.org/Basis/list.html) structures
   in the Standard ML basis library;
-* [Postfix field reference syntax](https://github.com/julianhyde/morel/issues/9)
+* [Postfix field reference syntax](https://github.com/hydromatic/morel/issues/9)
   makes Morel more familiar to SQL users;
 * Add [Morel language reference](docs/reference.md).
 
 For more information, see the
-[release notes](https://github.com/julianhyde/morel/blob/main/HISTORY.md#02--2020-03-10).
+[release notes](https://github.com/hydromatic/morel/blob/main/HISTORY.md#02--2020-03-10).
 
 If you have comments, please reply on Twitter:
 

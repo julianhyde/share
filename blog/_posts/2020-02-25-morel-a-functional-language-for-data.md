@@ -9,7 +9,7 @@ tweet:  https://twitter.com/julianhyde/status/1232572869315444736
 
 For the past few months, I have been working on an experimental
 functional/data language called
-[Morel](https://github.com/julianhyde/morel).
+[Morel](https://github.com/hydromatic/morel).
 
 [![Morel mushroom](/assets/img/OldDesignShop_MushroomSpringMorel-180x275.jpg "Morel mushroom (credit: OldDesignShop.com)"){:style="float: right;margin: 10px;width: 180px;height: 275px;"}](https://olddesignshop.com/wp-content/uploads/2015/03/OldDesignShop_MushroomSpringMorel-670x1024.jpg)
 
@@ -175,9 +175,9 @@ aspects of database query languages and functional programming.
 In this brief introduction, I have not gone into the details of
 Morel's syntax, semantics or implementation, but examples can be found
 on the
-[Morel site](https://github.com/julianhyde/morel/blob/main/README.md)
+[Morel site](https://github.com/hydromatic/morel/blob/main/README.md)
 and in
-[Morel's test suite](https://github.com/julianhyde/morel/tree/main/src/test/resources/script),
+[Morel's test suite](https://github.com/hydromatic/morel/tree/main/src/test/resources/script),
 and I plan to write more blog posts over the following months.
 
 If you have comments, please reply on Twitter:

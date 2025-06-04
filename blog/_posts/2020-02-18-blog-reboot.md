@@ -86,7 +86,7 @@ database technology more useful.  Lastly, I want to bring the
 technology to a wide audience via open source software.
 
 I'll be writing about those things here. I'm especially keen to
-introduce you to [Morel](https://github.com/julianhyde/morel/), a
+introduce you to [Morel](https://github.com/hydromatic/morel/), a
 language that I am developing. It is a small functional language
 derived from [Standard ML](https://en.wikipedia.org/wiki/Standard_ML)
 that is also an elegant and powerful database query language, and I

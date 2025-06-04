@@ -286,7 +286,7 @@ in the algebra. And those fragments of host language may be opaque to
 the optimizer and prevent advanced optimizations.
 
 Reflecting on these problems, I came up with
-[Morel](https://github.com/julianhyde/morel), a language that has the
+[Morel](https://github.com/hydromatic/morel), a language that has the
 power of a general-purpose language (due to its SML ancestry) but with
 support for relational expressions in the language, so that you
 naturally express data-oriented problems in relational algebra.

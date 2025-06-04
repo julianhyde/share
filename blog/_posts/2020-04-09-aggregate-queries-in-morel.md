@@ -80,7 +80,7 @@ SQL had to invent a new clause, `HAVING`, that does the same as
 `WHERE` but in the post-aggregation context. (As we shall see, Morel
 does not have that problem. The semantic rules after a `group` are the
 same as before it, so you can intermix `group` and `where`
-[any way you like](https://github.com/julianhyde/morel/issues/21).)
+[any way you like](https://github.com/hydromatic/morel/issues/21).)
 
 Aggregate functions create other semantic problems. Assuming that the
 `Emp` table contains 100 rows, how many rows does the following
@@ -242,12 +242,12 @@ val it =
 
 (Examples in this post use the new `=` syntax for renaming group keys
 and aggregate functions that was introduced in
-[[MOREL-24](https://github.com/julianhyde/morel/issues/24)] but has
+[[MOREL-24](https://github.com/hydromatic/morel/issues/24)] but has
 not yet been released, rather than the old `as` syntax used in
 morel-0.2, and also assume that `sum` and `+` have overloads for both
 `int` and `real`, introduced in
-[[MOREL-28](https://github.com/julianhyde/morel/issues/28)] and
-[[MOREL-29](https://github.com/julianhyde/morel/issues/29)].)
+[[MOREL-28](https://github.com/hydromatic/morel/issues/28)] and
+[[MOREL-29](https://github.com/hydromatic/morel/issues/29)].)
 
 The key extractor (`e.deptno`) and argument extractor (`e.sal`) are
 not functions but expressions that are evaluated in the environment of
