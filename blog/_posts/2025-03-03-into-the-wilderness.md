@@ -91,4 +91,4 @@ or Twitter:
 </div>
 
 This article
-[has been updated](https://github.com/julianhyde/share/commits/main/blog/_posts/2025-03-03-into-the-wilderness.md).
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).

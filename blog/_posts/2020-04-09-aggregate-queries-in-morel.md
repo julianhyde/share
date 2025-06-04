@@ -24,7 +24,7 @@ languages.
 
 # Aggregate functions and relational algebra
 
-When Tedd Codd
+When Ted Codd
 [introduced the relational algebra in 1970](https://github.com/dmvaldman/library/blob/master/computer%20science/Codd%20-%20A%20Relational%20Model%20of%20Data%20for%20Large%20Shared%20Data%20Banks.pdf),
 there was no support for aggregation or aggregate functions. The
 operators were project, select, join and semijoin (called
@@ -172,15 +172,16 @@ and works forward.)
 
 Thus `sum` is defined as follows:
 
-```ml
-- val sum = foldl (fn (x, y) => x + y) 0;
-val sum = fn : int list -> int
+```sml
+val sum = foldl (fn (x, y) => x + y) 0;
+(*[> val sum = fn : int list -> int]*)
 ```
 
 Here is `sum` applied to a list:
-```ml
-- sum [1, 2, 3, 5, 8, 13];
-val it = 32 : int
+
+```sml
+sum [1, 2, 3, 5, 8, 13];
+(*[> val it = 32 : int]*)
 ```
 
 # Choices, choices...
@@ -213,8 +214,8 @@ In functional programming terms, it's difficult to express this
 concisely. If `group` were a higher-order function, its signature
 would look something like this:
 
-```
-- val group: ('r -> 'k) -> ('r -> 'a) -> ('a list -> 'b) -> ('k * 'b) list
+```sml
+(*[> val group = fn : ('r -> 'k) -> ('r -> 'a) -> ('a list -> 'b) -> ('k * 'b) list]*)
 ```
 
 where:
@@ -233,11 +234,11 @@ But Morel provides syntactic sugar so that `group` is simple to use in
 practice, while retaining strongly typing and type inference. For example:
 
 ```sml
-- from e in emps
-    group e.deptno compute sumSal = sum of e.sal;
-val it =
-  [{deptno=20,sumSal=10875.0},{deptno=10,sumSal=8750.0},
-   {deptno=30,sumSal=9400.0}] : {deptno:int, sumSal:real} list
+from e in emps
+  group e.deptno compute sumSal = sum of e.sal;
+(*[> val it =
+>   [{deptno=20,sumSal=10875.0},{deptno=10,sumSal=8750.0},
+>    {deptno=30,sumSal=9400.0}] : {deptno:int, sumSal:real} list]*)
 ```
 
 (Examples in this post use the new `=` syntax for renaming group keys
@@ -262,23 +263,23 @@ expression that yields a function. In this case, we use the constant
 Here is another example:
 
 ```sml
-- from e in emps,
-      d in depts
-    where e.deptno = d.deptno
-    group e.deptno, d.dname, e.job
-      compute sumSal = sum of e.sal,
-        minRemuneration = min of e.sal + e.commission;
-val it =
-  [{deptno=30,dname="SALES",job="MANAGER",minRemuneration=2850.0,sumSal=2850.0},
-   {deptno=20,dname="RESEARCH",job="CLERK",minRemuneration=800.0,sumSal=1900.0},
-   {deptno=10,dname="ACCOUNTING",job="PRESIDENT",minRemuneration=5000.0,sumSal=5000.0},
-   {deptno=10,dname="ACCOUNTING",job="MANAGER",minRemuneration=2450.0,sumSal=2450.0},
-   {deptno=20,dname="RESEARCH",job="ANALYST",minRemuneration=3000.0,sumSal=6000.0},
-   {deptno=30,dname="SALES",job="CLERK",minRemuneration=950.0,sumSal=950.0},
-   {deptno=10,dname="ACCOUNTING",job="CLERK",minRemuneration=1300.0,sumSal=1300.0},
-   {deptno=20,dname="RESEARCH",job="MANAGER",minRemuneration=2975.0,sumSal=2975.0},
-   {deptno=30,dname="SALES",job="SALESMAN",minRemuneration=1500.0,sumSal=5600.0}]
-  : {deptno:int, dname:string, job:string, minRemuneration:real, sumSal:real} list
+from e in emps,
+    d in depts
+  where e.deptno = d.deptno
+  group e.deptno, d.dname, e.job
+    compute sumSal = sum of e.sal,
+      minRemuneration = min of e.sal + e.commission;
+(*[> val it =
+>   [{deptno=30,dname="SALES",job="MANAGER",minRemuneration=2850.0,sumSal=2850.0},
+>    {deptno=20,dname="RESEARCH",job="CLERK",minRemuneration=800.0,sumSal=1900.0},
+>    {deptno=10,dname="ACCOUNTING",job="PRESIDENT",minRemuneration=5000.0,sumSal=5000.0},
+>    {deptno=10,dname="ACCOUNTING",job="MANAGER",minRemuneration=2450.0,sumSal=2450.0},
+>    {deptno=20,dname="RESEARCH",job="ANALYST",minRemuneration=3000.0,sumSal=6000.0},
+>    {deptno=30,dname="SALES",job="CLERK",minRemuneration=950.0,sumSal=950.0},
+>    {deptno=10,dname="ACCOUNTING",job="CLERK",minRemuneration=1300.0,sumSal=1300.0},
+>    {deptno=20,dname="RESEARCH",job="MANAGER",minRemuneration=2975.0,sumSal=2975.0},
+>    {deptno=30,dname="SALES",job="SALESMAN",minRemuneration=1500.0,sumSal=5600.0}]
+>   : {deptno:int, dname:string, job:string, minRemuneration:real, sumSal:real} list]*)
 ```
 
 Several things are more advanced than the previous example. The key is
@@ -317,17 +318,17 @@ query.  In this example, we define our own version of the `sum`
 function:
 
 ```sml
-- let
-    fun my_sum [] = 0
-      | my_sum (head :: tail) = head + (my_sum tail)
-  in
-    from e in emps
-      group e.deptno
-      compute sumEmpno = my_sum of e.empno
-  end;
-val it =
-  [{deptno=20,sumEmpno=38501},{deptno=10,sumEmpno=23555},
-   {deptno=30,sumEmpno=46116}] : {deptno:int, sumEmpno:int} list
+let
+  fun my_sum [] = 0
+    | my_sum (head :: tail) = head + (my_sum tail)
+in
+  from e in emps
+    group e.deptno
+    compute sumEmpno = my_sum of e.empno
+end;
+(*[> val it =
+>   [{deptno=20,sumEmpno=38501},{deptno=10,sumEmpno=23555},
+>    {deptno=30,sumEmpno=46116}] : {deptno:int, sumEmpno:int} list]*)
 ```
 
 Aggregate functions are invoked on a collection of values formed by
@@ -339,14 +340,14 @@ therefore trivial in Morel: we just use the identity operator (`fn x
 => x`) as the aggregate function, and it returns its argument:
 
 ```sml
-- from e in emps
-    group e.deptno
-    compute names = (fn x => x) of e.ename;
-val it =
-  [{deptno=20,names=["SMITH","JONES","SCOTT","ADAMS","FORD"]},
-   {deptno=10,names=["CLARK","KING","MILLER"]},
-   {deptno=30,names=["ALLEN","WARD","MARTIN","BLAKE","TURNER","JAMES"]}]
-  : {deptno:int, names:string list} list
+from e in emps
+  group e.deptno
+  compute names = (fn x => x) of e.ename;
+(*[> val it =
+>   [{deptno=20,names=["SMITH","JONES","SCOTT","ADAMS","FORD"]},
+>    {deptno=10,names=["CLARK","KING","MILLER"]},
+>    {deptno=30,names=["ALLEN","WARD","MARTIN","BLAKE","TURNER","JAMES"]}]
+>   : {deptno:int, names:string list} list]*)
 ```
 
 # Computing aggregate functions efficiently
@@ -398,4 +399,4 @@ If you have comments, please reply on Twitter:
 </div>
 
 This article
-[has been updated](https://github.com/julianhyde/share/commits/main/blog/_posts/2020-04-09-aggregate-queries-in-morel.md).
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).

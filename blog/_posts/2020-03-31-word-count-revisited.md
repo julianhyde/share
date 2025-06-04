@@ -105,72 +105,74 @@ the framework could be made more efficient without the user having to
 rewrite their `mapper` and `reducer` functions.
 
 ```sml
-- fun mapReduce mapper reducer list =
-    let
-      fun update (key, value, []) = [(key, [value])]
-        | update (key, value, ((key2, values) :: tail)) =
-            if key = key2 then
-              (key, (value :: values)) :: tail
-            else
-              (key2, values) :: (update (key, value, tail))
-      fun dedup ([], dict) = dict
-        | dedup ((key, value) :: tail, dict) =
-            dedup (tail, update (key, value, dict))
-      fun flatMap f list = List.foldl (op @) [] (List.map f list)
-      val keyValueList = flatMap mapper list
-      val keyValuesList = dedup (keyValueList, [])
-    in
-      List.map (fn (key, values) => (key, reducer (key, values))) keyValuesList
-    end;
-val mapReduce = fn
-  : ('a -> (''b * 'c) list)
-    -> (''b * 'c list -> 'd) -> 'a list -> (''b * 'd) list
+fun mapReduce mapper reducer list =
+  let
+    fun update (key, value, []) = [(key, [value])]
+      | update (key, value, ((key2, values) :: tail)) =
+          if key = key2 then
+            (key, (value :: values)) :: tail
+          else
+            (key2, values) :: (update (key, value, tail))
+    fun dedup ([], dict) = dict
+      | dedup ((key, value) :: tail, dict) =
+          dedup (tail, update (key, value, dict))
+    fun flatMap f list = List.foldl (op @) [] (List.map f list)
+    val keyValueList = flatMap mapper list
+    val keyValuesList = dedup (keyValueList, [])
+  in
+    List.map (fn (key, values) => (key, reducer (key, values))) keyValuesList
+  end;
+(*[> val mapReduce = fn
+>   : ('a -> ('b * 'c) list)
+>     -> ('b * 'c list -> 'd) -> 'a list -> ('b * 'd) list]*)
 ```
 
 Now let's define the `wc_mapper` and `wc_reducer` functions that will
 power the WordCount algorithm.
 
 ```sml
-- fun wc_mapper line =
-    let
-      fun split0 [] word words = word :: words
-        | split0 (#" " :: s) word words = split0 s "" (word :: words)
-        | split0 (c :: s) word words = split0 s (word ^ (String.str c)) words
-      fun split s = List.rev (split0 (String.explode s) "" [])
-    in
-      List.map (fn w => (w, 1)) (split line)
-    end;
-val wc_mapper = fn : string -> (string * int) list
-- fun wc_reducer (key, values) = foldl (op +) 0 values;
-val wc_reducer = fn : 'a * int list -> int
+fun wc_mapper line =
+  let
+    fun split0 [] word words = word :: words
+      | split0 (#" " :: s) word words = split0 s "" (word :: words)
+      | split0 (c :: s) word words = split0 s (word ^ (String.str c)) words
+    fun split s = List.rev (split0 (String.explode s) "" [])
+  in
+    List.map (fn w => (w, 1)) (split line)
+  end;
+(*[> val wc_mapper = fn : string -> (string * int) list]*)
+
+fun wc_reducer (key, values) = foldl (op +) 0 values;
+(*[> val wc_reducer = fn : 'a * int list -> int]*)
 ```
 
 Check that they work on discrete values:
+
 ```sml
-- wc_mapper "a skunk sat on a stump";
-val it = [("a",1),("skunk",1),("sat",1),("on",1),("a",1),("stump",1)]
-  : (string * int) list
-- wc_reducer ("hello", [1, 4, 2]);
-val it = 7 : int
+wc_mapper "a skunk sat on a stump";
+(*[> val it = [("a",1),("skunk",1),("sat",1),("on",1),("a",1),("stump",1)]
+>   : (string * int) list]*)
+wc_reducer ("hello", [1, 4, 2]);
+(*[> val it = 7 : int]*)
 ```
 
 Bind them to `mapReduce` to create a function tailored to the
 WordCount problem:
 
 ```sml
-- fun wordCount lines = mapReduce wc_mapper wc_reducer lines;
-val wordCount = fn : string list -> (string * int) list
+fun wordCount lines = mapReduce wc_mapper wc_reducer lines;
+(*[> val wordCount = fn : string list -> (string * int) list]*)
 ```
 
 And check that our `wordCount` function works:
 
 ```sml
-- wordCount ["a skunk sat on a stump",
-    "and thunk the stump stunk",
-    "but the stump thunk the skunk stunk"];
-val it =
-  [("but",1),("the",3),("stump",3),("thunk",2),("skunk",2),("stunk",2),
-   ("and",1),("a",2),("sat",1),("on",1)] : (string * int) list
+wordCount ["a skunk sat on a stump",
+  "and thunk the stump stunk",
+  "but the stump thunk the skunk stunk"];
+(*[> val it =
+>   [("but",1),("the",3),("stump",3),("thunk",2),("skunk",2),("stunk",2),
+>    ("and",1),("a",2),("sat",1),("on",1)] : (string * int) list]*)
 ```
 
 # WordCount in Pig
@@ -402,7 +404,7 @@ fun wordCount lines =
 gives signature
 
 ```sml
-val wordCount = fn : string list -> {count:int, word:string} list
+(*[> val wordCount = fn : string list -> {count:int, word:string} list]*)
 ```
 
 Another improvement is that the new solution is not an expression, but
@@ -411,15 +413,16 @@ there is a list called `lines` in the environment, but the function
 can easily be applied to any value.
 
 Now let's run it:
+
 ```sml
 wordCount ["a skunk sat on a stump",
     "and thunk the stump stunk",
     "but the stump thunk the skunk stunk"];
-val it =
-  [{count=2,word="a"},{count=3,word="the"},{count=1,word="but"},
-   {count=1,word="sat"},{count=1,word="and"},{count=2,word="stunk"},
-   {count=3,word="stump"},{count=1,word="on"},{count=2,word="thunk"},
-   {count=2,word="skunk"}] : {count:int, word:string} list
+(*[> val it =
+>   [{count=2,word="a"},{count=3,word="the"},{count=1,word="but"},
+>    {count=1,word="sat"},{count=1,word="and"},{count=2,word="stunk"},
+>    {count=3,word="stump"},{count=1,word="on"},{count=2,word="thunk"},
+>    {count=2,word="skunk"}] : {count:int, word:string} list]*)
 ```
 
 # Conclusion
@@ -448,4 +451,4 @@ If you have comments, please reply on Twitter:
 </div>
 
 This article
-[has been updated](https://github.com/julianhyde/share/commits/main/blog/_posts/2020-03-31-word-count-revisited.md).
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).

@@ -64,7 +64,7 @@ COMMIT;
 If we added `insert`, `update`, and `delete` operators to Morel, this
 could become the following code.
 
-{% highlight sml %}
+```sml
 (* Delete employees who earn more than 1,000. *)
 delete e in scott.emps
   where e.sal > 1000;
@@ -80,7 +80,7 @@ update e in scott.emps
 
 (* Commit. *)
 commit;
-{% endhighlight %}
+```
 
 Note that `update` has an `assign` clause that updates
 the current record, and we borrow the `with`
@@ -146,7 +146,7 @@ state of the `emps` table before the `INSERT` command was run. In SQL,
 you're out of luck. In the DML syntax I'm proposing for Morel, it is
 straightforward:
 
-{% highlight sml %}
+```sml
 (* Delete employees who earn more than 1,000. *)
 val emps2 =
   from e in scott.emps
@@ -163,7 +163,7 @@ val emps4 =
 
 (* Commit. *)
 commit {scott with emps = emps4};
-{% endhighlight %}
+```
 
 The `insert`, `update`, and `delete` commands are no more, but we use
 the new `with` operator during update and commit.
@@ -258,7 +258,5 @@ or Twitter:
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
 
-<!--
 This article
-[has been updated](https://github.com/julianhyde/share/commits/main/blog/_posts/2025-03-31-morel-dml.md).
--->
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).

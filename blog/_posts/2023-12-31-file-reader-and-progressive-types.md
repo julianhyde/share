@@ -77,11 +77,11 @@ those has some CSV files, and there's one compressed CSV file.
 
 Now let's start the Morel shell:
 
-```bash
+{% highlight bash %}
 $ ./morel --directory=src/test/resources/data
 morel version 0.4.0 (java version "21.0.1", JLine terminal, xterm-256color)
 -
-```
+{% endhighlight %}
 
 Morel is a functional programming language that is also a query
 language. It is statically typed, and its main type constructors are
@@ -90,20 +90,20 @@ lists and records.
 In the following, we create two record values, a list of records,
 and write a simple query.
 
-{% highlight bash %}
-- val fred = {name="Fred", age=27};
-val fred = {age=27,name="Fred"} : {age:int, name:string}
+```sml
+val fred = {name="Fred", age=27};
+(*[> val fred = {age=27,name="Fred"} : {age:int, name:string}]*)
 
-- val velma = {name="Velma", age=20};
-val velma = {age=20,name="Velma"} : {age:int, name:string}
+val velma = {name="Velma", age=20};
+(*[> val velma = {age=20,name="Velma"} : {age:int, name:string}]*)
 
-- val employees = [fred, velma];
-val employees = [{age=27,name="Fred"},{age=20,name="Velma"}]
-  : {age:int, name:string} list
+val employees = [fred, velma];
+(*[> val employees = [{age=27,name="Fred"},{age=20,name="Velma"}]
+>   : {age:int, name:string} list]*)
 
-- from e in employees yield e.age;
-val it = [27,20] : int list
-{% endhighlight %}
+from e in employees yield e.age;
+(*[> val it = [27,20] : int list]*)
+```
 
 We wanted to make the file reader interactive.  You shouldn't have to
 leave the Morel shell to see what files are available.
@@ -111,10 +111,10 @@ leave the Morel shell to see what files are available.
 So you can browse the whole file system as if you are looking at the
 fields of a record. The `file` object is where you start.
 
-{% highlight sml %}
-- file;
-val it = {scott={},wordle={}} : {scott:{...}, wordle:{...}, ...}
-{% endhighlight %}
+```sml
+file;
+(*[> val it = {scott={},wordle={}} : {scott:{...}, wordle:{...}, ...}]*)
+```
 
 As you can see, it is a record with fields `scott` and `wordle`. In
 the file reader, every directory is a record, and the fields are the
@@ -122,12 +122,12 @@ files or subdirectories.
 
 Now let's look at `file.scott`:
 
-{% highlight sml %}
-- file.scott;
-val it = {bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>}
-  : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,
-     ...}
-{% endhighlight %}
+```sml
+file.scott;
+(*[> val it = {bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>}
+>   : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,
+>      ...}]*)
+```
 
 It, too, is a record, but fields such as `dept` and `emp` are listed
 as relations, because they are CSV files.  We can run queries on those
@@ -135,30 +135,30 @@ data sets. Here is a query to compute the total salary budget for each
 department. You could write a similar query in SQL using `JOIN` and
 `GROUP BY`:
 
-{% highlight sml %}
-- from d in file.scott.dept
-=   join e in file.scott.emp on d.deptno = e.deptno
-=   group d.dname compute sum of e.sal;
-val it =
-  [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},
-   {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list
-{% endhighlight %}
+```sml
+from d in file.scott.dept
+  join e in file.scott.emp on d.deptno = e.deptno
+  group d.dname compute sum of e.sal;
+(*[> val it =
+>   [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},
+>    {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list]*)
+```
 
 After we have traversed into `scott` and `dept`, the type of the
 `file` value has changed:
 
-{% highlight sml %}
-- file;
-val it =
-  {scott={bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>},
-   wordle={}}
-  : {
-     scott:{bonus:{...} list, dept:{deptno:int, dname:string, loc:string} list,
-            emp:
-                {comm:real, deptno:int, empno:int, ename:string,
-                 hiredate:string, job:string, mgrno:int, sal:real} list,
-            salgrade:{...} list, ...}, wordle:{...}, ...}
-{% endhighlight %}
+```sml
+file;
+(*[> val it =
+>   {scott={bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>},
+>    wordle={}}
+>   : {
+>      scott:{bonus:{...} list, dept:{deptno:int, dname:string, loc:string} list,
+>             emp:
+>                 {comm:real, deptno:int, empno:int, ename:string,
+>                  hiredate:string, job:string, mgrno:int, sal:real} list,
+>             salgrade:{...} list, ...}, wordle:{...}, ...}]*)
+```
 
 Note that the `scott` field has been expanded, and so have the `dept`
 and `emp` fields. This is called *progressive typing*. What is it, and
@@ -207,19 +207,19 @@ For example, this query replaces the expression `file.scott` in the
 previous query with a variable `s` to make the query more concise. It
 gives the same results as the previous query.
 
-{% highlight sml %}
-- val s = file.scott;
-val s = {bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>}
-  : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,
-     ...}
+```sml
+val s = file.scott;
+(*[> val s = {bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>}
+>   : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,
+>      ...}]*)
 
-- from d in s.dept
-=   join e in s.emp on d.deptno = e.deptno
-=   group d.dname compute sum of e.sal;
-val it =
-  [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},
-   {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list
-{% endhighlight %}
+from d in s.dept
+  join e in s.emp on d.deptno = e.deptno
+  group d.dname compute sum of e.sal;
+(*[> val it =
+>   [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},
+>    {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list]*)
+```
 
 # Conclusion
 
@@ -237,4 +237,4 @@ or Twitter:
 </div>
 
 This article
-[has been updated](https://github.com/julianhyde/share/commits/main/blog/_posts/2023-12-31-file-reader-and-progressive-types.md).
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).

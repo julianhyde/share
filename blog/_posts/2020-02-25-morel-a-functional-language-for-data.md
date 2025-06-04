@@ -52,21 +52,21 @@ similar to the equivalent SQL query.
 
 For example, here is a query in Morel:
 
-{% highlight sml %}
+```sml
 from e in hr.emps,
     d in hr.depts
 where e.deptno = d.deptno
 yield {e.id, e.deptno, ename = e.name, dname = d.name};
-{% endhighlight %}
+```
 
 The equivalent query in SQL looks very similar:
 
-{% highlight sml %}
+```sql
 SELECT e.id, e.deptno, e.name AS ename, d.name AS dname
 FROM hr.emps AS e,
     hr.depts AS d
 WHERE e.deptno = d.deptno;
-{% endhighlight %}
+```
 
 # External data
 
@@ -185,3 +185,6 @@ If you have comments, please reply on Twitter:
 <div data_dnt="true">
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
+
+This article
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).

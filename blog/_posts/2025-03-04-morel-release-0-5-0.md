@@ -46,7 +46,7 @@ is equivalent to
 For example, `sum` has type `int list -> int`, and so `into sum`
 converts a stream of `int` values into an `int` result.
 
-{% highlight sml %}
+```sml
 (* "sum" adds a list of integers. *)
 sum [1, 2, 4];
 (*[> val it = 7 : int]*)
@@ -72,7 +72,7 @@ explode "abc";
 
 "abc" into explode;
 (*[> val it = [#"a",#"b",#"c"] : char list]*)
-{% endhighlight %}
+```
 
 Next, `through` is similar to `into`, but has a pattern so that
 following steps can refer to the data items:
@@ -95,7 +95,7 @@ list of orders and returns a list of orders with state and zipcode
 filled out. To stream orders through this function, we simply add the
 line `through clean_over in clean_address` to the pipeline.
 
-{% highlight sml %}
+```sml
 (* Function that converts a list of orders to a list of orders with
    corrected state and zipcode. *)
 fun clean_address ...
@@ -109,7 +109,7 @@ fun pipeline orders =
        through clean_order in clean_address
        group clean_order.state compute count;
 (*[> val pipeline = fn : order list -> {count: int, state: string} list;]*)
-{% endhighlight %}
+```
 
 Note that the `pipeline` function itself takes a list argument and
 returns a list.  We could therefore include it in a higher-level query
@@ -139,7 +139,8 @@ FROM Emp AS e,
 {% endhighlight %}
 
 Morel has analogous syntax:
-{% highlight sml %}
+
+```sml
 from e in emps,
     d in depts
   where e.deptno = d.deptno
@@ -154,7 +155,7 @@ from e in emps
 (*[> val it =
 >   [{dname="RESEARCH",ename="SMITH"},{dname="SALES",ename="ALLEN"},
 >    {dname="SALES",ename="WARD"},...] : {dname:string, ename:string} list]*)
-{% endhighlight %}
+```
 
 but used to only allow the comma join syntax immediately after the
 `from` keyword, before clauses such as `where` or `join` had occurred.
@@ -164,7 +165,7 @@ Following
 allows comma-separated joins later in the pipeline, and also allows
 `on` in comma-joins. The following is now legal:
 
-{% highlight sml %}
+```sml
 from a in [1, 2],
     b in [3, 4, 5] on a + b = 6
   where b < 5
@@ -172,14 +173,14 @@ from a in [1, 2],
       d in [7, 8];
 (*[> val it = [{a=2,b=4,c=6,d=7},{a=2,b=4,c=6,d=8}]
 >   : {a:int, b:int, c:int, d:int} list]*)
-{% endhighlight %}
+```
 
 This will be particularly convenient (when we have solved some
 query-planning issues in
 [[MOREL-229](https://github.com/hydromatic/morel/issues/229)]) for
 writing queries that use unbounded variables to solve constraints:
 
-{% highlight sml %}
+```sml
 from a, b
   where a < b
 join c, d, e
@@ -193,7 +194,7 @@ join c, d, e
 >   [{a=1,b=2,c=1,d=1,e=1},{a=1,b=2,c=1,d=1,e=2},{a=1,b=2,c=1,d=2,e=1},
 >    {a=1,b=2,c=2,d=1,e=1},{a=1,b=3,c=1,d=1,e=1}]
 >   : {a:int, b:int, c:int, d:int, e:int} list]*)
-{% endhighlight %}
+```
 
 # 3. Duplicate elimination (`distinct`)
 
@@ -202,12 +203,12 @@ join c, d, e
 
 Here is a query that finds the set of distinct job titles:
 
-{% highlight sml %}
+```sml
 from e in scott.emp
   yield {e.job}
   distinct;
 (*[> val it = ["CLERK","SALESMAN","ANALYST","MANAGER","PRESIDENT"] : string list]*)
-{% endhighlight %}
+```
 
 `distinct` is short-hand for `group` with all fields and no aggregate
 functions (`compute` clause), and is similar to SQL's `SELECT
@@ -219,15 +220,15 @@ DISTINCT`.
 lambda (`fn` expression) to have multiple branches, similar to `case`.
 Following this change, the following expressions are equivalent:
 
-{% highlight sml %}
+```sml
 fn [] => 0 | x :: _ => x + 1;
 (*[> val it = fn : int list -> int]*)
-{% endhighlight %}
+```
 
-{% highlight sml %}
+```sml
 fn list => case list of [] => 0 | x :: _ => x + 1;
 (*[> val it = fn : int list -> int]*)
-{% endhighlight %}
+```
 
 Prior to this change, the first expression would give a syntax error.
 
@@ -239,7 +240,7 @@ related to the `int` type.
 Per [Moscow ML](https://mosml.org/mosmllib/Int.html) it has the
 following interface:
 
-{% highlight sml %}
+```sml
 val precision : int option
 val minInt    : int option
 val maxInt    : int option
@@ -275,17 +276,18 @@ val fmt       : StringCvt.radix -> int -> string
 
 val toString  : int -> string
 val fromString : string -> int option   (* Overflow      *)
-{% endhighlight %}
+```
 
 Example use:
-{% highlight sml %}
+
+```sml
 Int.compare;
 (*[> val it = fn : int * int -> order]*)
 Int.compare (2, 3);
 (*[> val it = LESS : order]*)
 Int.maxInt;
 (*[> val it = SOME 1073741823 : int option]*)
-{% endhighlight %}
+```
 
 The `Int` structure is an instance of the
 [`INTEGER` signature in the Standard ML Basis
@@ -326,4 +328,4 @@ or Twitter:
 </div>
 
 This article
-[has been updated](https://github.com/julianhyde/share/commits/main/blog/_posts/2025-03-04-morel-release-0-5-0.md).
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).

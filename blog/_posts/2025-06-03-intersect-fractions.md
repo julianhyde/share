@@ -88,7 +88,7 @@ To convert this algorithm to code, we will need three things:
 
 Here are the `factorize` and `product` functions.
 
-{% highlight sml %}
+```sml
 fun factorize n =
   let
     fun factorize' n d =
@@ -103,25 +103,26 @@ fun factorize n =
 fun product [] = 1
   | product (x::xs) = x * (product xs);
 (*[> val product = fn : int list -> int]*)
-{% endhighlight %}
+```
 
 Here's how they work:
-{% highlight sml %}
+
+```sml
 factorize 120;
 (*[> val it = [2, 2, 2, 3, 5] : int list]*)
 product (factorize 120);
 (*[> val it = 120 : int]*)
-{% endhighlight %}
+```
 
 So, we can compute GCD like this:
 
-{% highlight sml %}
+```sml
 fun gcd (m, n) =
   from f in factorize m
     intersect factorize n
     compute product;
 (*[> val gcd = fn : int * int -> int]*)
-{% endhighlight %}
+```
 
 The last step uses `compute` because `product` fulfills Morel's only
 criterion to be an aggregate function: its argument is a collection
@@ -130,16 +131,17 @@ of values. (At least one SQL dialect agrees with us, and has a
 aggregate function.)
 
 LCM can be computed from GCD:
-{% highlight sml %}
+
+```sml
 fun lcm (m, n) =
   (m * n) div gcd (m, n);
 (*[> val lcm = fn : int * int -> int]*)
-{% endhighlight %}
+```
 
 But, as we discussed above, it can also be computed directly using
 `union`, `except` and `intersect`:
 
-{% highlight sml %}
+```sml
 fun lcm' (m, n) =
   let
     val m_factors = factorize m
@@ -152,18 +154,18 @@ fun lcm' (m, n) =
     compute product
   end;
 (*[> val lcm' = fn : int * int -> int]*)
-{% endhighlight %}
+```
 
 Let's test them:
 
-{% highlight sml %}
+```sml
 gcd (36, 120);
 (*[> val it = 12 : int]*)
 lcm (36, 120);
 (*[> val it = 360 : int]*)
 lcm' (36, 120);
 (*[> val it = 360 : int]*)
-{% endhighlight %}
+```
 
 ## Conclusion
 
@@ -181,7 +183,5 @@ or Twitter:
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
 
-<!--
 This article
 [has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).
--->
