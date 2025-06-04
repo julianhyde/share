@@ -9,7 +9,7 @@
 #
 for f in _site/*/*/*/*.html; do
   perl -p -i -e '
-s!<span class="n">(commit|from|join|on|not|union|yield|distinct|group|compute|order|desc|forall|exists|require|skip|take|andalso|orelse|implies|elem)</span>!<span class="kr">\1</span>!g;
+s!<span class="n">(commit|from|join|on|not|union|intersect|except|yield|distinct|group|compute|order|desc|forall|exists|require|skip|take|andalso|orelse|mod|div|implies|elem)</span>!<span class="kr">\1</span>!g;
 s!\(\*</span><span class="cm">\[!!g;
 s!\]\*\)!!g;
 ' $f
