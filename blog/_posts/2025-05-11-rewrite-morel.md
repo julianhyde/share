@@ -4,7 +4,7 @@ title:  "Should Morel be rewritten in Rust?"
 date:   2025-05-11 12:00:00 -0800
 author: Julian Hyde
 image:  /assets/img/OldDesignShop_MushroomSpringMorel-240x240.jpg
-tweet:  https://x.com/julianhyde/status/1897425406279737401
+tweet:  https://x.com/julianhyde/status/1921752150553608204
 ---
 
 There are many excellent and innovative projects happening in the Rust
