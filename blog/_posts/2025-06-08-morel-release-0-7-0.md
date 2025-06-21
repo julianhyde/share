@@ -244,7 +244,7 @@ you can use to reference parts of the current row.  For example, the
 ```sml
 from i in [1, 2, 3],
     j in [4, 5, 6]
-  where i + j > 6;
+  where i + j > 7;
 
 (*[> i j
 > - -
@@ -260,7 +260,7 @@ fields: a `yield` whose expression is not a record, what we call an
 "atomic yield". Here is an example:
 
 ```sml
-from i in [1, 2, 3]
+from i in [1, 2, 3],
     j in [4, 5, 6]
   yield i + j;
 ```

@@ -17,11 +17,15 @@ function main
   s!\]\*\)!!g;
   ' $f
 
-  # Special keywords for morel-dml only
+    # Some posts have extra keywords
     case "$f" in
     (*/dml-in-morel.html)
       perl -p -i -e '
   s!<span class="n">(assign|delete|insert|update)</span>!<span class="kr">\1</span>!g;
+  ' $f;;
+    (*/sorting-on-expressions.html)
+      perl -p -i -e '
+  s!<span class="n">(using)</span>!<span class="kr">\1</span>!g;
   ' $f;;
     esac
   done
