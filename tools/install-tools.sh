@@ -30,6 +30,7 @@ for i in \
   gra \
   jenv \
   lastLog.sh \
+  longLines \
   relNotes \
   remove-javadoc-timestamps \
   mailself \
