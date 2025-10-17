@@ -43,6 +43,7 @@
     <maven-project-info-reports-plugin.version>3.1.1</maven-project-info-reports-plugin.version>
     <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+    <sakila-data-hsqldb.version>0.1</sakila-data-hsqldb.version>
     <scott-data-hsqldb.version>0.2</scott-data-hsqldb.version>
     <sqlline.version>1.12.0</sqlline.version>
     <steelwheels-data-hsqldb.version>0.2</steelwheels-data-hsqldb.version>
@@ -183,6 +184,11 @@
       <groupId>net.hydromatic</groupId>
       <artifactId>look-data-hsqldb</artifactId>
       <version>${look-data-hsqldb.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.hydromatic</groupId>
+      <artifactId>sakila-data-hsqldb</artifactId>
+      <version>${sakila-data-hsqldb.version}</version>
     </dependency>
     <dependency>
       <groupId>net.hydromatic</groupId>
