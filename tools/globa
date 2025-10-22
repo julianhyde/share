@@ -28,10 +28,16 @@ function foo {
     }
     flag = substr(flags, k + 1, 1)
     s = $0
-    isOut = s ~ /_actual/ || s ~ /surefire/ || s ~ /quidem/;
+    isOut = s ~ /_actual/ || s ~ /surefire/ || s ~ /quidem/ || s ~ /target\/test-output/;
     if (flag == "o") {
       if (isOut) {
         # leave s as is
+      } else if (s ~ /^tests\//) {
+        gsub(/^tests\//, "target/test-output/tests/", s);
+        s = s ".out";
+      } else if (s ~ /^\.\/tests\//) {
+        gsub(/^\.\/tests\//, "./target/test-output/tests/", s);
+        s = s ".out";
       } else if (s ~ /src\/test\/resources\/sql/) {
         gsub(/src\/test\/resources\/sql/, "build/quidem/test/sql", s);
       } else if (s ~ /src\/test\/resources\/script/) {
@@ -47,6 +53,12 @@ function foo {
     } else if (flag == "r") {
       if (!isOut) {
         # leave s as is
+      } else if (s ~ /^target\/test-output\/tests\//) {
+        gsub(/^target\/test-output\/tests\//, "tests/", s);
+        gsub(/\.out$/, "", s);
+      } else if (s ~ /^\.\/target\/test-output\/tests\//) {
+        gsub(/^\.\/target\/test-output\/tests\//, "./tests/", s);
+        gsub(/\.out$/, "", s);
       } else if (s ~ /_actual/) {
         if (s ~ /build\/diffrepo\/test/) {
           gsub(/build\/diffrepo\/test/, "src/test/resources", s)
@@ -76,7 +88,7 @@ function foo {
 }
 
 case "$1" in
-(or) foo "$1" "$2";;
+(or|ro) foo "$1" "$2";;
 (*) echo "Unknown flag '$1'";;
 esac
 

@@ -122,6 +122,30 @@ target/test-classes/script/surefire/script/foreign.sml.out src/test/resources/sc
 EOF
 compare $TNAME
 
+# from actual 4 (tests/ directory)
+TNAME=globa-or-4
+${TOOLS}/globa or target/test-output/tests/script/simple.smli.out > $OUT
+cat > $REF <<EOF
+target/test-output/tests/script/simple.smli.out tests/script/simple.smli
+EOF
+compare $TNAME
+
+# from ref 4 (tests/ directory)
+TNAME=globa-ref-4
+${TOOLS}/globa or tests/script/simple.smli > $OUT
+cat > $REF <<EOF
+target/test-output/tests/script/simple.smli.out tests/script/simple.smli
+EOF
+compare $TNAME
+
+# from ref 4b (tests/ directory with ./)
+TNAME=globa-ref-4b
+${TOOLS}/globa or ./tests/script/simple.smli > $OUT
+cat > $REF <<EOF
+./target/test-output/tests/script/simple.smli.out ./tests/script/simple.smli
+EOF
+compare $TNAME
+
 echo Succeeded.
 
 # End
