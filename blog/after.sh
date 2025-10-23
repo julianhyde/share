@@ -1,3 +1,5 @@
+#!/bin/bash
+#
 # Run this script after 'docker compose run build-site' to highlight
 # keywords that are in Morel but not in Standard ML.
 #
