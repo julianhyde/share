@@ -19,8 +19,8 @@ date, I have noted the year of introduction.
 |----------|----------|-------------------------|--------------------|
 | Lambda calculus | 1930s[^32] | `λx.x + 1`     |                    |
 | Lisp     | 1960[^1] | `(lambda (x) (+ x 1))`  |                    |
-| Smalltalk | 1972[^35] | `[ :x | x + 1 ]`      |                    |
 | ML       | 1973[^2] | `fn x => x + 1`         |                    |
+| Smalltalk | 1981[^35] | `[ :x | x + 1 ]`      |                    |
 | Erlang   | 1987[^3] | `fun(X) -> X + 1 end`   |                    |
 | Haskell  | 1990[^4] | `\x -> x + 1`           | `(+ 1)` (1999[^5]) |
 | Python   | 1991[^6] | `lambda x: x + 1`       |                    |
@@ -199,6 +199,9 @@ This article
        methods must be used immediately (assigned to a variable, passed
        as a parameter, or applied to arguments).
 
-[^35]: Smalltalk was created in the early 1970s at Xerox PARC by
-       Alan Kay, Dan Ingalls, Adele Goldberg, and others. The block
-       syntax appeared in the original Smalltalk-72 documentation.
+[^35]: Smalltalk was created in the early 1970s at Xerox PARC by Alan
+       Kay, Dan Ingalls, Adele Goldberg, and others. Smalltalk-76
+       added block literals with no arguments. Smalltalk-80 (1981)
+       allowed code blocks to have arguments. See
+       "[Smalltalk-80: The Language and its implementation](http://stephane.ducasse.free.fr/FreeBooks/BlueBook/Bluebook.pdf)"
+       by Adele Goldberg and David Robson, page 35.
