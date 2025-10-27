@@ -19,7 +19,8 @@ date, I have noted the year of introduction.
 |----------|----------|-------------------------|--------------------|
 | Lambda calculus | 1930s[^32] | `λx.x + 1`     |                    |
 | Lisp     | 1960[^1] | `(lambda (x) (+ x 1))`  |                    |
-| ML       | 1973[^2] | `fn x => x + 1`         |                    |
+| ML       | 1978[^2] | <code>&lambda;x.x+1</code> | Evolved to `fun x.x+1` (1983), then `fn x => x + 1` (1985) |
+| Hope     | 1980[^36] | `lambda x => x + 1`    |                    |
 | Smalltalk | 1981[^35] | `[ :x | x + 1 ]`      |                    |
 | Erlang   | 1987[^3] | `fun(X) -> X + 1 end`   |                    |
 | Haskell  | 1990[^4] | `\x -> x + 1`           | `(+ 1)` (1999[^5]) |
@@ -71,9 +72,15 @@ This article
       1960 paper "Recursive Functions of Symbolic Expressions and
       Their Computation by Machine, Part I" by John McCarthy.
 
-[^2]: ML was invented in 1973 by Robin Milner et al. The syntax
-      appeared in the 1978 paper "The Definition of Standard ML" by
-      Milner, Tofte, and Harper.
+[^2]: ML was invented in 1973 by Robin Milner et al. In
+      ["A Metalanguage for Interactive Proof in ICF"](https://dl.acm.org/doi/pdf/10.1145/512760.512773")
+      (Gordon, Milner et al., 1978), the syntax was
+      "<code>&lambda;x.x+1</code>". By
+      ["A Proposal for Standard ML (second draft)"](https://smlfamily.github.io/history/SML-proposal-6-83.pdf)
+      (Milner, 1983), the syntax was "`fun x . x + 1`".
+      The final syntax "<code>fn x => x + 1</code>" first appeared in
+      ["The Standard ML Core Language (Revised)"](https://smlfamily.github.io/history/SML-proposal-9-85.pdf)
+      (Milner, 1985).
 
 [^3]: Erlang was created in 1987 by Joe Armstrong et al. The syntax
       appeared in the 1993 book "Erlang Programming" by Armstrong.
@@ -205,3 +212,9 @@ This article
        allowed code blocks to have arguments. See
        "[Smalltalk-80: The Language and its implementation](http://stephane.ducasse.free.fr/FreeBooks/BlueBook/Bluebook.pdf)"
        by Adele Goldberg and David Robson, page 35.
+
+[^36]: Per "[The History of Standard ML](https://dl.acm.org/doi/pdf/10.1145/3386336)"
+       (MacQueen, Harper, Reppy, 2000), HOPE was developed in
+       Edinburgh just after LCF/ML from 1977 to 1980. See
+       "[HOPE: An experimental applicative language](https://dl.acm.org/doi/pdf/10.1145/800087.802799)"
+       (Burstall, MacQueen, Sannella, 1980).
