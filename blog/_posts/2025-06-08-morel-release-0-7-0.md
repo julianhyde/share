@@ -51,11 +51,11 @@ ordered and duplicates were allowed.
 But saying that every collection and query is over a `list` type
 is a white lie. Consider this query:
 
-```sml
+<!-- morel skip
 from e in scott.emps
   where e.sal > 1000.0
   yield e.ename;
-```
+-->
 
 The collection `scott.emps` maps to the `EMP` table in the `scott`
 database, and Morel's goal is to push as much of the processing as
@@ -76,13 +76,12 @@ is a `list`.
 Could we redefine `list` so that its iteration order is undefined?
 Yes, but then we would be short-changing queries such as
 
-```sml
+<!-- morel
 from i in ["a", "b"],
     j in [1, 2, 3]
   yield (i, j);
-(*[> val it = [("a",1),("a",2),("a",3),("b",1),("b",2),("b",3)]
->   : (string * int) list]*)
-```
+> val it = [("a",1),("a",2),("a",3),("b",1),("b",2),("b",3)] : (string * int) list
+-->
 
 which do have a defined order.
 
@@ -100,22 +99,22 @@ In Standard ML, and in Morel until recently, a name could only have
 one binding.  Functions are values, and therefore inhabit the same
 namespace as regular values.  If I declare `x` to be an `int` value
 
-```sml
+<!-- morel skip
 val x = 42;
-```
+-->
 
 and then later try to declare `x` to be a function
 
-```sml
+<!-- morel skip
 val x = fn y => y + 1;
-```
+-->
 
 then the previous declaration of `x` is no longer accessible.
-```sml
+<!-- morel skip
 int z = x - 2;
-(*[> 0.0-0.0 Error: Cannot deduce type: conflict: fn(int, int) vs int
->   raised at: 0.0-0.0]*)
-```
+> 0.0-0.0 Error: Cannot deduce type: conflict: fn(int, int) vs int
+>   raised at: 0.0-0.0
+-->
 
 To create
 [overloaded functions](https://github.com/hydromatic/morel/issues/237),

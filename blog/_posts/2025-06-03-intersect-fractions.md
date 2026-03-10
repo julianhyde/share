@@ -88,7 +88,7 @@ To convert this algorithm to code, we will need three things:
 
 Here are the `factorize` and `product` functions.
 
-```sml
+<!-- morel
 fun factorize n =
   let
     fun factorize' n d =
@@ -98,31 +98,66 @@ fun factorize n =
   in
     factorize' n 2
   end;
-(*[> val factorize = fn : int -> int list]*)
+> val factorize = fn : int -> int list
 
 fun product [] = 1
   | product (x::xs) = x * (product xs);
-(*[> val product = fn : int list -> int]*)
-```
+> val product = fn : int list -> int
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">factorize</span> <span class="n">n</span> <span class="p">=</span>
+  <span class="kr">let</span>
+    <span class="kr">fun</span> <span class="nf">factorize'</span> <span class="n">n</span> <span class="n">d</span> <span class="p">=</span>
+      <span class="kr">if</span> <span class="n">n</span> &lt; <span class="n">d</span> <span class="kr">then</span> <span class="p">[]</span> <span class="kr">else</span>
+      <span class="kr">if</span> <span class="n">n</span> <span class="n">mod</span> <span class="n">d</span> <span class="p">=</span> <span class="mi">0</span> <span class="kr">then</span> <span class="n">d</span> <span class="o">::</span> <span class="p">(</span><span class="n">factorize'</span> <span class="p">(</span><span class="n">n</span> <span class="n">div</span> <span class="n">d</span><span class="p">)</span> <span class="n">d</span><span class="p">)</span>
+      <span class="kr">else</span> <span class="n">factorize'</span> <span class="n">n</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="kr">in</span>
+    <span class="n">factorize'</span> <span class="n">n</span> <span class="mi">2</span>
+  <span class="kr">end</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val factorize = fn : int -&gt; int list</span></code></pre>
+<pre class="morel-input"><code>
+<span class="kr">fun</span> <span class="nf">product</span> <span class="p">[]</span> <span class="p">=</span> <span class="mi">1</span>
+  <span class="p">|</span> <span class="n">product</span> <span class="p">(</span><span class="n">x</span><span class="o">::</span><span class="n">xs</span><span class="p">)</span> <span class="p">=</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">product</span> <span class="n">xs</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val product = fn : int list -&gt; int</span></code></pre>
+</div>
+
 
 Here's how they work:
 
-```sml
+<!-- morel
 factorize 120;
-(*[> val it = [2, 2, 2, 3, 5] : int list]*)
+> val it = [2,2,2,3,5] : int list
 product (factorize 120);
-(*[> val it = 120 : int]*)
-```
+> val it = 120 : int
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="n">factorize</span> <span class="mi">120</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [2,2,2,3,5] : int list</span></code></pre>
+<pre class="morel-input"><code><span class="n">product</span> <span class="p">(</span><span class="n">factorize</span> <span class="mi">120</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = 120 : int</span></code></pre>
+</div>
+
 
 So, we can compute GCD like this:
 
-```sml
+<!-- morel skip
 fun gcd (m, n) =
   from f in factorize m
     intersect factorize n
     compute product;
-(*[> val gcd = fn : int * int -> int]*)
-```
+> val gcd = fn : int * int -> int
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">gcd</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
+  <span class="kr">from</span> <span class="n">f</span> <span class="kr">in</span> <span class="n">factorize</span> <span class="n">m</span>
+    <span class="kr">intersect</span> <span class="n">factorize</span> <span class="n">n</span>
+    <span class="kr">compute</span> <span class="n">product</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val gcd = fn : int * int -&gt; int</span></code></pre>
+</div>
+
 
 The last step uses `compute` because `product` fulfills Morel's only
 criterion to be an aggregate function: its argument is a collection
@@ -132,16 +167,23 @@ aggregate function.)
 
 LCM can be computed from GCD:
 
-```sml
+<!-- morel skip
 fun lcm (m, n) =
   (m * n) div gcd (m, n);
-(*[> val lcm = fn : int * int -> int]*)
-```
+> val lcm = fn : int * int -> int
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">lcm</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
+  <span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="n">div</span> <span class="n">gcd</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val lcm = fn : int * int -&gt; int</span></code></pre>
+</div>
+
 
 But, as we discussed above, it can also be computed directly using
 `union`, `except` and `intersect`:
 
-```sml
+<!-- morel skip
 fun lcm' (m, n) =
   let
     val m_factors = factorize m
@@ -153,19 +195,45 @@ fun lcm' (m, n) =
         intersect n_factors)
     compute product
   end;
-(*[> val lcm' = fn : int * int -> int]*)
-```
+> val lcm' = fn : int * int -> int
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">lcm'</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
+  <span class="kr">let</span>
+    <span class="kr">val</span> <span class="nv">m_factors</span> <span class="p">=</span> <span class="n">factorize</span> <span class="n">m</span>
+    <span class="kr">val</span> <span class="nv">n_factors</span> <span class="p">=</span> <span class="n">factorize</span> <span class="n">n</span>
+  <span class="kr">in</span>
+    <span class="kr">from</span> <span class="n">f</span> <span class="kr">in</span> <span class="n">m_factors</span>
+      <span class="kr">union</span> <span class="p">(</span><span class="n">n_factors</span><span class="p">)</span>
+      <span class="kr">except</span> <span class="p">(</span><span class="kr">from</span> <span class="n">f</span> <span class="kr">in</span> <span class="n">m_factors</span>
+        <span class="kr">intersect</span> <span class="n">n_factors</span><span class="p">)</span>
+    <span class="kr">compute</span> <span class="n">product</span>
+  <span class="kr">end</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val lcm' = fn : int * int -&gt; int</span></code></pre>
+</div>
+
 
 Let's test them:
 
-```sml
+<!-- morel skip
 gcd (36, 120);
-(*[> val it = 12 : int]*)
+> val it = 12 : int
 lcm (36, 120);
-(*[> val it = 360 : int]*)
+> val it = 360 : int
 lcm' (36, 120);
-(*[> val it = 360 : int]*)
-```
+> val it = 360 : int
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="n">gcd</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = 12 : int</span></code></pre>
+<pre class="morel-input"><code><span class="n">lcm</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = 360 : int</span></code></pre>
+<pre class="morel-input"><code><span class="n">lcm'</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = 360 : int</span></code></pre>
+</div>
+
 
 ## Conclusion
 

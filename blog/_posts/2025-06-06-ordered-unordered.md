@@ -15,18 +15,43 @@ more information than you had before.
 
 No, the integer list
 
-```sml
+<!-- morel skip
 [3, 1, 4, 1, 5, 9, 2, 6, 5, 3]
-```
+> val it = [3,1,4,1,5,9,2,6,5,3] : int list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5,9,2,6,5,3] : int list</span></code></pre>
+</div>
+
 
 and the string list
 
-```sml
+<!-- morel skip
 ["Shall I compare thee to a summer's day?",
   "Thou art more lovely and more temperate",
   "Rough winds do shake the darling buds of May",
   "And summer's lease hath all too short a date"]
-```
+> val it =
+>   ["Shall I compare thee to a summer's day?",
+>    "Thou art more lovely and more temperate",
+>    "Rough winds do shake the darling buds of May",
+>    "And summer's lease hath all too short a date"] : string list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="p">[</span><span class="s2">"Shall I compare thee to a summer's day?"</span><span class="p">,</span>
+  <span class="s2">"Thou art more lovely and more temperate"</span><span class="p">,</span>
+  <span class="s2">"Rough winds do shake the darling buds of May"</span><span class="p">,</span>
+  <span class="s2">"And summer's lease hath all too short a date"</span><span class="p">]</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it =</span>
+<span class="c">  ["Shall I compare thee to a summer's day?",</span>
+<span class="c">   "Thou art more lovely and more temperate",</span>
+<span class="c">   "Rough winds do shake the darling buds of May",</span>
+<span class="c">   "And summer's lease hath all too short a date"] : string list</span></code></pre>
+</div>
+
 
 depend on the order of their elements for their meaning.
 
@@ -63,11 +88,18 @@ Functional programming languages' fundamental type is the list, an
 ordered type. Functional programs are often defined by structural
 induction on lists.  For example, the function
 
-```sml
+<!-- morel
 fun allPositive [] = true
   | allPositive (x::xs) = x > 0 andalso allPositive xs;
-(*[> val allPositive = fn : int list -> bool]*)
-```
+> val allPositive = fn : int list -> bool
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">allPositive</span> <span class="p">[]</span> <span class="p">=</span> <span class="n">true</span>
+  <span class="p">|</span> <span class="n">allPositive</span> <span class="p">(</span><span class="n">x</span><span class="o">::</span><span class="n">xs</span><span class="p">)</span> <span class="p">=</span> <span class="n">x</span> &gt; <span class="mi">0</span> <span class="kr">andalso</span> <span class="n">allPositive</span> <span class="n">xs</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val allPositive = fn : int list -&gt; bool</span></code></pre>
+</div>
+
 
 inductively defines that a list of numbers is "all-positive" if it is
 empty, or if its first element is positive and the rest of the list is
@@ -90,42 +122,74 @@ implying a given element may occur more than once, but iteration order
 is not defined.) `bag` is the unordered counterpart to the ordered
 `list` type, and has similar operations.
 
-```sml
+<!-- morel
 val b = bag [3, 1, 4, 1, 5];
-(*[> val b = [3,1,4,1,5] : int bag]*)
+> val b = [3,1,4,1,5] : int bag
 Bag.length b;
-(*[> val it = 5 : int]*)
+> val it = 5 : int
 Bag.toList b;
-(*[> val it = [3,1,4,1,5] : int list]*)
+> val it = [3,1,4,1,5] : int list
 Bag.fromList [3, 1, 4, 1, 5];
-(*[> val it = [3,1,4,1,5] : int bag]*)
-```
+> val it = [3,1,4,1,5] : int bag
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">b</span> <span class="p">=</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span></code></pre>
+<pre class="morel-output"><code><span class="c">val b = [3,1,4,1,5] : int bag</span></code></pre>
+<pre class="morel-input"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">length</span> <span class="n">b</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = 5 : int</span></code></pre>
+<pre class="morel-input"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">toList</span> <span class="n">b</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5] : int list</span></code></pre>
+<pre class="morel-input"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5] : int bag</span></code></pre>
+</div>
+
 
 Order-dependent operations from the `list` type, such as `hd` and
 `drop`, are defined for `bag` instances, but they are not guaranteed
 to return the same result every time you call them.
 
-```sml
+<!-- morel
 Bag.hd b;
-(*[> val it = 3 : int]*)
+> val it = 3 : int
 Bag.drop (b, 2);
-(*[> val it = [4,1,5] : int bag]*)
-```
+> val it = [4,1,5] : int bag
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">hd</span> <span class="n">b</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = 3 : int</span></code></pre>
+<pre class="morel-input"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">drop</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [4,1,5] : int bag</span></code></pre>
+</div>
+
 
 Collections backed by database tables now have type `bag`:
 
-```sml
+<!-- morel skip
 from e in scott.depts;
-
-(*[> deptno dname      loc
+> deptno dname      loc
 > ------ ---------- --------
 > 10     ACCOUNTING NEW YORK
 > 20     RESEARCH   DALLAS
 > 30     SALES      CHICAGO
 > 40     OPERATIONS BOSTON
 >
-> val it : {deptno:int, dname:string, loc:string} bag]*)
-```
+> val it : {deptno:int, dname:string, loc:string} bag
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">depts</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">deptno dname      loc</span>
+<span class="c">------ ---------- --------</span>
+<span class="c">10     ACCOUNTING NEW YORK</span>
+<span class="c">20     RESEARCH   DALLAS</span>
+<span class="c">30     SALES      CHICAGO</span>
+<span class="c">40     OPERATIONS BOSTON</span>
+<span class="c"></span>
+<span class="c">val it : {deptno:int, dname:string, loc:string} bag</span></code></pre>
+</div>
+
 
 (You may notice that `scott.depts` collection, backed by the `DEPT`
 table of the `SCOTT` JDBC data source, has changed its name as well
@@ -148,41 +212,72 @@ In previous versions of Morel, the `order` step converted a list to a
 `list` with a different ordering; now its input can be a list *or* a
 bag:
 
-```sml
+<!-- morel
 from i in [3, 1, 4, 1, 5]
   order DESC i;
-(*[> val it = [5,4,3,1,1] : int list]*)
+> val it = [5,4,3,1,1] : int list
 from i in bag [3, 1, 4, 1, 5]
   order DESC i;
-(*[> val it = [5,4,3,1,1] : int list]*)
-```
+> val it = [5,4,3,1,1] : int list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+  <span class="kr">order</span> <span class="n">DESC</span> <span class="n">i</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [5,4,3,1,1] : int list</span></code></pre>
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+  <span class="kr">order</span> <span class="n">DESC</span> <span class="n">i</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [5,4,3,1,1] : int list</span></code></pre>
+</div>
+
 
 If the sort key does not create a total ordering, the results will be
 nondeterministic but still a list. For example, we can sort integers
 so that even numbers occur before odd numbers
 
-```sml
+<!-- morel skip
 from i in bag [3, 1, 4, 1, 5]
   order i mod 2;
-(*[> val it = [4, 1, 5, 1, 3]]*)
-```
+> val it = [4, 1, 5, 1, 3]
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+  <span class="kr">order</span> <span class="n">i</span> <span class="n">mod</span> <span class="mi">2</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [4, 1, 5, 1, 3]</span></code></pre>
+</div>
+
 
 or convert a bag to a list in arbitrary order.
 
-```sml
+<!-- morel skip
 from i in bag [3, 1, 4, 1, 5]
   order ();
-(*[> val it = [5, 4, 1, 1, 3]]*)
-```
+> val it = [5, 4, 1, 1, 3]
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+  <span class="kr">order</span> <span class="p">();</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [5, 4, 1, 1, 3]</span></code></pre>
+</div>
+
   
 To go the opposite direction, the new `unorder` step converts a list
 to a bag:
 
-```sml
+<!-- morel
 from i in [3, 1, 4, 1, 5]
   unorder;
-(*[> val it = [3,1,4,1,5] : int bag]*)
-```
+> val it = [3,1,4,1,5] : int bag
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+  <span class="kr">unorder</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5] : int bag</span></code></pre>
+</div>
+
 
 (You are also free to apply `unorder` to a `bag`; it will have no
 effect.)
@@ -192,14 +287,24 @@ corresponding `list`. If you plan to convert the `bag` to a `list`
 at a later stage, you need to store the ordering in an extra field.
 The new `ordinal` expression lets us do this:
 
-```sml
+<!-- morel
 from i in [3, 1, 4, 1, 5]
   yield {i, j = ordinal}
   unorder
   order j
   yield i;
-(*[> val it = [3,1,4,1,5] : int list]*)
-```
+> val it = [3,1,4,1,5] : int list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="p">=</span> <span class="kr">ordinal</span><span class="p">}</span>
+  <span class="kr">unorder</span>
+  <span class="kr">order</span> <span class="n">j</span>
+  <span class="kr">yield</span> <span class="n">i</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5] : int list</span></code></pre>
+</div>
+
 
 The `ordinal` expression can be used in an expression in a
 step whose input is ordered (except the steps whose expressions are
@@ -211,21 +316,36 @@ avoids evaluating `ordinal` if it can.
 Here is a query that computes the salary rank of each employee,
 then returns only the poorly-paid clerks.
 
-```sml
+<!-- morel skip
 from e in scott.emps
   order e.sal
   yield {e, rank = 1 + ordinal}
   where e.job = "CLERK";
-
-(*[> ename  rank
+> ename  rank
 > ------ ----
 > MILLER 9
 > ADAMS  12
 > JAMES  13
 > SMITH  14
 >
-> val it : {ename:string, rank:int} list]*)
-```
+> val it : {ename:string, rank:int} list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="n">e</span><span class="p">,</span> <span class="n">rank</span> <span class="p">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="kr">ordinal</span><span class="p">}</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"CLERK"</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">ename  rank</span>
+<span class="c">------ ----</span>
+<span class="c">MILLER 9</span>
+<span class="c">ADAMS  12</span>
+<span class="c">JAMES  13</span>
+<span class="c">SMITH  14</span>
+<span class="c"></span>
+<span class="c">val it : {ename:string, rank:int} list</span></code></pre>
+</div>
+
 
 The main reason to apply `order` and `unorder` in a query is
 to control the target collection type. But there is a more subtle
@@ -244,13 +364,13 @@ not exhaustive.
 If you want `order` to be stable, you can add `ordinal` to the
 trailing edge of the sort key:
 
-```sml
+<!-- morel skip
 from e in scott.emps
   order DESC e.sal
   where e.deptno <> 20
   yield {e.ename, e.job, e.sal}
   order (e.job, ordinal);
-(*[> val it =
+> val it =
 >   [{ename="MILLER",job="CLERK",sal=1300.0},
 >    {ename="JAMES",job="CLERK",sal=950.0},
 >    {ename="BLAKE",job="MANAGER",sal=2850.0},
@@ -260,8 +380,28 @@ from e in scott.emps
 >    {ename="TURNER",job="SALESMAN",sal=1500.0},
 >    {ename="WARD",job="SALESMAN",sal=1250.0},
 >    {ename="MARTIN",job="SALESMAN",sal=1250.0}]
->   : {ename:string, job:string, sal:real} list]*)
-```
+>   : {ename:string, job:string, sal:real} list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="n">DESC</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> &lt;&gt; <span class="mi">20</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">}</span>
+  <span class="kr">order</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="kr">ordinal</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it =</span>
+<span class="c">  [{ename="MILLER",job="CLERK",sal=1300.0},</span>
+<span class="c">   {ename="JAMES",job="CLERK",sal=950.0},</span>
+<span class="c">   {ename="BLAKE",job="MANAGER",sal=2850.0},</span>
+<span class="c">   {ename="CLARK",job="MANAGER",sal=2450.0},</span>
+<span class="c">   {ename="KING",job="PRESIDENT",sal=5000.0},</span>
+<span class="c">   {ename="ALLEN",job="SALESMAN",sal=1600.0},</span>
+<span class="c">   {ename="TURNER",job="SALESMAN",sal=1500.0},</span>
+<span class="c">   {ename="WARD",job="SALESMAN",sal=1250.0},</span>
+<span class="c">   {ename="MARTIN",job="SALESMAN",sal=1250.0}]</span>
+<span class="c">  : {ename:string, job:string, sal:real} list</span></code></pre>
+</div>
+
 
 Materializing `ordinal` as a 1-based, contiguous sequence of integers
 is expensive because it forces sequential execution, and the
@@ -353,30 +493,50 @@ operator, we define the semantics of each step over input that is a
 The rules for `from` and `join` produce the same familiar ordering as
 a nested "for" loop in a language such as C, Python or Java:
 
-```sml
+<!-- morel
 from hundreds in [100, 200, 300],
     tens in [10, 20, 30]
   join units in [1, 2, 3]
   yield hundreds + tens + units;
-(*[> val it =
->   [111,112,113,121,122,123,131,132,133,211,212,213,221,222,
->    223,231,232,233,311,312,313,321,322,323,331,332,333]]*)
-```
+> val it = [111,112,113,121,122,123,131,132,133,211,212,213,...] : int list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">hundreds</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">],</span>
+    <span class="n">tens</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+  <span class="kr">join</span> <span class="n">units</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+  <span class="kr">yield</span> <span class="n">hundreds</span> <span class="o">+</span> <span class="n">tens</span> <span class="o">+</span> <span class="n">units</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [111,112,113,121,122,123,131,132,133,211,212,213,...] : int list</span></code></pre>
+</div>
+
 
 The rules for `union`, `intersect` and `except` are rather subtle, and
 are best illustrated by example:
 
-```sml
+<!-- morel
 from i in [3, 1, 4, 1, 5, 9, 2, 6]
   union [2, 7, 1, 8, 2, 8, 1, 8];
-(*[> val it = [3,1,4,1,5,9,2,6,2,7,1,8,2,8,1,8] : int list]*)
 from i in [3, 1, 4, 1, 5, 9, 2, 6]
   intersect [2, 7, 1, 8, 2, 8, 1, 8];
-(*[> val it = [1,1,2] : int list]*)
 from i in [3, 1, 4, 1, 5, 9, 2, 6]
   except [2, 7, 1, 8, 2, 8, 1, 8];
-(*[> val it = [3,4,5,6,9] : int list]*)
-```
+> val it = [3,1,4,1,5,9,2,6,2,7,1,8,...] : int list
+> val it = [1,1,2] : int list
+> val it = [3,4,5,9,6] : int list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+  <span class="kr">union</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">];</span>
+<span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+  <span class="kr">intersect</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">];</span>
+<span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+  <span class="kr">except</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">];</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5,9,2,6,2,7,1,8,...] : int list</span>
+<span class="c">val it = [1,1,2] : int list</span>
+<span class="c">val it = [3,4,5,9,6] : int list</span></code></pre>
+</div>
+
 
 ## Hybrid relational operators
 
@@ -394,13 +554,12 @@ For example, if we join a `list` of department numbers (ordered) to a
 table of employees (unordered), selecting only the clerks and
 managers, the result is a `bag` (unordered):
 
-```sml
+<!-- morel skip
 from deptno in [10, 20, 30]
   join e in scott.emps on e.deptno = deptno
   where e.job elem ["CLERK", "MANAGER"]
   yield {deptno, e.ename};
-
-(*[> deptno ename
+> deptno ename
 > ------ ------
 > 30     JAMES
 > 10     CLARK
@@ -410,8 +569,27 @@ from deptno in [10, 20, 30]
 > 30     BLAKE
 > 20     JONES
 >
-> val it : {deptno:int, ename:string} bag]*)
-```
+> val it : {deptno:int, ename:string} bag
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">deptno</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+  <span class="kr">join</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="n">deptno</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="kr">elem</span> <span class="p">[</span><span class="s2">"CLERK"</span><span class="p">,</span> <span class="s2">"MANAGER"</span><span class="p">]</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="n">deptno</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">};</span></code></pre>
+<pre class="morel-output"><code><span class="c">deptno ename</span>
+<span class="c">------ ------</span>
+<span class="c">30     JAMES</span>
+<span class="c">10     CLARK</span>
+<span class="c">20     ADAMS</span>
+<span class="c">10     MILLER</span>
+<span class="c">20     SMITH</span>
+<span class="c">30     BLAKE</span>
+<span class="c">20     JONES</span>
+<span class="c"></span>
+<span class="c">val it : {deptno:int, ename:string} bag</span></code></pre>
+</div>
+
 
 ## Type inference challenges
 
@@ -424,7 +602,7 @@ to the casual user.)
 
 The problem is evident in a program such as
 
-```sml
+<!-- morel skip
 let
   fun f (xs, ys) =
     from i in xs
@@ -432,8 +610,20 @@ let
 in
   f ((from e in scott.emps yield e.empno), [7521, 7782, 8000])
 end;
-(*[> val it = [7521,7782] : int bag]*)
-```
+> val it = [7521,7782] : int bag
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">let</span>
+  <span class="kr">fun</span> <span class="nf">f</span> <span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span> <span class="p">=</span>
+    <span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">xs</span>
+      <span class="kr">intersect</span> <span class="n">ys</span>
+<span class="kr">in</span>
+  <span class="n">f</span> <span class="p">((</span><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">empno</span><span class="p">),</span> <span class="p">[</span><span class="mi">7521</span><span class="p">,</span> <span class="mi">7782</span><span class="p">,</span> <span class="mi">8000</span><span class="p">])</span>
+<span class="kr">end</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [7521,7782] : int bag</span></code></pre>
+</div>
+
 
 While resolving the type of function `f` and its embedded query, the
 types of the arguments `xs` and `ys` have not yet been

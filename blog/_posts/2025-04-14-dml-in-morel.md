@@ -64,7 +64,7 @@ COMMIT;
 If we added `insert`, `update`, and `delete` operators to Morel, this
 could become the following code.
 
-```sml
+<!-- morel skip
 (* Delete employees who earn more than 1,000. *)
 delete e in scott.emps
   where e.sal > 1000;
@@ -80,7 +80,26 @@ update e in scott.emps
 
 (* Commit. *)
 commit;
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Delete employees who earn more than 1,000. *)</span>
+<span class="n">delete</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">;</span>
+
+<span class="c">(*</span><span class="cm"> Add one employee. *)</span>
+<span class="n">insert</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="p">[{</span><span class="n">empno</span> <span class="p">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">deptno</span> <span class="p">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">ename</span> <span class="p">=</span> <span class="s2">"HYDE"</span><span class="p">,</span> <span class="n">job</span> <span class="p">=</span> <span class="s2">"ANALYST"</span><span class="p">,</span> <span class="n">sal</span> <span class="p">=</span> <span class="mi">1150</span><span class="p">}];</span>
+
+<span class="c">(*</span><span class="cm"> Double the salary of all managers. *)</span>
+<span class="n">update</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="nd">'MANAGER'</span>
+  <span class="n">assign</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="p">{</span><span class="n">e</span> <span class="kr">with</span> <span class="n">sal</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="o">*</span> <span class="mi">2</span><span class="p">});</span>
+
+<span class="c">(*</span><span class="cm"> Commit. *)</span>
+<span class="n">commit</span><span class="p">;</span></code></pre>
+</div>
+
 
 Note that `update` has an `assign` clause that updates
 the current record, and we borrow the `with`
@@ -146,7 +165,7 @@ state of the `emps` table before the `INSERT` command was run. In SQL,
 you're out of luck. In the DML syntax I'm proposing for Morel, it is
 straightforward:
 
-```sml
+<!-- morel skip
 (* Delete employees who earn more than 1,000. *)
 val emps2 =
   from e in scott.emps
@@ -163,7 +182,27 @@ val emps4 =
 
 (* Commit. *)
 commit {scott with emps = emps4};
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Delete employees who earn more than 1,000. *)</span>
+<span class="kr">val</span> <span class="nv">emps2</span> <span class="p">=</span>
+  <span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+    <span class="kr">where</span> <span class="kr">not</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">);</span>
+
+<span class="c">(*</span><span class="cm"> Add one employee. *)</span>
+<span class="kr">val</span> <span class="nv">emps3</span> <span class="p">=</span> <span class="n">emps2</span> <span class="kr">union</span>
+  <span class="p">[{</span><span class="n">empno</span> <span class="p">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">deptno</span> <span class="p">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">ename</span> <span class="p">=</span> <span class="s2">"HYDE"</span><span class="p">,</span> <span class="n">job</span> <span class="p">=</span> <span class="s2">"ANALYST"</span><span class="p">,</span> <span class="n">sal</span> <span class="p">=</span> <span class="mi">1150</span><span class="p">}];</span>
+
+<span class="c">(*</span><span class="cm"> Double the salary of all managers. *)</span>
+<span class="kr">val</span> <span class="nv">emps4</span> <span class="p">=</span>
+  <span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps3</span>
+    <span class="kr">yield</span> <span class="kr">if</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"MANAGER"</span> <span class="kr">then</span> <span class="p">{</span><span class="n">e</span> <span class="kr">with</span> <span class="n">sal</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="o">*</span> <span class="mi">2</span><span class="p">}</span> <span class="kr">else</span> <span class="n">e</span><span class="p">;</span>
+
+<span class="c">(*</span><span class="cm"> Commit. *)</span>
+<span class="n">commit</span> <span class="p">{</span><span class="n">scott</span> <span class="kr">with</span> <span class="n">emps</span> <span class="p">=</span> <span class="n">emps4</span><span class="p">};</span></code></pre>
+</div>
+
 
 The `insert`, `update`, and `delete` commands are no more, but we use
 the new `with` operator during update and commit.

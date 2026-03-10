@@ -83,13 +83,22 @@ with an optional `desc` keyword.
 
 One problem is the commas. In the expression
 
-```sml
+<!-- morel skip
 let
   val pairs = [(1, "a"), (2, "b"), (1, "c")];
 in
   foo (from (i, j) in pairs order i desc, j)
 end;
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">let</span>
+  <span class="kr">val</span> <span class="nv">pairs</span> <span class="p">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">)];</span>
+<span class="kr">in</span>
+  <span class="n">foo</span> <span class="p">(</span><span class="kr">from</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="kr">in</span> <span class="n">pairs</span> <span class="kr">order</span> <span class="n">i</span> <span class="kr">desc</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">;</span></code></pre>
+</div>
+
 
 it is not immediately clear whether `j` is a second argument for the
 call to the function `foo` or the second item in the `order` clause.
@@ -119,52 +128,87 @@ enum (`LESS`, `EQUAL`, `GREATER`). Its type is
 
 For `int`, I can write a simple function:
 
-```sml
+<!-- morel
 fun compareInt (x: int, y: int) =
   if x < y then LESS
   else if x > y then GREATER
   else EQUAL;
-(*[> val compareInt = fn : int * int -> order]*)
-```
+> val compareInt = fn : int * int -> order
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">compareInt</span> <span class="p">(</span><span class="n">x</span><span class="o">:</span> <span class="n">int</span><span class="p">,</span> <span class="n">y</span><span class="o">:</span> <span class="n">int</span><span class="p">)</span> <span class="p">=</span>
+  <span class="kr">if</span> <span class="n">x</span> &lt; <span class="n">y</span> <span class="kr">then</span> <span class="n">LESS</span>
+  <span class="kr">else</span> <span class="kr">if</span> <span class="n">x</span> &gt; <span class="n">y</span> <span class="kr">then</span> <span class="n">GREATER</span>
+  <span class="kr">else</span> <span class="n">EQUAL</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val compareInt = fn : int * int -&gt; order</span></code></pre>
+</div>
+
 
 In fact, most data types have a built-in `compare` function:
 
-```sml
+<!-- morel
 Int.compare;
-(*[> val it = fn : int * int -> order]*)
-
+> val it = fn : int * int -> order
 Real.compare;
-(*[> val it = fn : real * real -> order]*)
-
+> val it = fn : real * real -> order
 String.compare;
-(*[> val it = fn : string * string -> order]*)
-```
+> val it = fn : string * string -> order
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = fn : int * int -&gt; order</span></code></pre>
+<pre class="morel-input"><code><span class="nn">Real</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = fn : real * real -&gt; order</span></code></pre>
+<pre class="morel-input"><code><span class="nn">String</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = fn : string * string -&gt; order</span></code></pre>
+</div>
+
 
 For more complex orderings, I can write a comparator that combines
 other comparators. For example, this function compares a list of
 `string * real` pairs, the `string` first, then the `real`
 descending:
 
-```sml
+<!-- morel
 fun compareStringRealPair ((s1, r1), (s2, r2)) =
     case String.compare (s1, s2) of
         EQUAL => Real.compare (r2, r1)
       | result => result;
-(*[> val compareStringRealPair = fn
->   : string * real * (string * real) -> order]*)
-```
+> val compareStringRealPair = fn : string * real * (string * real) -> order
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">compareStringRealPair</span> <span class="p">((</span><span class="n">s1</span><span class="p">,</span> <span class="n">r1</span><span class="p">),</span> <span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">r2</span><span class="p">))</span> <span class="p">=</span>
+    <span class="kr">case</span> <span class="nn">String</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span> <span class="kr">of</span>
+        <span class="n">EQUAL</span> <span class="o">=&gt;</span> <span class="nn">Real</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">r1</span><span class="p">)</span>
+      <span class="p">|</span> <span class="n">result</span> <span class="o">=&gt;</span> <span class="n">result</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val compareStringRealPair = fn : string * real * (string * real) -&gt; order</span></code></pre>
+</div>
+
 
 If we were to add comparators to Morel, we could add `order using`
 syntax like this:
 
-```sml
+<!-- morel skip
 (* Sort employees by job, and then by descending salary. *)
 from e in scott.emps
   order using fn (emp1, emp2) =>
     case String.compare (emp1.job, emp2.job) of
        EQUAL => Real.compare (emp2.sal, emp1.sal)
      | result => result;
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Sort employees by job, and then by descending salary. *)</span>
+<span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="n">using</span> <span class="kr">fn</span> <span class="p">(</span><span class="n">emp1</span><span class="p">,</span> <span class="n">emp2</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="kr">case</span> <span class="nn">String</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="nn">emp1</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">emp2</span><span class="p">.</span><span class="n">job</span><span class="p">)</span> <span class="kr">of</span>
+       <span class="n">EQUAL</span> <span class="o">=&gt;</span> <span class="nn">Real</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="nn">emp2</span><span class="p">.</span><span class="n">sal</span><span class="p">,</span> <span class="nn">emp1</span><span class="p">.</span><span class="n">sal</span><span class="p">)</span>
+     <span class="p">|</span> <span class="n">result</span> <span class="o">=&gt;</span> <span class="n">result</span><span class="p">;</span></code></pre>
+</div>
+
 
 (The comparator expression in this query is basically an inline
 version of the `compareStringRealPair` function, but working on `emp`
@@ -188,20 +232,34 @@ construct an expression with a complex type.
 Previously, if you wanted a composite ordering, with one of the keys
 descending, you would write something like this:
 
-```sml
+<!-- morel skip
 (* Old syntax. *)
 from e in scott.emps
   order e.job, e.sal desc;
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Old syntax. *)</span>
+<span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="kr">desc</span><span class="p">;</span></code></pre>
+</div>
+
 
 As of Morel 0.7, you can write the same query using a single
 expression:
 
-```sml
+<!-- morel skip
 (* New syntax. *)
 from e in scott.emps
   order (e.job, DESC e.sal);
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> New syntax. *)</span>
+<span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="n">DESC</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">);</span></code></pre>
+</div>
+
 
 Note that:
  * For a composite ordering, we use a tuple type. Morel compares the
@@ -248,29 +306,50 @@ wasn't before?
 
 We can pass the expression as an argument to a function, like this:
 
-```sml
+<!-- morel skip
 fun rankedEmployees extractKey =
   from e in scott.emps
     order extractKey e;
-    
+
 rankedEmployees (fn e => e.ename);
 rankedEmployees (fn e => (e.job,  DESC e.sal));
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">rankedEmployees</span> <span class="n">extractKey</span> <span class="p">=</span>
+  <span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+    <span class="kr">order</span> <span class="n">extractKey</span> <span class="n">e</span><span class="p">;</span>
+
+<span class="n">rankedEmployees</span> <span class="p">(</span><span class="kr">fn</span> <span class="n">e</span> <span class="o">=&gt;</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">);</span>
+<span class="n">rankedEmployees</span> <span class="p">(</span><span class="kr">fn</span> <span class="n">e</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span>  <span class="n">DESC</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">));</span></code></pre>
+</div>
+
 
 We can also achieve the trivial sort required to convert a `bag` to a
 `list`. You can sort by any constant value, such as the integer `0` or
 the `Option` constructor `NONE`, but the norm would be to sort by the
 empty tuple `()`:
 
-```sml
+<!-- morel skip
 from e in scott.emps
   yield e.ename
   order ();
-(*[> val it =
+> val it =
 >   ["SMITH","ALLEN","WARD","JONES","MARTIN","BLAKE","CLARK",
 >    "SCOTT","KING","TURNER","ADAMS","JAMES","FORD","MILLER"]
->   : string list]*)
-```
+>   : string list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span>
+  <span class="kr">order</span> <span class="p">();</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it =</span>
+<span class="c">  ["SMITH","ALLEN","WARD","JONES","MARTIN","BLAKE","CLARK",</span>
+<span class="c">   "SCOTT","KING","TURNER","ADAMS","JAMES","FORD","MILLER"]</span>
+<span class="c">  : string list</span></code></pre>
+</div>
+
 
 Note that result is a `list`, even though `scott.emps` (a relational
 database table) is a `bag`.  The elements are in
@@ -297,41 +376,72 @@ Currently, the behavior is the same as SQL's `NULLS FIRST`.  This
 happens because Morel sorts datatype values based on the declaration
 order of their constructors. The `option` type is declared as:
 
-```sml
+<!-- morel skip
 datatype option 'a = NONE | SOME of 'a;
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">datatype</span> <span class="n">option</span> <span class="nd">'a</span> <span class="p">=</span> <span class="n">NONE</span> <span class="p">|</span> <span class="n">SOME</span> <span class="kr">of</span> <span class="nd">'a</span><span class="p">;</span></code></pre>
+</div>
+
 
 Since `NONE` appears before `SOME` in this declaration, the `NONE`
 value sorts lower than all `SOME` values:
 
-```sml
+<!-- morel
 from i in [SOME 1, SOME ~100, NONE]
   order i;
-(*[> val it = [NONE, SOME ~100, SOME 1] : int option list]*)
-```
+> val it = [NONE,SOME ~100,SOME 1] : int option list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
+  <span class="kr">order</span> <span class="n">i</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [NONE,SOME ~100,SOME 1] : int option list</span></code></pre>
+</div>
+
 
 We haven't yet figured out how to express the equivalent of `NULLS
 LAST`.  One idea is to add a `noneLast` datatype
 
-```sml
+<!-- morel skip
 datatype 'a noneLast = NONE_LAST of 'a;
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">datatype</span> <span class="nd">'a</span> <span class="n">noneLast</span> <span class="p">=</span> <span class="n">NONE_LAST</span> <span class="kr">of</span> <span class="nd">'a</span><span class="p">;</span></code></pre>
+</div>
+
 
 and use it in a query like this:
 
-```sml
+<!-- morel skip
 from i in [SOME 1, SOME ~100, NONE]
   order NONE_LAST i;
-(*[> val it = [SOME ~100, SOME 1, NONE] : int option list]*)
-```
+> val it = [SOME ~100, SOME 1, NONE] : int option list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
+  <span class="kr">order</span> <span class="n">NONE_LAST</span> <span class="n">i</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [SOME ~100, SOME 1, NONE] : int option list</span></code></pre>
+</div>
+
 
 When we use `NONE_LAST` and `DESC` together in a query
 
-```sml
+<!-- morel skip
 from i in [SOME 1, SOME ~100, NONE]
   order DESC (NONE_LAST i);
-(*[> val it = [NONE, SOME 1, SOME ~100] : int option list]*)
-```
+> val it = [NONE, SOME 1, SOME ~100] : int option list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
+  <span class="kr">order</span> <span class="n">DESC</span> <span class="p">(</span><span class="n">NONE_LAST</span> <span class="n">i</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [NONE, SOME 1, SOME ~100] : int option list</span></code></pre>
+</div>
+
 
 the `NONE` value appears first. It's what we asked for,
 but not what we expected if we were expecting `DESC`
