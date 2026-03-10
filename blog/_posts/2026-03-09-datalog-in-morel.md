@@ -117,7 +117,7 @@ intermediate node to the destination node. From the edges {1 &rarr;
 
 You can now run the following program from Morel's shell:
 
-```sml
+<!-- morel
 Datalog.execute "
 .decl edge(x:int, y:int)
 .decl path(x:int, y:int)
@@ -126,9 +126,23 @@ edge(2,3).
 path(X,Y) :- edge(X,Y).
 path(X,Z) :- path(X,Y), edge(Y,Z).
 .output path";
-(*[> val it = {path=[{x=1,y=2},{x=2,y=3},{x=1,y=3}]}]*)
-(*[>   : {path:{x:int, y:int} list} variant]*)
-```
+> val it = {path=[{x=1,y=2},{x=2,y=3},{x=1,y=3}]}
+>   : {path:{x:int, y:int} list} variant
+-->
+
+<div class="morel">
+<pre class="morel-input"><code>Datalog.execute "
+.decl edge(x:int, y:int)
+.decl path(x:int, y:int)
+edge(1,2).
+edge(2,3).
+path(X,Y) :- edge(X,Y).
+path(X,Z) :- path(X,Y), edge(Y,Z).
+.output path";</code></pre>
+<pre class="morel-output"><code>val it = {path=[{x=1,y=2},{x=2,y=3},{x=1,y=3}]}
+  : {path:{x:int, y:int} list} variant</code></pre>
+</div>
+
 
 The program is passed (as a string literal) as an argument to the
 `Datalog.execute` function, and the Souffl&eacute; `symbol` and
@@ -168,7 +182,7 @@ Parsing and validation follow standard patterns, but let's look at
 the translation algorithm in a little more detail.
 Here is the translation to Morel of the earlier Datalog program:
 
-```sml
+<!-- morel skip
 let
   val edge_facts = [(1, 2), (2, 3)]
   fun edge (x, y) = (x, y) elem edge_facts
@@ -178,7 +192,20 @@ let
 in
   {path = from x, y where path (x, y)}
 end
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><b>let</b>
+  <b>val</b> edge_facts = [(1, 2), (2, 3)]
+  <b>fun</b> edge (x, y) = (x, y) <b>elem</b> edge_facts
+  <b>fun</b> path (x, y) =
+    edge (x, y) <b>orelse</b>
+    (<b>exists</b> v0 <b>where</b> path (x, v0) <b>andalso</b> edge (v0, y))
+<b>in</b>
+  {path = <b>from</b> x, y <b>where</b> path (x, y)}
+<b>end</b></code></pre>
+</div>
+
 
 You'll notice that the Datalog and Morel programs have the same
 structure. Datalog rules without a body (such as `edge(1,2)` and
@@ -238,7 +265,7 @@ with the relational algebra-style queries (defined by `from`,
 
 The following query is in a hybrid style.
 
-```sml
+<!-- morel skip
 (* Calculus style: recursive reachability *)
 fun edge (x, y) = (x, y) elem [(1,2), (2,3), (3,4), (2,4)];
 fun reachable (x, y) =
@@ -250,7 +277,22 @@ from source in [1, 2, 3, 4]
   yield {source,
          reachable_count = count (from target
                                     where reachable (source, target))}
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code>(* Calculus style: recursive reachability *)
+<b>fun</b> edge (x, y) = (x, y) <b>elem</b> [(1,2), (2,3), (3,4), (2,4)];
+<b>fun</b> reachable (x, y) =
+  edge (x, y) <b>orelse</b>
+  <b>exists</b> z <b>where</b> edge (x, z) <b>andalso</b> reachable (z, y);
+
+(* Algebra style: count reachable nodes per source *)
+<b>from</b> source <b>in</b> [1, 2, 3, 4]
+  <b>yield</b> {source,
+         reachable_count = count (<b>from</b> target
+                                    <b>where</b> reachable (source, target))}</code></pre>
+</div>
+
 
 The `edge` and `reachable` functions define graph reachability in a
 Datalog style, using recursion and boolean return values. The `from`
