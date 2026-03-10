@@ -149,19 +149,45 @@ has been renamed `Relational.nonEmpty`.
 
 Are there any employees with a salary greater than 1,000?
 
-```sml
+<!-- morel silent
+val emps = scott.emps;
+val depts = scott.depts;
+-->
+
+<!-- morel skip
 (* Using new "exists" keyword. *)
 exists e in emps
   where e.sal > 1000.0;
+> val it = true : bool
 
 (* Equivalent using "from" and "List.null". *)
 not (List.null (from e in emps where e.sal > 1000.0));
+> val it = true : bool
 
 (* Equivalent using "from" and "compute". *)
 (from e in emps
   where e.sal > 1000.0
   compute count) > 0
-```
+> val it = true : bool
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Using new "exists" keyword. *)</span>
+<span class="kr">exists</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = true : bool</span></code></pre>
+<pre class="morel-input"><code>
+<span class="c">(*</span><span class="cm"> Equivalent using "from" and "List.null". *)</span>
+<span class="kr">not</span> <span class="p">(</span><span class="nn">List</span><span class="p">.</span><span class="n">null</span> <span class="p">(</span><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span> <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">));</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = true : bool</span></code></pre>
+<pre class="morel-input"><code>
+<span class="c">(*</span><span class="cm"> Equivalent using "from" and "compute". *)</span>
+<span class="p">(</span><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span>
+  <span class="kr">compute</span> <span class="n">count</span><span class="p">)</span> &gt; <span class="mi">0</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = true : bool</span></code></pre>
+</div>
+
 
 The logic expression "&exist; *e* &isin; *set*. *predicate*" maps to the
 Morel expression "<code><b>exists</b> <i>e</i> <b>in</b> <i>set</i>
@@ -175,21 +201,44 @@ least one row.
 ### Example 2. Universal quantification
 
 Do all programmers have a salary greater than 900?
-```sml
+<!-- morel skip
 (* Using new "forall" keyword. *)
 forall e in emps
   where e.job = "PROGRAMMER"
   require e.sal > 900.0;
+> val it = true : bool
 
 (* Equivalent using "exists". *)
 not (exists e in emps
   where e.job = "PROGRAMMER"
   andalso not (e.sal > 900.0));
+> val it = true : bool
 
 (* Equivalent using "from" and "List.null". *)
 List.null (from e in emps
            where e.job = "PROGRAMMER" andalso not (e.sal > 900.0));
-```
+> val it = true : bool
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Using new "forall" keyword. *)</span>
+<span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span>
+  <span class="kr">require</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = true : bool</span></code></pre>
+<pre class="morel-input"><code>
+<span class="c">(*</span><span class="cm"> Equivalent using "exists". *)</span>
+<span class="kr">not</span> <span class="p">(</span><span class="kr">exists</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span>
+  <span class="kr">andalso</span> <span class="kr">not</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">.</span><span class="mi">0</span><span class="p">));</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = true : bool</span></code></pre>
+<pre class="morel-input"><code>
+<span class="c">(*</span><span class="cm"> Equivalent using "from" and "List.null". *)</span>
+<span class="nn">List</span><span class="p">.</span><span class="n">null</span> <span class="p">(</span><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
+           <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span> <span class="kr">andalso</span> <span class="kr">not</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">.</span><span class="mi">0</span><span class="p">));</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = true : bool</span></code></pre>
+</div>
+
 
 The logic expression "&forall; *e* &isin; *set*. *predicate*" maps to
 the Morel expression "<code><b>forall</b> <i>e</i> <b>in</b>
@@ -206,12 +255,20 @@ Why did we add `require` when `where` does almost the same thing?  Our
 initial syntax only had `where`, and to solve the previous query many
 people would end up writing something like this:
 
-```sml
+<!-- morel skip
 (* A query using "where" is invalid and not equivalent to the
    original query. *)
 forall e in emps
   where e.job = "PROGRAMMER" andalso e.sal > 900;
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> A query using "where" is invalid and not equivalent to the
+   original query. *)</span>
+<span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span> <span class="kr">andalso</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">;</span></code></pre>
+</div>
+
 
 This query is invalid (we decided that a `forall` query must end in
 `require`, for reasons that will become clear) but even if it were
@@ -227,11 +284,20 @@ check each member of that population.
 But it got us thinking about other ways to write the query. How would
 you write it if you were a logician? Probably like this:
 
-```sml
+<!-- morel skip
 (* Valid, and equivalent to the original query. *)
 forall e in emps
   require not (e.job = "PROGRAMMER") orelse e.sal > 900;
-```
+> val it = true : bool
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Valid, and equivalent to the original query. *)</span>
+<span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">require</span> <span class="kr">not</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span><span class="p">)</span> <span class="kr">orelse</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = true : bool</span></code></pre>
+</div>
+
 
 The query considers the whole population (all employees, including
 programmers and managers) and crafts the predicate so that rows not in
@@ -240,12 +306,22 @@ just that: <code><i>a</i> <b>implies</b> <i>b</i></code> evaluates to
 true if <code><i>a</i></code> is false, <code><i>b</i></code>
 otherwise.
 
-```sml
+<!-- morel skip
 (* Valid, equivalent to the original query, and we think
    quite nice even if you're not a logician. *)
 forall e in emps
   require e.job = "PROGRAMMER" implies e.sal > 900;
-```
+> val it = true : bool
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Valid, equivalent to the original query, and we think
+   quite nice even if you're not a logician. *)</span>
+<span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">require</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span> <span class="kr">implies</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = true : bool</span></code></pre>
+</div>
+
 
 The `implies` operator (like most operators, including `orelse`,
 `andalso` and arithmetic `-`, `mod` and `/`), is left-associative.
@@ -264,27 +340,52 @@ we needed a way to change just one field of a record.
 Suppose that the `emps` table has eight fields and `emp` represents
 one row from that table:
 
-```sml
+<!-- morel silent
 val emp = List.hd scott.emps;
-(*[> val emp =
+-->
+
+<!-- morel skip
+val emp = List.hd scott.emps;
+> val emp =
 >   {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",
 >    job="CLERK",mgr=7902,sal=800.0}
 >   : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,
->      job:string, mgr:int, sal:real}]*)
-```
+>      job:string, mgr:int, sal:real}
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">emp</span> <span class="p">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">hd</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val emp =</span>
+<span class="c">  {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",</span>
+<span class="c">   job="CLERK",mgr=7902,sal=800.0}</span>
+<span class="c">  : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,</span>
+<span class="c">     job:string, mgr:int, sal:real}</span></code></pre>
+</div>
+
 
 If you want to change just the `sal` field, conventional record syntax
 requires you to copy the other seven fields:
 
-```sml
+<!-- morel skip
 val emp2 = {emp.comm, emp.deptno, emp.empno, emp.ename, emp.hiredate,
     emp.job, emp.mgr, sal = emp.sal * 2.0};
-(*[> val emp2 =
+> val emp2 =
 >   {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",
 >    job="CLERK",mgr=7902,sal=1600.0}
 >   : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,
->      job:string, mgr:int, sal:real}]*)
-```
+>      job:string, mgr:int, sal:real}
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">emp2</span> <span class="p">=</span> <span class="p">{</span><span class="nn">emp</span><span class="p">.</span><span class="n">comm</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">deptno</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">empno</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">ename</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">hiredate</span><span class="p">,</span>
+    <span class="nn">emp</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">mgr</span><span class="p">,</span> <span class="n">sal</span> <span class="p">=</span> <span class="nn">emp</span><span class="p">.</span><span class="n">sal</span> <span class="o">*</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">};</span></code></pre>
+<pre class="morel-output"><code><span class="c">val emp2 =</span>
+<span class="c">  {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",</span>
+<span class="c">   job="CLERK",mgr=7902,sal=1600.0}</span>
+<span class="c">  : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,</span>
+<span class="c">     job:string, mgr:int, sal:real}</span></code></pre>
+</div>
+
 
 Being a functional programming language, Morel avoids direct field
 mutation since mutation often leads to bugs. But creating an entirely
@@ -293,14 +394,24 @@ new record doesn't have to be so verbose.
 We have borrowed OCaml's
 [syntax for functional update of records](https://github.com/hydromatic/morel/issues/249):
 
-```sml
+<!-- morel skip
 val emp3 = {emp with sal = emp.sal * 2.0};
-(*[> val emp3 =
+> val emp3 =
 >   {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",
 >    job="CLERK",mgr=7902,sal=1600.0}
 >   : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,
->      job:string, mgr:int, sal:real}]*)
-```
+>      job:string, mgr:int, sal:real}
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">emp3</span> <span class="p">=</span> <span class="p">{</span><span class="n">emp</span> <span class="kr">with</span> <span class="n">sal</span> <span class="p">=</span> <span class="nn">emp</span><span class="p">.</span><span class="n">sal</span> <span class="o">*</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">};</span></code></pre>
+<pre class="morel-output"><code><span class="c">val emp3 =</span>
+<span class="c">  {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",</span>
+<span class="c">   job="CLERK",mgr=7902,sal=1600.0}</span>
+<span class="c">  : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,</span>
+<span class="c">     job:string, mgr:int, sal:real}</span></code></pre>
+</div>
+
 
 The `with` keyword in a record expression tells Morel to copy the
 original record (`emp` in this case) and only modify the fields
@@ -318,43 +429,77 @@ queries. Why is that?
 
 Maybe it's because the query results don't look much like queries.
 
-```sml
+<!-- morel skip
 from d in scott.depts
     join e in scott.emps on e.deptno = d.deptno
   where e.job = "CLERK"
   yield {d.dname, e.empno};
-(*[> val it =
+> val it =
 >   [{dname="ACCOUNTING",empno=7934},{dname="RESEARCH",empno=7369},
 >    {dname="RESEARCH",empno=7876},{dname="SALES",empno=7900}]
->   : {dname:string, empno:int} list]*)
-```
+>   : {dname:string, empno:int} list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">d</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">depts</span>
+    <span class="kr">join</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"CLERK"</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="nn">d</span><span class="p">.</span><span class="n">dname</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">empno</span><span class="p">};</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it =</span>
+<span class="c">  [{dname="ACCOUNTING",empno=7934},{dname="RESEARCH",empno=7369},</span>
+<span class="c">   {dname="RESEARCH",empno=7876},{dname="SALES",empno=7900}]</span>
+<span class="c">  : {dname:string, empno:int} list</span></code></pre>
+</div>
+
 
 By default, result sets are condensed into a compact representation,
 which works well for many of Morel's supported data types. However,
 this format obscures the natural structure of tabular data. Let's use
 the new [tabular mode](https://github.com/hydromatic/morel/issues/259):
 
-```sml
+<!-- morel skip
 set ("output", "tabular");
-(*[> val it = () : unit]*)
-```
+> val it = () : unit
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="n">set</span> <span class="p">(</span><span class="s2">"output"</span><span class="p">,</span> <span class="s2">"tabular"</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = () : unit</span></code></pre>
+</div>
+
 
 Now the tabular structure is clear:
 
-```sml
+<!-- morel skip
 from d in scott.depts
     join e in scott.emps on e.deptno = d.deptno
   where e.job = "CLERK"
   yield {d.dname, e.empno};
-(*[> dname      empno
+> dname      empno
 > ---------- -----
 > ACCOUNTING  7934
 > RESEARCH    7369
 > RESEARCH    7876
 > SALES       7900
 >
-> val it : {dname:string, empno:int} list]*)
-```
+> val it : {dname:string, empno:int} list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">d</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">depts</span>
+    <span class="kr">join</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"CLERK"</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="nn">d</span><span class="p">.</span><span class="n">dname</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">empno</span><span class="p">};</span></code></pre>
+<pre class="morel-output"><code><span class="c">dname      empno</span>
+<span class="c">---------- -----</span>
+<span class="c">ACCOUNTING  7934</span>
+<span class="c">RESEARCH    7369</span>
+<span class="c">RESEARCH    7876</span>
+<span class="c">SALES       7900</span>
+<span class="c"></span>
+<span class="c">val it : {dname:string, empno:int} list</span></code></pre>
+</div>
+
 
 Tabular mode only activates if the data set is a list of records;
 otherwise it falls back to the "classic" mode.  There's still much

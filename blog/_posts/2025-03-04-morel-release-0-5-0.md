@@ -46,33 +46,64 @@ is equivalent to
 For example, `sum` has type `int list -> int`, and so `into sum`
 converts a stream of `int` values into an `int` result.
 
-```sml
+<!-- morel skip
 (* "sum" adds a list of integers. *)
 sum [1, 2, 4];
-(*[> val it = 7 : int]*)
+> val it = 7 : int
 
 (* "into" applies a function to its input, collected into a list. *)
 from i in [1, 2, 4]
   into sum;
-(*[> val i = 7 : int]*)
+> val it = 7 : int
 
 (* Rewrite "into" to apply the function directly. *)
 sum (from e in [1, 2, 4]);
-(*[> val i = 7 : int]*)
+> val it = 7 : int
 
 (* "into" is equivalent to existing keyword "compute". *)
 from e in [1, 2, 4]
   compute sum;
-(*[> val i = 7 : int]*)
+> val it = 7 : int
 
 (* Actually, "a into b" is equivalent to "(b) a" for any types, not
    just lists. *)
 explode "abc";
-(*[> val it = [#"a",#"b",#"c"] : char list]*)
+> val it = [#"a",#"b",#"c"] : char list
 
 "abc" into explode;
-(*[> val it = [#"a",#"b",#"c"] : char list]*)
-```
+> val it = [#"a",#"b",#"c"] : char list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> "sum" adds a list of integers. *)</span>
+<span class="n">sum</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">];</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = 7 : int</span></code></pre>
+<pre class="morel-input"><code>
+<span class="c">(*</span><span class="cm"> "into" applies a function to its input, collected into a list. *)</span>
+<span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+  <span class="n">into</span> <span class="n">sum</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = 7 : int</span></code></pre>
+<pre class="morel-input"><code>
+<span class="c">(*</span><span class="cm"> Rewrite "into" to apply the function directly. *)</span>
+<span class="n">sum</span> <span class="p">(</span><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = 7 : int</span></code></pre>
+<pre class="morel-input"><code>
+<span class="c">(*</span><span class="cm"> "into" is equivalent to existing keyword "compute". *)</span>
+<span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+  <span class="kr">compute</span> <span class="n">sum</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = 7 : int</span></code></pre>
+<pre class="morel-input"><code>
+<span class="c">(*</span><span class="cm"> Actually, "a into b" is equivalent to "(b) a" for any types, not
+   just lists. *)</span>
+<span class="n">explode</span> <span class="s2">"abc"</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [#"a",#"b",#"c"] : char list</span></code></pre>
+<pre class="morel-input"><code>
+<span class="s2">"abc"</span> <span class="n">into</span> <span class="n">explode</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [#"a",#"b",#"c"] : char list</span></code></pre>
+</div>
+
+
+
 
 Next, `through` is similar to `into`, but has a pattern so that
 following steps can refer to the data items:
@@ -95,11 +126,11 @@ list of orders and returns a list of orders with state and zipcode
 filled out. To stream orders through this function, we simply add the
 line `through clean_over in clean_address` to the pipeline.
 
-```sml
+<!-- morel skip
 (* Function that converts a list of orders to a list of orders with
    corrected state and zipcode. *)
 fun clean_address ...
-(*[> val clean_address = fn : order list -> order list;]*)
+> val clean_address = fn : order list -> order list;
 
 (* Define a function that takes a collection of orders, removes orders with
    more than 1,000 items, cleans addresses, and summarizes by state. *)
@@ -108,8 +139,25 @@ fun pipeline orders =
        where order.units < 1000
        through clean_order in clean_address
        group clean_order.state compute count;
-(*[> val pipeline = fn : order list -> {count: int, state: string} list;]*)
-```
+> val pipeline = fn : order list -> {count: int, state: string} list;
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Function that converts a list of orders to a list of orders with
+   corrected state and zipcode. *)</span>
+<span class="kr">fun</span> <span class="nf">clean_address</span> <span class="p">...</span></code></pre>
+<pre class="morel-output"><code><span class="c">val clean_address = fn : order list -&gt; order list;</span></code></pre>
+<pre class="morel-input"><code>
+<span class="c">(*</span><span class="cm"> Define a function that takes a collection of orders, removes orders with
+   more than 1,000 items, cleans addresses, and summarizes by state. *)</span>
+<span class="kr">fun</span> <span class="nf">pipeline</span> <span class="n">orders</span> <span class="p">=</span>
+    <span class="kr">from</span> <span class="kr">order</span> <span class="kr">in</span> <span class="n">orders</span>
+       <span class="kr">where</span> <span class="kr">order</span><span class="p">.</span><span class="n">units</span> &lt; <span class="mi">1000</span>
+       <span class="n">through</span> <span class="n">clean_order</span> <span class="kr">in</span> <span class="n">clean_address</span>
+       <span class="kr">group</span> <span class="nn">clean_order</span><span class="p">.</span><span class="n">state</span> <span class="kr">compute</span> <span class="n">count</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val pipeline = fn : order list -&gt; {count: int, state: string} list;</span></code></pre>
+</div>
+
 
 Note that the `pipeline` function itself takes a list argument and
 returns a list.  We could therefore include it in a higher-level query
@@ -140,22 +188,69 @@ FROM Emp AS e,
 
 Morel has analogous syntax:
 
-```sml
+<!-- morel silent
+val emps = scott.emps;
+val depts = scott.depts;
+-->
+
+<!-- morel skip
 from e in emps,
     d in depts
   where e.deptno = d.deptno
   yield {e.ename, d.dname};
-(*[> val it =
->   [{dname="RESEARCH",ename="SMITH"},{dname="SALES",ename="ALLEN"},
->    {dname="SALES",ename="WARD"},...] : {dname:string, ename:string} list]*)
+> val it =
+>   [{dname="ACCOUNTING",ename="CLARK"},{dname="ACCOUNTING",ename="KING"},
+>    {dname="ACCOUNTING",ename="MILLER"},{dname="RESEARCH",ename="JONES"},
+>    {dname="RESEARCH",ename="FORD"},{dname="RESEARCH",ename="ADAMS"},
+>    {dname="RESEARCH",ename="SMITH"},{dname="RESEARCH",ename="SCOTT"},
+>    {dname="SALES",ename="WARD"},{dname="SALES",ename="TURNER"},
+>    {dname="SALES",ename="ALLEN"},{dname="SALES",ename="JAMES"},
+>    {dname="SALES",ename="BLAKE"},{dname="SALES",ename="MARTIN"}]
+>   : {dname:string, ename:string} list
 
 from e in emps
   join d in depts on e.deptno = d.deptno
   yield {e.ename, d.dname};
-(*[> val it =
->   [{dname="RESEARCH",ename="SMITH"},{dname="SALES",ename="ALLEN"},
->    {dname="SALES",ename="WARD"},...] : {dname:string, ename:string} list]*)
-```
+> val it =
+>   [{dname="ACCOUNTING",ename="CLARK"},{dname="ACCOUNTING",ename="KING"},
+>    {dname="ACCOUNTING",ename="MILLER"},{dname="RESEARCH",ename="JONES"},
+>    {dname="RESEARCH",ename="FORD"},{dname="RESEARCH",ename="ADAMS"},
+>    {dname="RESEARCH",ename="SMITH"},{dname="RESEARCH",ename="SCOTT"},
+>    {dname="SALES",ename="WARD"},{dname="SALES",ename="TURNER"},
+>    {dname="SALES",ename="ALLEN"},{dname="SALES",ename="JAMES"},
+>    {dname="SALES",ename="BLAKE"},{dname="SALES",ename="MARTIN"}]
+>   : {dname:string, ename:string} list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span><span class="p">,</span>
+    <span class="n">d</span> <span class="kr">in</span> <span class="n">depts</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">,</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span><span class="p">};</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it =</span>
+<span class="c">  [{dname="ACCOUNTING",ename="CLARK"},{dname="ACCOUNTING",ename="KING"},</span>
+<span class="c">   {dname="ACCOUNTING",ename="MILLER"},{dname="RESEARCH",ename="JONES"},</span>
+<span class="c">   {dname="RESEARCH",ename="FORD"},{dname="RESEARCH",ename="ADAMS"},</span>
+<span class="c">   {dname="RESEARCH",ename="SMITH"},{dname="RESEARCH",ename="SCOTT"},</span>
+<span class="c">   {dname="SALES",ename="WARD"},{dname="SALES",ename="TURNER"},</span>
+<span class="c">   {dname="SALES",ename="ALLEN"},{dname="SALES",ename="JAMES"},</span>
+<span class="c">   {dname="SALES",ename="BLAKE"},{dname="SALES",ename="MARTIN"}]</span>
+<span class="c">  : {dname:string, ename:string} list</span></code></pre>
+<pre class="morel-input"><code>
+<span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">join</span> <span class="n">d</span> <span class="kr">in</span> <span class="n">depts</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">,</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span><span class="p">};</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it =</span>
+<span class="c">  [{dname="ACCOUNTING",ename="CLARK"},{dname="ACCOUNTING",ename="KING"},</span>
+<span class="c">   {dname="ACCOUNTING",ename="MILLER"},{dname="RESEARCH",ename="JONES"},</span>
+<span class="c">   {dname="RESEARCH",ename="FORD"},{dname="RESEARCH",ename="ADAMS"},</span>
+<span class="c">   {dname="RESEARCH",ename="SMITH"},{dname="RESEARCH",ename="SCOTT"},</span>
+<span class="c">   {dname="SALES",ename="WARD"},{dname="SALES",ename="TURNER"},</span>
+<span class="c">   {dname="SALES",ename="ALLEN"},{dname="SALES",ename="JAMES"},</span>
+<span class="c">   {dname="SALES",ename="BLAKE"},{dname="SALES",ename="MARTIN"}]</span>
+<span class="c">  : {dname:string, ename:string} list</span></code></pre>
+</div>
+
 
 but used to only allow the comma join syntax immediately after the
 `from` keyword, before clauses such as `where` or `join` had occurred.
@@ -165,22 +260,33 @@ Following
 allows comma-separated joins later in the pipeline, and also allows
 `on` in comma-joins. The following is now legal:
 
-```sml
+<!-- morel
 from a in [1, 2],
     b in [3, 4, 5] on a + b = 6
   where b < 5
   join c in [6, 7] on b + c = 10,
       d in [7, 8];
-(*[> val it = [{a=2,b=4,c=6,d=7},{a=2,b=4,c=6,d=8}]
->   : {a:int, b:int, c:int, d:int} list]*)
-```
+> val it = [{a=2,b=4,c=6,d=7},{a=2,b=4,c=6,d=8}]
+>   : {a:int, b:int, c:int, d:int} list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">a</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="n">b</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="kr">on</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="p">=</span> <span class="mi">6</span>
+  <span class="kr">where</span> <span class="n">b</span> &lt; <span class="mi">5</span>
+  <span class="kr">join</span> <span class="n">c</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span> <span class="kr">on</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="p">=</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="n">d</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">];</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [{a=2,b=4,c=6,d=7},{a=2,b=4,c=6,d=8}]</span>
+<span class="c">  : {a:int, b:int, c:int, d:int} list</span></code></pre>
+</div>
+
 
 This will be particularly convenient (when we have solved some
 query-planning issues in
 [[MOREL-229](https://github.com/hydromatic/morel/issues/229)]) for
 writing queries that use unbounded variables to solve constraints:
 
-```sml
+<!-- morel skip
 from a, b
   where a < b
 join c, d, e
@@ -190,11 +296,28 @@ join c, d, e
     andalso d > 0
     andalso e > 0
     andalso a + b + c + d + e < 8;
-(*[> val it =
+> val it =
 >   [{a=1,b=2,c=1,d=1,e=1},{a=1,b=2,c=1,d=1,e=2},{a=1,b=2,c=1,d=2,e=1},
 >    {a=1,b=2,c=2,d=1,e=1},{a=1,b=3,c=1,d=1,e=1}]
->   : {a:int, b:int, c:int, d:int, e:int} list]*)
-```
+>   : {a:int, b:int, c:int, d:int, e:int} list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+  <span class="kr">where</span> <span class="n">a</span> &lt; <span class="n">b</span>
+<span class="kr">join</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span>
+  <span class="kr">where</span> <span class="n">a</span> &gt; <span class="mi">0</span>
+    <span class="kr">andalso</span> <span class="n">b</span> &gt; <span class="mi">0</span>
+    <span class="kr">andalso</span> <span class="n">c</span> &gt; <span class="mi">0</span>
+    <span class="kr">andalso</span> <span class="n">d</span> &gt; <span class="mi">0</span>
+    <span class="kr">andalso</span> <span class="n">e</span> &gt; <span class="mi">0</span>
+    <span class="kr">andalso</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">e</span> &lt; <span class="mi">8</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it =</span>
+<span class="c">  [{a=1,b=2,c=1,d=1,e=1},{a=1,b=2,c=1,d=1,e=2},{a=1,b=2,c=1,d=2,e=1},</span>
+<span class="c">   {a=1,b=2,c=2,d=1,e=1},{a=1,b=3,c=1,d=1,e=1}]</span>
+<span class="c">  : {a:int, b:int, c:int, d:int, e:int} list</span></code></pre>
+</div>
+
 
 # 3. Duplicate elimination (`distinct`)
 
@@ -203,12 +326,24 @@ join c, d, e
 
 Here is a query that finds the set of distinct job titles:
 
-```sml
+<!-- morel skip
 from e in scott.emp
   yield {e.job}
   distinct;
-(*[> val it = ["CLERK","SALESMAN","ANALYST","MANAGER","PRESIDENT"] : string list]*)
-```
+> val it =
+>   [{job="CLERK"},{job="SALESMAN"},{job="ANALYST"},{job="MANAGER"},
+>    {job="PRESIDENT"}] : {job:string} list
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emp</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">}</span>
+  <span class="kr">distinct</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it =</span>
+<span class="c">  [{job="CLERK"},{job="SALESMAN"},{job="ANALYST"},{job="MANAGER"},</span>
+<span class="c">   {job="PRESIDENT"}] : {job:string} list</span></code></pre>
+</div>
+
 
 `distinct` is short-hand for `group` with all fields and no aggregate
 functions (`compute` clause), and is similar to SQL's `SELECT
@@ -220,15 +355,27 @@ DISTINCT`.
 lambda (`fn` expression) to have multiple branches, similar to `case`.
 Following this change, the following expressions are equivalent:
 
-```sml
+<!-- morel
 fn [] => 0 | x :: _ => x + 1;
-(*[> val it = fn : int list -> int]*)
-```
+> val it = fn : int list -> int
+-->
 
-```sml
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">fn</span> <span class="p">[]</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">|</span> <span class="n">x</span> <span class="o">::</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = fn : int list -&gt; int</span></code></pre>
+</div>
+
+
+<!-- morel
 fn list => case list of [] => 0 | x :: _ => x + 1;
-(*[> val it = fn : int list -> int]*)
-```
+> val it = fn : int list -> int
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">fn</span> <span class="n">list</span> <span class="o">=&gt;</span> <span class="kr">case</span> <span class="n">list</span> <span class="kr">of</span> <span class="p">[]</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">|</span> <span class="n">x</span> <span class="o">::</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = fn : int list -&gt; int</span></code></pre>
+</div>
+
 
 Prior to this change, the first expression would give a syntax error.
 
@@ -240,7 +387,7 @@ related to the `int` type.
 Per [Moscow ML](https://mosml.org/mosmllib/Int.html) it has the
 following interface:
 
-```sml
+<!-- morel skip
 val precision : int option
 val minInt    : int option
 val maxInt    : int option
@@ -276,18 +423,67 @@ val fmt       : StringCvt.radix -> int -> string
 
 val toString  : int -> string
 val fromString : string -> int option   (* Overflow      *)
-```
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">precision</span> <span class="o">:</span> <span class="n">int</span> <span class="n">option</span>
+<span class="kr">val</span> <span class="nv">minInt</span>    <span class="o">:</span> <span class="n">int</span> <span class="n">option</span>
+<span class="kr">val</span> <span class="nv">maxInt</span>    <span class="o">:</span> <span class="n">int</span> <span class="n">option</span>
+
+<span class="kr">val</span> ~         <span class="o">:</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>              <span class="c">(*</span><span class="cm"> Overflow      *)</span>
+<span class="kr">val</span> <span class="o">*</span>         <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>        <span class="c">(*</span><span class="cm"> Overflow      *)</span>
+<span class="kr">val</span> <span class="nv">div</span>       <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>        <span class="c">(*</span><span class="cm"> Div, Overflow *)</span>
+<span class="kr">val</span> <span class="nv">mod</span>       <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>        <span class="c">(*</span><span class="cm"> Div           *)</span>
+<span class="kr">val</span> <span class="nv">quot</span>      <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>        <span class="c">(*</span><span class="cm"> Div, Overflow *)</span>
+<span class="kr">val</span> <span class="nv">rem</span>       <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>        <span class="c">(*</span><span class="cm"> Div           *)</span>
+<span class="kr">val</span> <span class="o">+</span>         <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>        <span class="c">(*</span><span class="cm"> Overflow      *)</span>
+<span class="kr">val</span> <span class="o">-</span>         <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>        <span class="c">(*</span><span class="cm"> Overflow      *)</span>
+<span class="kr">val</span> &gt;         <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">bool</span>
+<span class="kr">val</span> &gt;<span class="p">=</span>        <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">bool</span>
+<span class="kr">val</span> &lt;         <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">bool</span>
+<span class="kr">val</span> &lt;<span class="p">=</span>        <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">bool</span>
+<span class="kr">val</span> <span class="nv">abs</span>       <span class="o">:</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>              <span class="c">(*</span><span class="cm"> Overflow      *)</span>
+<span class="kr">val</span> <span class="nv">min</span>       <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>
+<span class="kr">val</span> <span class="nv">max</span>       <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>
+
+<span class="kr">val</span> <span class="nv">sign</span>      <span class="o">:</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>
+<span class="kr">val</span> <span class="nv">sameSign</span>  <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">bool</span>
+<span class="kr">val</span> <span class="nv">compare</span>   <span class="o">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="kr">order</span>
+
+<span class="kr">val</span> <span class="nv">toInt</span>     <span class="o">:</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>
+<span class="kr">val</span> <span class="nv">fromInt</span>   <span class="o">:</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>
+<span class="kr">val</span> <span class="nv">toLarge</span>   <span class="o">:</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>
+<span class="kr">val</span> <span class="nv">fromLarge</span> <span class="o">:</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">int</span>
+
+<span class="kr">val</span> <span class="nv">scan</span>      <span class="o">:</span> <span class="nn">StringCvt</span><span class="p">.</span><span class="n">radix</span>
+                <span class="o">-&gt;</span> <span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="nd">'a</span><span class="p">)</span> <span class="nn">StringCvt</span><span class="p">.</span><span class="n">reader</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">int</span><span class="p">,</span> <span class="nd">'a</span><span class="p">)</span> <span class="nn">StringCvt</span><span class="p">.</span><span class="n">reader</span>
+<span class="kr">val</span> <span class="nv">fmt</span>       <span class="o">:</span> <span class="nn">StringCvt</span><span class="p">.</span><span class="n">radix</span> <span class="o">-&gt;</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">string</span>
+
+<span class="kr">val</span> <span class="nv">toString</span>  <span class="o">:</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">string</span>
+<span class="kr">val</span> <span class="nv">fromString</span> <span class="o">:</span> <span class="n">string</span> <span class="o">-&gt;</span> <span class="n">int</span> <span class="n">option</span>   <span class="c">(*</span><span class="cm"> Overflow      *)</span></code></pre>
+</div>
+
 
 Example use:
 
-```sml
+<!-- morel
 Int.compare;
-(*[> val it = fn : int * int -> order]*)
+> val it = fn : int * int -> order
 Int.compare (2, 3);
-(*[> val it = LESS : order]*)
+> val it = LESS : order
 Int.maxInt;
-(*[> val it = SOME 1073741823 : int option]*)
-```
+> val it = SOME 2147483647 : int option
+-->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = fn : int * int -&gt; order</span></code></pre>
+<pre class="morel-input"><code><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = LESS : order</span></code></pre>
+<pre class="morel-input"><code><span class="nn">Int</span><span class="p">.</span><span class="n">maxInt</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = SOME 2147483647 : int option</span></code></pre>
+</div>
+
 
 The `Int` structure is an instance of the
 [`INTEGER` signature in the Standard ML Basis
