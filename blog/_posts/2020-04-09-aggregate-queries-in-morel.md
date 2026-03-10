@@ -172,17 +172,28 @@ and works forward.)
 
 Thus `sum` is defined as follows:
 
-```sml
+<!-- We use env=A so that 'sum' doesn't override built-in 'sum' in a later query. -->
+<!-- morel env=A
 val sum = foldl (fn (x, y) => x + y) 0;
-(*[> val sum = fn : int list -> int]*)
-```
+> val sum = fn : int list -> int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">val</span> <span class="nv">sum</span> <span class="p">=</span> <span class="n">foldl</span> <span class="p">(</span><span class="kr">fn</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="mi">0</span><span class="p">;</span></div>
+<div class="code-output">val sum = fn : int list -&gt; int</div>
+</div>
 
 Here is `sum` applied to a list:
 
-```sml
+<!-- morel env=A
 sum [1, 2, 3, 5, 8, 13];
-(*[> val it = 32 : int]*)
-```
+> val it = 32 : int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="n">sum</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">13</span><span class="p">];</span></div>
+<div class="code-output">val it = 32 : int</div>
+</div>
 
 # Choices, choices...
 
@@ -214,8 +225,8 @@ In functional programming terms, it's difficult to express this
 concisely. If `group` were a higher-order function, its signature
 would look something like this:
 
-```sml
-(*[> val group = fn : ('r -> 'k) -> ('r -> 'a) -> ('a list -> 'b) -> ('k * 'b) list]*)
+```
+val group = fn : ('r -> 'k) -> ('r -> 'a) -> ('a list -> 'b) -> ('k * 'b) list
 ```
 
 where:
@@ -233,13 +244,60 @@ Yes, this is complicated! And this variant only allows one aggregate function.
 But Morel provides syntactic sugar so that `group` is simple to use in
 practice, while retaining strongly typing and type inference. For example:
 
-```sml
+<!-- morel silent
+Sys.set ("output", "tabular");
+> val it = () : unit
+val (emps, depts) = (scott.emps, scott.depts);
+> comm   deptno empno ename  hiredate   job       mgr  sal
+> ------ ------ ----- ------ ---------- --------- ---- ------
+> 0.0    20     7369  SMITH  1980-12-17 CLERK     7902 800.0
+> 300.0  30     7499  ALLEN  1981-02-20 SALESMAN  7698 1600.0
+> 500.0  30     7521  WARD   1981-02-22 SALESMAN  7698 1250.0
+> 0.0    20     7566  JONES  1981-02-04 MANAGER   7839 2975.0
+> 1400.0 30     7654  MARTIN 1981-09-28 SALESMAN  7698 1250.0
+> 0.0    30     7698  BLAKE  1981-01-05 MANAGER   7839 2850.0
+> 0.0    10     7782  CLARK  1981-06-09 MANAGER   7839 2450.0
+> 0.0    20     7788  SCOTT  1987-04-19 ANALYST   7566 3000.0
+> 0.0    10     7839  KING   1981-11-17 PRESIDENT 0    5000.0
+> 0.0    30     7844  TURNER 1981-09-08 SALESMAN  7698 1500.0
+> 0.0    20     7876  ADAMS  1987-05-23 CLERK     7788 1100.0
+> 0.0    30     7900  JAMES  1981-12-03 CLERK     7698 950.0
+> 0.0    20     7902  FORD   1981-12-03 ANALYST   7566 3000.0
+> 0.0    10     7934  MILLER 1982-01-23 CLERK     7782 1300.0
+>
+> val emps : {comm:real, deptno:int, empno:int, ename:string, hiredate:string, job:string, mgr:int, sal:real} bag
+> deptno dname      loc
+> ------ ---------- --------
+> 10     ACCOUNTING NEW YORK
+> 20     RESEARCH   DALLAS
+> 30     SALES      CHICAGO
+> 40     OPERATIONS BOSTON
+>
+> val depts : {deptno:int, dname:string, loc:string} bag
+-->
+<!-- morel
 from e in emps
-  group e.deptno compute sumSal = sum of e.sal;
-(*[> val it =
->   [{deptno=20,sumSal=10875.0},{deptno=10,sumSal=8750.0},
->    {deptno=30,sumSal=9400.0}] : {deptno:int, sumSal:real} list]*)
-```
+  group e.deptno compute {sumSal = sum over e.sal};
+> deptno sumSal
+> ------ -------
+> 20     10875.0
+> 10     8750.0
+> 30     9400.0
+>
+> val it : {deptno:int, sumSal:real} bag
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">group</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="kr">compute</span> <span class="p">{</span><span class="n">sumSal</span> <span class="p">=</span> <span class="n">sum</span> <span class="kr">over</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">};</span></div>
+<div class="code-output">deptno sumSal
+------ -------
+20     10875.0
+10     8750.0
+30     9400.0
+
+val it : {deptno:int, sumSal:real} bag</div>
+</div>
 
 (Examples in this post use the new `=` syntax for renaming group keys
 and aggregate functions that was introduced in
@@ -262,25 +320,74 @@ expression that yields a function. In this case, we use the constant
 
 Here is another example:
 
-```sml
+<!-- morel silent
+(*) Give 'emps' a 'commission' column
+val emps =
+  from e in scott.emps
+    yield {e.empno, e.ename, e.deptno, e.sal, e.job,
+      commission = if e.job = "SALESMAN" then 250.0 else 0.0};
+> commission deptno empno ename  job       sal
+> ---------- ------ ----- ------ --------- ------
+> 0.0        20     7369  SMITH  CLERK     800.0
+> 250.0      30     7499  ALLEN  SALESMAN  1600.0
+> 250.0      30     7521  WARD   SALESMAN  1250.0
+> 0.0        20     7566  JONES  MANAGER   2975.0
+> 250.0      30     7654  MARTIN SALESMAN  1250.0
+> 0.0        30     7698  BLAKE  MANAGER   2850.0
+> 0.0        10     7782  CLARK  MANAGER   2450.0
+> 0.0        20     7788  SCOTT  ANALYST   3000.0
+> 0.0        10     7839  KING   PRESIDENT 5000.0
+> 250.0      30     7844  TURNER SALESMAN  1500.0
+> 0.0        20     7876  ADAMS  CLERK     1100.0
+> 0.0        30     7900  JAMES  CLERK     950.0
+> 0.0        20     7902  FORD   ANALYST   3000.0
+> 0.0        10     7934  MILLER CLERK     1300.0
+>
+> val emps : {commission:real, deptno:int, empno:int, ename:string, job:string, sal:real} bag
+-->
+<!-- morel
 from e in emps,
     d in depts
   where e.deptno = d.deptno
-  group e.deptno, d.dname, e.job
-    compute sumSal = sum of e.sal,
-      minRemuneration = min of e.sal + e.commission;
-(*[> val it =
->   [{deptno=30,dname="SALES",job="MANAGER",minRemuneration=2850.0,sumSal=2850.0},
->    {deptno=20,dname="RESEARCH",job="CLERK",minRemuneration=800.0,sumSal=1900.0},
->    {deptno=10,dname="ACCOUNTING",job="PRESIDENT",minRemuneration=5000.0,sumSal=5000.0},
->    {deptno=10,dname="ACCOUNTING",job="MANAGER",minRemuneration=2450.0,sumSal=2450.0},
->    {deptno=20,dname="RESEARCH",job="ANALYST",minRemuneration=3000.0,sumSal=6000.0},
->    {deptno=30,dname="SALES",job="CLERK",minRemuneration=950.0,sumSal=950.0},
->    {deptno=10,dname="ACCOUNTING",job="CLERK",minRemuneration=1300.0,sumSal=1300.0},
->    {deptno=20,dname="RESEARCH",job="MANAGER",minRemuneration=2975.0,sumSal=2975.0},
->    {deptno=30,dname="SALES",job="SALESMAN",minRemuneration=1500.0,sumSal=5600.0}]
->   : {deptno:int, dname:string, job:string, minRemuneration:real, sumSal:real} list]*)
-```
+  group {e.deptno, d.dname, e.job}
+    compute {sumSal = sum over e.sal,
+      minRemuneration = min over e.sal + e.commission};
+> deptno dname      job       minRemuneration sumSal
+> ------ ---------- --------- --------------- ------
+> 30     SALES      MANAGER   2850.0          2850.0
+> 20     RESEARCH   CLERK     800.0           1900.0
+> 10     ACCOUNTING PRESIDENT 5000.0          5000.0
+> 10     ACCOUNTING MANAGER   2450.0          2450.0
+> 20     RESEARCH   ANALYST   3000.0          6000.0
+> 30     SALES      CLERK     950.0           950.0
+> 10     ACCOUNTING CLERK     1300.0          1300.0
+> 20     RESEARCH   MANAGER   2975.0          2975.0
+> 30     SALES      SALESMAN  1500.0          5600.0
+>
+> val it : {deptno:int, dname:string, job:string, minRemuneration:real, sumSal:real} bag
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span><span class="p">,</span>
+    <span class="nv">d</span> <span class="kr">in</span> <span class="n">depts</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">group</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">deptno</span><span class="p">,</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">}</span>
+    <span class="kr">compute</span> <span class="p">{</span><span class="n">sumSal</span> <span class="p">=</span> <span class="n">sum</span> <span class="kr">over</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">,</span>
+      <span class="n">minRemuneration</span> <span class="p">=</span> <span class="n">min</span> <span class="kr">over</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="o">+</span> <span class="nn">e</span><span class="p">.</span><span class="n">commission</span><span class="p">};</span></div>
+<div class="code-output">deptno dname      job       minRemuneration sumSal
+------ ---------- --------- --------------- ------
+30     SALES      MANAGER   2850.0          2850.0
+20     RESEARCH   CLERK     800.0           1900.0
+10     ACCOUNTING PRESIDENT 5000.0          5000.0
+10     ACCOUNTING MANAGER   2450.0          2450.0
+20     RESEARCH   ANALYST   3000.0          6000.0
+30     SALES      CLERK     950.0           950.0
+10     ACCOUNTING CLERK     1300.0          1300.0
+20     RESEARCH   MANAGER   2975.0          2975.0
+30     SALES      SALESMAN  1500.0          5600.0
+
+val it : {deptno:int, dname:string, job:string, minRemuneration:real, sumSal:real} bag</div>
+</div>
 
 Several things are more advanced than the previous example. The key is
 composite, there is more than one aggregate function, and the argument
@@ -317,19 +424,41 @@ So of course you can define your own aggregate functions inside a
 query.  In this example, we define our own version of the `sum`
 function:
 
-```sml
+<!-- morel
 let
   fun my_sum [] = 0
     | my_sum (head :: tail) = head + (my_sum tail)
 in
   from e in emps
     group e.deptno
-    compute sumEmpno = my_sum of e.empno
+    compute {sumEmpno = my_sum over e.empno}
 end;
-(*[> val it =
->   [{deptno=20,sumEmpno=38501},{deptno=10,sumEmpno=23555},
->    {deptno=30,sumEmpno=46116}] : {deptno:int, sumEmpno:int} list]*)
-```
+> deptno sumEmpno
+> ------ --------
+> 20     38501
+> 10     23555
+> 30     46116
+>
+> val it : {deptno:int, sumEmpno:int} bag
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">let</span>
+  <span class="kr">fun</span> <span class="nf">my_sum</span> <span class="p">[]</span> <span class="p">=</span> <span class="mi">0</span>
+    <span class="p">|</span> <span class="n">my_sum</span> <span class="p">(</span><span class="n">head</span> <span class="o">::</span> <span class="n">tail</span><span class="p">)</span> <span class="p">=</span> <span class="n">head</span> <span class="o">+</span> <span class="p">(</span><span class="n">my_sum</span> <span class="n">tail</span><span class="p">)</span>
+<span class="kr">in</span>
+  <span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span>
+    <span class="kr">group</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
+    <span class="kr">compute</span> <span class="p">{</span><span class="n">sumEmpno</span> <span class="p">=</span> <span class="n">my_sum</span> <span class="kr">over</span> <span class="nn">e</span><span class="p">.</span><span class="n">empno</span><span class="p">}</span>
+<span class="kr">end</span><span class="p">;</span></div>
+<div class="code-output">deptno sumEmpno
+------ --------
+20     38501
+10     23555
+30     46116
+
+val it : {deptno:int, sumEmpno:int} bag</div>
+</div>
 
 Aggregate functions are invoked on a collection of values formed by
 applying their argument expression to all of the records in the
@@ -339,16 +468,27 @@ aggregate function, which creates a collection of its arguments, is
 therefore trivial in Morel: we just use the identity operator (`fn x
 => x`) as the aggregate function, and it returns its argument:
 
-```sml
+<!-- morel
 from e in emps
   group e.deptno
-  compute names = (fn x => x) of e.ename;
-(*[> val it =
+  compute {names = (fn x => x) over e.ename};
+> val it =
 >   [{deptno=20,names=["SMITH","JONES","SCOTT","ADAMS","FORD"]},
 >    {deptno=10,names=["CLARK","KING","MILLER"]},
 >    {deptno=30,names=["ALLEN","WARD","MARTIN","BLAKE","TURNER","JAMES"]}]
->   : {deptno:int, names:string list} list]*)
-```
+>   : {deptno:int, names:string bag} bag
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">group</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">compute</span> <span class="p">{</span><span class="n">names</span> <span class="p">=</span> <span class="p">(</span><span class="kr">fn</span> <span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span><span class="p">)</span> <span class="kr">over</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">};</span></div>
+<div class="code-output">val it =
+  [{deptno=20,names=["SMITH","JONES","SCOTT","ADAMS","FORD"]},
+   {deptno=10,names=["CLARK","KING","MILLER"]},
+   {deptno=30,names=["ALLEN","WARD","MARTIN","BLAKE","TURNER","JAMES"]}]
+  : {deptno:int, names:string bag} bag</div>
+</div>
 
 # Computing aggregate functions efficiently
 

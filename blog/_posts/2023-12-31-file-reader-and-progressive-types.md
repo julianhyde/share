@@ -90,20 +90,36 @@ lists and records.
 In the following, we create two record values, a list of records,
 and write a simple query.
 
-```sml
+<!-- morel
 val fred = {name="Fred", age=27};
-(*[> val fred = {age=27,name="Fred"} : {age:int, name:string}]*)
+> val fred = {age=27,name="Fred"} : {age:int, name:string}
 
 val velma = {name="Velma", age=20};
-(*[> val velma = {age=20,name="Velma"} : {age:int, name:string}]*)
+> val velma = {age=20,name="Velma"} : {age:int, name:string}
 
 val employees = [fred, velma];
-(*[> val employees = [{age=27,name="Fred"},{age=20,name="Velma"}]
->   : {age:int, name:string} list]*)
+> val employees = [{age=27,name="Fred"},{age=20,name="Velma"}]
+>   : {age:int, name:string} list
 
 from e in employees yield e.age;
-(*[> val it = [27,20] : int list]*)
-```
+> val it = [27,20] : int list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">val</span> <span class="nv">fred</span> <span class="p">=</span> <span class="p">{</span><span class="n">name</span><span class="p">=</span><span class="s2">"Fred"</span><span class="p">,</span> <span class="n">age</span><span class="p">=</span><span class="mi">27</span><span class="p">};</span></div>
+<div class="code-output">val fred = {age=27,name="Fred"} : {age:int, name:string}</div>
+<div class="code-input">
+<span class="kr">val</span> <span class="nv">velma</span> <span class="p">=</span> <span class="p">{</span><span class="n">name</span><span class="p">=</span><span class="s2">"Velma"</span><span class="p">,</span> <span class="n">age</span><span class="p">=</span><span class="mi">20</span><span class="p">};</span></div>
+<div class="code-output">val velma = {age=20,name="Velma"} : {age:int, name:string}</div>
+<div class="code-input">
+<span class="kr">val</span> <span class="nv">employees</span> <span class="p">=</span> <span class="p">[</span><span class="n">fred</span><span class="p">,</span> <span class="n">velma</span><span class="p">];</span></div>
+<div class="code-output">val employees = [{age=27,name="Fred"},{age=20,name="Velma"}]
+  : {age:int, name:string} list</div>
+<div class="code-input">
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">employees</span> <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">age</span><span class="p">;</span></div>
+<div class="code-output">val it = [27,20] : int list</div>
+</div>
+
 
 We wanted to make the file reader interactive.  You shouldn't have to
 leave the Morel shell to see what files are available.
@@ -111,10 +127,16 @@ leave the Morel shell to see what files are available.
 So you can browse the whole file system as if you are looking at the
 fields of a record. The `file` object is where you start.
 
-```sml
+<!-- morel skip
 file;
-(*[> val it = {scott={},wordle={}} : {scott:{...}, wordle:{...}, ...}]*)
-```
+> val it = {scott={},wordle={}} : {scott:{...}, wordle:{...}, ...}
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="n">file</span><span class="p">;</span></div>
+<div class="code-output">val it = {scott={},wordle={}} : {scott:{...}, wordle:{...}, ...}</div>
+</div>
+
 
 As you can see, it is a record with fields `scott` and `wordle`. In
 the file reader, every directory is a record, and the fields are the
@@ -122,12 +144,20 @@ files or subdirectories.
 
 Now let's look at `file.scott`:
 
-```sml
+<!-- morel skip
 file.scott;
-(*[> val it = {bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>}
+> val it = {bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>}
 >   : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,
->      ...}]*)
-```
+>      ...}
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="nn">file</span><span class="p">.</span><span class="n">scott</span><span class="p">;</span></div>
+<div class="code-output">val it = {bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;}
+  : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,
+     ...}</div>
+</div>
+
 
 It, too, is a record, but fields such as `dept` and `emp` are listed
 as relations, because they are CSV files.  We can run queries on those
@@ -135,21 +165,31 @@ data sets. Here is a query to compute the total salary budget for each
 department. You could write a similar query in SQL using `JOIN` and
 `GROUP BY`:
 
-```sml
+<!-- morel skip
 from d in file.scott.dept
   join e in file.scott.emp on d.deptno = e.deptno
   group d.dname compute sum of e.sal;
-(*[> val it =
+> val it =
 >   [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},
->    {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list]*)
-```
+>    {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">d</span> <span class="kr">in</span> <span class="nn">file</span><span class="p">.</span><span class="nn">scott</span><span class="p">.</span><span class="n">dept</span>
+  <span class="kr">join</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">file</span><span class="p">.</span><span class="nn">scott</span><span class="p">.</span><span class="n">emp</span> <span class="kr">on</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">group</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span> <span class="kr">compute</span> <span class="n">sum</span> <span class="kr">of</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">;</span></div>
+<div class="code-output">val it =
+  [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},
+   {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list</div>
+</div>
+
 
 After we have traversed into `scott` and `dept`, the type of the
 `file` value has changed:
 
-```sml
+<!-- morel skip
 file;
-(*[> val it =
+> val it =
 >   {scott={bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>},
 >    wordle={}}
 >   : {
@@ -157,8 +197,22 @@ file;
 >             emp:
 >                 {comm:real, deptno:int, empno:int, ename:string,
 >                  hiredate:string, job:string, mgrno:int, sal:real} list,
->             salgrade:{...} list, ...}, wordle:{...}, ...}]*)
-```
+>             salgrade:{...} list, ...}, wordle:{...}, ...}
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="n">file</span><span class="p">;</span></div>
+<div class="code-output">val it =
+  {scott={bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;},
+   wordle={}}
+  : {
+     scott:{bonus:{...} list, dept:{deptno:int, dname:string, loc:string} list,
+            emp:
+                {comm:real, deptno:int, empno:int, ename:string,
+                 hiredate:string, job:string, mgrno:int, sal:real} list,
+            salgrade:{...} list, ...}, wordle:{...}, ...}</div>
+</div>
+
 
 Note that the `scott` field has been expanded, and so have the `dept`
 and `emp` fields. This is called *progressive typing*. What is it, and
@@ -207,19 +261,32 @@ For example, this query replaces the expression `file.scott` in the
 previous query with a variable `s` to make the query more concise. It
 gives the same results as the previous query.
 
-```sml
+<!-- morel skip
 val s = file.scott;
-(*[> val s = {bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>}
+> val s = {bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>}
 >   : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,
->      ...}]*)
-
+>      ...}
 from d in s.dept
   join e in s.emp on d.deptno = e.deptno
   group d.dname compute sum of e.sal;
-(*[> val it =
+> val it =
 >   [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},
->    {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list]*)
-```
+>    {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">val</span> <span class="nv">s</span> <span class="p">=</span> <span class="nn">file</span><span class="p">.</span><span class="n">scott</span><span class="p">;</span></div>
+<div class="code-output">val s = {bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;}
+  : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,
+     ...}</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">d</span> <span class="kr">in</span> <span class="nn">s</span><span class="p">.</span><span class="n">dept</span>
+  <span class="kr">join</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">s</span><span class="p">.</span><span class="n">emp</span> <span class="kr">on</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">group</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span> <span class="kr">compute</span> <span class="n">sum</span> <span class="kr">of</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">;</span></div>
+<div class="code-output">val it =
+  [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},
+   {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list</div>
+</div>
+
 
 # Conclusion
 

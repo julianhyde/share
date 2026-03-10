@@ -117,7 +117,7 @@ intermediate node to the destination node. From the edges {1 &rarr;
 
 You can now run the following program from Morel's shell:
 
-```sml
+<!-- morel
 Datalog.execute "
 .decl edge(x:int, y:int)
 .decl path(x:int, y:int)
@@ -126,9 +126,23 @@ edge(2,3).
 path(X,Y) :- edge(X,Y).
 path(X,Z) :- path(X,Y), edge(Y,Z).
 .output path";
-(*[> val it = {path=[{x=1,y=2},{x=2,y=3},{x=1,y=3}]}]*)
-(*[>   : {path:{x:int, y:int} list} variant]*)
-```
+> val it = {path=[{x=1,y=2},{x=2,y=3},{x=1,y=3}]}
+>   : {path:{x:int, y:int} list} variant
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="nn">Datalog</span><span class="p">.</span><span class="n">execute</span> <span class="s2">"
+.decl edge(x:int, y:int)
+.decl path(x:int, y:int)
+edge(1,2).
+edge(2,3).
+path(X,Y) :- edge(X,Y).
+path(X,Z) :- path(X,Y), edge(Y,Z).
+.output path"</span><span class="p">;</span></div>
+<div class="code-output">val it = {path=[{x=1,y=2},{x=2,y=3},{x=1,y=3}]}
+  : {path:{x:int, y:int} list} variant</div>
+</div>
+
 
 The program is passed (as a string literal) as an argument to the
 `Datalog.execute` function, and the Souffl&eacute; `symbol` and
@@ -168,7 +182,7 @@ Parsing and validation follow standard patterns, but let's look at
 the translation algorithm in a little more detail.
 Here is the translation to Morel of the earlier Datalog program:
 
-```sml
+<!-- morel skip
 let
   val edge_facts = [(1, 2), (2, 3)]
   fun edge (x, y) = (x, y) elem edge_facts
@@ -178,7 +192,20 @@ let
 in
   {path = from x, y where path (x, y)}
 end
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">let</span>
+  <span class="kr">val</span> <span class="nv">edge_facts</span> <span class="p">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+  <span class="kr">fun</span> <span class="nf">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="kr">elem</span> <span class="n">edge_facts</span>
+  <span class="kr">fun</span> <span class="nf">path</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span>
+    <span class="n">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="kr">orelse</span>
+    <span class="p">(</span><span class="kr">exists</span> <span class="n">v0</span> <span class="kr">where</span> <span class="n">path</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v0</span><span class="p">)</span> <span class="kr">andalso</span> <span class="n">edge</span> <span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="kr">in</span>
+  <span class="p">{</span><span class="n">path</span> <span class="p">=</span> <span class="kr">from</span> <span class="nv">x</span><span class="p">,</span> <span class="nv">y</span> <span class="kr">where</span> <span class="n">path</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)}</span>
+<span class="kr">end</span></div>
+</div>
+
 
 You'll notice that the Datalog and Morel programs have the same
 structure. Datalog rules without a body (such as `edge(1,2)` and
@@ -238,7 +265,7 @@ with the relational algebra-style queries (defined by `from`,
 
 The following query is in a hybrid style.
 
-```sml
+<!-- morel skip
 (* Calculus style: recursive reachability *)
 fun edge (x, y) = (x, y) elem [(1,2), (2,3), (3,4), (2,4)];
 fun reachable (x, y) =
@@ -250,7 +277,22 @@ from source in [1, 2, 3, 4]
   yield {source,
          reachable_count = count (from target
                                     where reachable (source, target))}
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="c">(*</span><span class="cm"> Calculus style: recursive reachability *)</span>
+<span class="kr">fun</span> <span class="nf">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="kr">elem</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)];</span>
+<span class="kr">fun</span> <span class="nf">reachable</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span>
+  <span class="n">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="kr">orelse</span>
+  <span class="kr">exists</span> <span class="n">z</span> <span class="kr">where</span> <span class="n">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="kr">andalso</span> <span class="n">reachable</span> <span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+
+<span class="c">(*</span><span class="cm"> Algebra style: count reachable nodes per source *)</span>
+<span class="kr">from</span> <span class="nv">source</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="n">source</span><span class="p">,</span>
+         <span class="n">reachable_count</span> <span class="p">=</span> <span class="n">count</span> <span class="p">(</span><span class="kr">from</span> <span class="nv">target</span>
+                                    <span class="kr">where</span> <span class="n">reachable</span> <span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">))}</span></div>
+</div>
+
 
 The `edge` and `reachable` functions define graph reachability in a
 Datalog style, using recursion and boolean return values. The `from`
@@ -305,7 +347,5 @@ or Twitter:
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
 
-<!--
 This article
 [has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).
--->

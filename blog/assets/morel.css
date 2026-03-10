@@ -1,0 +1,279 @@
+/*
+ * Licensed to Julian Hyde under one or more contributor license
+ * agreements.  See the NOTICE file distributed with this work
+ * for additional information regarding copyright ownership.
+ * Julian Hyde licenses this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.  You may obtain a
+ * copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.  See the License for the specific
+ * language governing permissions and limitations under the
+ * License.
+ */
+
+/*
+ * Morel code block styles.
+ *
+ * Structure:
+ *   <div class="code-block">
+ *     <div class="code-input">   highlighted source code  </div>
+ *     <div class="code-output">  normal REPL output       </div>
+ *     <div class="code-error">   error output             </div>
+ *   </div>
+ */
+
+.code-block {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
+  font-size: 0.84em;
+  line-height: 1.65;
+  border: 1px solid #d8dde3;
+  border-radius: 7px;
+  overflow: hidden;
+  margin: 1.3em 0;
+  background: none;
+}
+
+.code-input {
+  background: #eef;
+  padding: 13px 18px;
+  color: #1f2328;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* When a .code-input follows output, add a top separator and reduce top gap */
+.code-output + .code-input,
+.code-error  + .code-input {
+  border-top: 1px solid #d8dde3;
+  padding-top: 5px;
+}
+
+/* Reduce bottom padding of input when directly followed by output */
+.code-input:has(+ .code-output),
+.code-input:has(+ .code-error) {
+  padding-bottom: 5px;
+}
+
+.code-output,
+.code-error {
+  padding: 3px 18px 10px 13px;
+  border-left: 5px solid;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.code-output { border-color: #2da44e; color: #1f2328; }
+.code-error  { border-color: #cf222e; color: #b91c1c; }
+
+.code-input > pre {
+  border: 0;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+/**
+ * Syntax highlighting styles
+ */
+.code-input {
+  background: #eef;
+}
+.code-input .c {
+  color: #c8940a;
+  font-weight: bold;
+}
+.code-input .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+.code-input .k {
+  font-weight: bold;
+}
+.code-input .o {
+  font-weight: bold;
+}
+.code-input .cm {
+  color: #c8940a;
+  font-weight: bold;
+}
+.code-input .cp {
+  color: #999;
+  font-weight: bold;
+}
+.code-input .c1 {
+  color: #998;
+  font-style: italic;
+}
+.code-input .cs {
+  color: #999;
+  font-weight: bold;
+  font-style: italic;
+}
+.code-input .gd {
+  color: #000;
+  background-color: #fdd;
+}
+.code-input .gd .x {
+  color: #000;
+  background-color: #faa;
+}
+.code-input .ge {
+  font-style: italic;
+}
+.code-input .gr {
+  color: #a00;
+}
+.code-input .gh {
+  color: #999;
+}
+.code-input .gi {
+  color: #000;
+  background-color: #dfd;
+}
+.code-input .gi .x {
+  color: #000;
+  background-color: #afa;
+}
+.code-input .go {
+  color: #888;
+}
+.code-input .gp {
+  color: #555;
+}
+.code-input .gs {
+  font-weight: bold;
+}
+.code-input .gu {
+  color: #aaa;
+}
+.code-input .gt {
+  color: #a00;
+}
+.code-input .kc {
+  font-weight: bold;
+}
+.code-input .kd {
+  font-weight: bold;
+}
+.code-input .kp {
+  font-weight: bold;
+}
+.code-input .kr {
+  font-weight: bold;
+}
+.code-input .kt {
+  color: #458;
+  font-weight: bold;
+}
+.code-input .m {
+  color: #099;
+}
+.code-input .s {
+  color: #d14;
+}
+.code-input .na {
+  color: #008080;
+}
+.code-input .nb {
+  color: #0086B3;
+}
+.code-input .nc {
+  color: #458;
+  font-weight: bold;
+}
+.code-input .no {
+  color: #008080;
+}
+.code-input .ni {
+  color: #800080;
+}
+.code-input .ne {
+  color: #900;
+  font-weight: bold;
+}
+.code-input .nf {
+  color: #900;
+  font-weight: bold;
+}
+.code-input .nn {
+  color: #555;
+}
+.code-input .nt {
+  color: #000080;
+}
+.code-input .nv {
+  color: #008080;
+}
+.code-input .ow {
+  font-weight: bold;
+}
+.code-input .w {
+  color: #bbb;
+}
+.code-input .mf {
+  color: #099;
+}
+.code-input .mh {
+  color: #099;
+}
+.code-input .mi {
+  color: #e36209;
+}
+.code-input .mo {
+  color: #099;
+}
+.code-input .sb {
+  color: #d14;
+}
+.code-input .sc {
+  color: #d14;
+}
+.code-input .sd {
+  color: #d14;
+}
+.code-input .s2 {
+  color: #d14;
+}
+.code-input .se {
+  color: #d14;
+}
+.code-input .sh {
+  color: #d14;
+}
+.code-input .si {
+  color: #d14;
+}
+.code-input .sx {
+  color: #d14;
+}
+.code-input .sr {
+  color: #009926;
+}
+.code-input .s1 {
+  color: #d14;
+}
+.code-input .ss {
+  color: #990073;
+}
+.code-input .bp {
+  color: #999;
+}
+.code-input .vc {
+  color: #008080;
+}
+.code-input .vg {
+  color: #008080;
+}
+.code-input .vi {
+  color: #008080;
+}
+.code-input .il {
+  color: #099;
+}
+
+/* End morel.css */

@@ -35,7 +35,7 @@ morel-rust version 0.2.0 (rust version 1.90.0)
 
 Next, you can enter some commands:
 
-```sml
+<!-- morel skip
 (* Define a recursive function *)
 fun factorial n =
   if n <= 1 then 1
@@ -47,7 +47,22 @@ val squares = List.map (fn x => x * x) [1, 2, 3, 4, 5];
 (* Compose functions *)
 val sumOfSquares =
   List.foldl (fn (x, y) => x + y) 0 (List.map (fn x => x * x) [1, 2, 3, 4, 5]);
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="c">(*</span><span class="cm"> Define a recursive function *)</span>
+<span class="kr">fun</span> <span class="nf">factorial</span> <span class="n">n</span> <span class="p">=</span>
+  <span class="kr">if</span> <span class="n">n</span> <span class="o">&lt;</span><span class="p">=</span> <span class="mi">1</span> <span class="kr">then</span> <span class="mi">1</span>
+  <span class="kr">else</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="c">(*</span><span class="cm"> Use lambdas and higher-order functions *)</span>
+<span class="kr">val</span> <span class="nv">squares</span> <span class="p">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="p">(</span><span class="kr">fn</span> <span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span>
+
+<span class="c">(*</span><span class="cm"> Compose functions *)</span>
+<span class="kr">val</span> <span class="nv">sumOfSquares</span> <span class="p">=</span>
+  <span class="nn">List</span><span class="p">.</span><span class="n">foldl</span> <span class="p">(</span><span class="kr">fn</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="mi">0</span> <span class="p">(</span><span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="p">(</span><span class="kr">fn</span> <span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span></div>
+</div>
+
 
 This demonstrates core functional programming: recursion,
 higher-order functions, and composition. Support for programs
@@ -135,10 +150,8 @@ or Twitter:
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
 
-<!--
 This article
 [has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).
--->
 
 <small>Apache Arrow, Apache DataFusion, Apache Iceberg, Apache
 Parquet, and Apache Kafka are trademarks of the Apache Software
