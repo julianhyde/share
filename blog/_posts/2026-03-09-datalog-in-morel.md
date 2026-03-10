@@ -131,16 +131,16 @@ path(X,Z) :- path(X,Y), edge(Y,Z).
 -->
 
 <div class="morel">
-<pre class="morel-input"><code>Datalog.execute "
+<pre class="morel-input"><code><span class="nn">Datalog</span><span class="p">.</span><span class="n">execute</span> <span class="s2">"
 .decl edge(x:int, y:int)
 .decl path(x:int, y:int)
 edge(1,2).
 edge(2,3).
 path(X,Y) :- edge(X,Y).
 path(X,Z) :- path(X,Y), edge(Y,Z).
-.output path";</code></pre>
-<pre class="morel-output"><code>val it = {path=[{x=1,y=2},{x=2,y=3},{x=1,y=3}]}
-  : {path:{x:int, y:int} list} variant</code></pre>
+.output path"</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = {path=[{x=1,y=2},{x=2,y=3},{x=1,y=3}]}</span>
+<span class="c">  : {path:{x:int, y:int} list} variant</span></code></pre>
 </div>
 
 
@@ -195,15 +195,15 @@ end
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><b>let</b>
-  <b>val</b> edge_facts = [(1, 2), (2, 3)]
-  <b>fun</b> edge (x, y) = (x, y) <b>elem</b> edge_facts
-  <b>fun</b> path (x, y) =
-    edge (x, y) <b>orelse</b>
-    (<b>exists</b> v0 <b>where</b> path (x, v0) <b>andalso</b> edge (v0, y))
-<b>in</b>
-  {path = <b>from</b> x, y <b>where</b> path (x, y)}
-<b>end</b></code></pre>
+<pre class="morel-input"><code><span class="kr">let</span>
+  <span class="kr">val</span> <span class="nv">edge_facts</span> <span class="p">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+  <span class="kr">fun</span> <span class="nf">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="kr">elem</span> <span class="n">edge_facts</span>
+  <span class="kr">fun</span> <span class="nf">path</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span>
+    <span class="n">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="kr">orelse</span>
+    <span class="p">(</span><span class="kr">exists</span> <span class="n">v0</span> <span class="kr">where</span> <span class="n">path</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v0</span><span class="p">)</span> <span class="kr">andalso</span> <span class="n">edge</span> <span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="kr">in</span>
+  <span class="p">{</span><span class="n">path</span> <span class="p">=</span> <span class="kr">from</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="kr">where</span> <span class="n">path</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)}</span>
+<span class="kr">end</span></code></pre>
 </div>
 
 
@@ -280,17 +280,17 @@ from source in [1, 2, 3, 4]
 -->
 
 <div class="morel">
-<pre class="morel-input"><code>(* Calculus style: recursive reachability *)
-<b>fun</b> edge (x, y) = (x, y) <b>elem</b> [(1,2), (2,3), (3,4), (2,4)];
-<b>fun</b> reachable (x, y) =
-  edge (x, y) <b>orelse</b>
-  <b>exists</b> z <b>where</b> edge (x, z) <b>andalso</b> reachable (z, y);
+<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Calculus style: recursive reachability *)</span>
+<span class="kr">fun</span> <span class="nf">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="kr">elem</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)];</span>
+<span class="kr">fun</span> <span class="nf">reachable</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span>
+  <span class="n">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="kr">orelse</span>
+  <span class="kr">exists</span> <span class="n">z</span> <span class="kr">where</span> <span class="n">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="kr">andalso</span> <span class="n">reachable</span> <span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
 
-(* Algebra style: count reachable nodes per source *)
-<b>from</b> source <b>in</b> [1, 2, 3, 4]
-  <b>yield</b> {source,
-         reachable_count = count (<b>from</b> target
-                                    <b>where</b> reachable (source, target))}</code></pre>
+<span class="c">(*</span><span class="cm"> Algebra style: count reachable nodes per source *)</span>
+<span class="kr">from</span> <span class="n">source</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="n">source</span><span class="p">,</span>
+         <span class="n">reachable_count</span> <span class="p">=</span> <span class="n">count</span> <span class="p">(</span><span class="kr">from</span> <span class="n">target</span>
+                                    <span class="kr">where</span> <span class="n">reachable</span> <span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">))}</span></code></pre>
 </div>
 
 
