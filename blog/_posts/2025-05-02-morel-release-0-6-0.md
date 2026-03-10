@@ -152,6 +152,11 @@ Are there any employees with a salary greater than 1,000?
 <!-- morel silent
 val emps = scott.emps;
 val depts = scott.depts;
+> val emps = <relation>
+>   :
+>     {comm:real, deptno:int, empno:int, ename:string, hiredate:string,
+>      job:string, mgr:int, sal:real} bag
+> val depts = <relation> : {deptno:int, dname:string, loc:string} bag
 -->
 
 <!-- morel skip
@@ -339,10 +344,6 @@ we needed a way to change just one field of a record.
 
 Suppose that the `emps` table has eight fields and `emp` represents
 one row from that table:
-
-<!-- morel silent
-val emp = List.hd scott.emps;
--->
 
 <!-- morel skip
 val emp = List.hd scott.emps;

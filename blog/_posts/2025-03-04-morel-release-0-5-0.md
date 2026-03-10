@@ -191,6 +191,11 @@ Morel has analogous syntax:
 <!-- morel silent
 val emps = scott.emps;
 val depts = scott.depts;
+> val emps = <relation>
+>   :
+>     {comm:real, deptno:int, empno:int, ename:string, hiredate:string,
+>      job:string, mgr:int, sal:real} bag
+> val depts = <relation> : {deptno:int, dname:string, loc:string} bag
 -->
 
 <!-- morel skip

@@ -57,6 +57,13 @@ from e in scott.emps
   yield e.ename;
 -->
 
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span>
+  <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">;</span></code></pre>
+</div>
+
+
 The collection `scott.emps` maps to the `EMP` table in the `scott`
 database, and Morel's goal is to push as much of the processing as
 possible to where the data resides. In this case, Morel can generate
@@ -80,8 +87,18 @@ Yes, but then we would be short-changing queries such as
 from i in ["a", "b"],
     j in [1, 2, 3]
   yield (i, j);
-> val it = [("a",1),("a",2),("a",3),("b",1),("b",2),("b",3)] : (string * int) list
+> val it = [("a",1),("a",2),("a",3),("b",1),("b",2),("b",3)]
+>   : (string * int) list
 -->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">],</span>
+    <span class="n">j</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+  <span class="kr">yield</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span></code></pre>
+<pre class="morel-output"><code><span class="c">val it = [("a",1),("a",2),("a",3),("b",1),("b",2),("b",3)]</span>
+<span class="c">  : (string * int) list</span></code></pre>
+</div>
+
 
 which do have a defined order.
 
@@ -103,11 +120,21 @@ namespace as regular values.  If I declare `x` to be an `int` value
 val x = 42;
 -->
 
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="mi">42</span><span class="p">;</span></code></pre>
+</div>
+
+
 and then later try to declare `x` to be a function
 
 <!-- morel skip
 val x = fn y => y + 1;
 -->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="kr">fn</span> <span class="n">y</span> <span class="o">=&gt;</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
+</div>
+
 
 then the previous declaration of `x` is no longer accessible.
 <!-- morel skip
@@ -115,6 +142,13 @@ int z = x - 2;
 > 0.0-0.0 Error: Cannot deduce type: conflict: fn(int, int) vs int
 >   raised at: 0.0-0.0
 -->
+
+<div class="morel">
+<pre class="morel-input"><code><span class="n">int</span> <span class="n">z</span> <span class="p">=</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span></code></pre>
+<pre class="morel-output"><code><span class="c">0.0-0.0 Error: Cannot deduce type: conflict: fn(int, int) vs int</span>
+<span class="c">  raised at: 0.0-0.0</span></code></pre>
+</div>
+
 
 To create
 [overloaded functions](https://github.com/hydromatic/morel/issues/237),
