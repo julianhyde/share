@@ -1,0 +1,82 @@
+/*
+ * Licensed to Julian Hyde under one or more contributor license
+ * agreements.  See the NOTICE file distributed with this work
+ * for additional information regarding copyright ownership.
+ * Julian Hyde licenses this file to you under the Apache
+ * License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License.  You may obtain a
+ * copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.  See the License for the specific
+ * language governing permissions and limitations under the
+ * License.
+ */
+
+/*
+ * Morel code block styles.
+ *
+ * Structure:
+ *   <div class="code-block">
+ *     <div class="code-input">   highlighted source code  </div>
+ *     <div class="code-output">  normal REPL output       </div>
+ *     <div class="code-error">   error output             </div>
+ *   </div>
+ */
+
+.code-block {
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
+  font-size: 0.84em;
+  line-height: 1.65;
+  border: 1px solid #d8dde3;
+  border-radius: 7px;
+  overflow: hidden;
+  margin: 1.3em 0;
+  background: none;
+}
+
+.code-input {
+  background: #f6f8fa;
+  padding: 13px 18px;
+  color: #1f2328;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* When a .code-input follows any other section, add a separator */
+.code-output + .code-input,
+.code-error  + .code-input {
+  border-top: 1px solid #d8dde3;
+}
+
+.code-output {
+  background: #f0fff4;
+  border-top: 1px solid #b7e4c7;
+  padding: 10px 18px;
+  color: #1a6430;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.code-error {
+  background: #fff5f5;
+  border-top: 1px solid #f5c2c2;
+  padding: 10px 18px;
+  color: #b91c1c;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* Syntax highlight token classes (inside .code-input only) */
+.kw   { color: #d73a49; font-weight: 500; }   /* keywords           */
+.str  { color: #032f62; }                      /* string / char lit  */
+.cmt  { color: #6a737d; font-style: italic; }  /* comments           */
+.num  { color: #005cc5; }                      /* numeric literals   */
+.ctor { color: #6f42c1; }                      /* constructors/types */
+.op   { color: #d73a49; }                      /* operators          */
+
+/* End morel.css */

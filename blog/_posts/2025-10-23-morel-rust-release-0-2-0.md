@@ -49,18 +49,18 @@ val sumOfSquares =
   List.foldl (fn (x, y) => x + y) 0 (List.map (fn x => x * x) [1, 2, 3, 4, 5]);
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Define a recursive function *)</span>
-<span class="kr">fun</span> <span class="nf">factorial</span> <span class="n">n</span> <span class="p">=</span>
-  <span class="kr">if</span> <span class="n">n</span> &lt;<span class="p">=</span> <span class="mi">1</span> <span class="kr">then</span> <span class="mi">1</span>
-  <span class="kr">else</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+<div class="code-block">
+<div class="code-input"><span class="cmt">(* Define a recursive function *)</span>
+<span class="kw">fun</span> factorial n =
+  <span class="kw">if</span> n &lt;= <span class="num">1</span> <span class="kw">then</span> <span class="num">1</span>
+  <span class="kw">else</span> n <span class="op">*</span> factorial (n <span class="op">-</span> <span class="num">1</span>);
 
-<span class="c">(*</span><span class="cm"> Use lambdas and higher-order functions *)</span>
-<span class="kr">val</span> <span class="nv">squares</span> <span class="p">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="p">(</span><span class="kr">fn</span> <span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span>
+<span class="cmt">(* Use lambdas and higher-order functions *)</span>
+<span class="kw">val</span> squares = <span class="ctor">List</span>.map (<span class="kw">fn</span> x <span class="op">=&gt;</span> x <span class="op">*</span> x) [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>];
 
-<span class="c">(*</span><span class="cm"> Compose functions *)</span>
-<span class="kr">val</span> <span class="nv">sumOfSquares</span> <span class="p">=</span>
-  <span class="nn">List</span><span class="p">.</span><span class="n">foldl</span> <span class="p">(</span><span class="kr">fn</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span> <span class="mi">0</span> <span class="p">(</span><span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="p">(</span><span class="kr">fn</span> <span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]);</span></code></pre>
+<span class="cmt">(* Compose functions *)</span>
+<span class="kw">val</span> sumOfSquares =
+  <span class="ctor">List</span>.foldl (<span class="kw">fn</span> (x, y) <span class="op">=&gt;</span> x <span class="op">+</span> y) <span class="num">0</span> (<span class="ctor">List</span>.map (<span class="kw">fn</span> x <span class="op">=&gt;</span> x <span class="op">*</span> x) [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>]);</div>
 </div>
 
 

@@ -57,10 +57,10 @@ from e in scott.emps
   yield e.ename;
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
-  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span>
-  <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">;</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="kw">from</span> e <span class="kw">in</span> <span class="ctor">scott</span>.emps
+  <span class="kw">where</span> <span class="ctor">e</span>.sal &gt; <span class="num">1000</span>.<span class="num">0</span>
+  <span class="kw">yield</span> <span class="ctor">e</span>.ename;</div>
 </div>
 
 
@@ -91,12 +91,12 @@ from i in ["a", "b"],
 >   : (string * int) list
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">],</span>
-    <span class="n">j</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
-  <span class="kr">yield</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val it = [("a",1),("a",2),("a",3),("b",1),("b",2),("b",3)]</span>
-<span class="c">  : (string * int) list</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="kw">from</span> i <span class="kw">in</span> [<span class="str">"a"</span>, <span class="str">"b"</span>],
+    j <span class="kw">in</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
+  <span class="kw">yield</span> (i, j);</div>
+<div class="code-output">val it = [("a",1),("a",2),("a",3),("b",1),("b",2),("b",3)]
+  : (string * int) list</div>
 </div>
 
 
@@ -120,8 +120,8 @@ namespace as regular values.  If I declare `x` to be an `int` value
 val x = 42;
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="mi">42</span><span class="p">;</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="kw">val</span> x = <span class="num">42</span>;</div>
 </div>
 
 
@@ -131,22 +131,22 @@ and then later try to declare `x` to be a function
 val x = fn y => y + 1;
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="kr">fn</span> <span class="n">y</span> <span class="o">=&gt;</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="kw">val</span> x = <span class="kw">fn</span> y <span class="op">=&gt;</span> y <span class="op">+</span> <span class="num">1</span>;</div>
 </div>
 
 
 then the previous declaration of `x` is no longer accessible.
-<!-- morel skip
+<!-- morel fail
 int z = x - 2;
-> 0.0-0.0 Error: Cannot deduce type: conflict: fn(int, int) vs int
->   raised at: 0.0-0.0
+> stdIn:1.5 Error: unbound variable or constructor: z
+>   raised at: stdIn:1.5
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="n">int</span> <span class="n">z</span> <span class="p">=</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">0.0-0.0 Error: Cannot deduce type: conflict: fn(int, int) vs int</span>
-<span class="c">  raised at: 0.0-0.0</span></code></pre>
+<div class="code-block">
+<div class="code-input">int z = x <span class="op">-</span> <span class="num">2</span>;</div>
+<div class="code-output">stdIn:1.5 Error: unbound variable or constructor: z
+  raised at: stdIn:1.5</div>
 </div>
 
 

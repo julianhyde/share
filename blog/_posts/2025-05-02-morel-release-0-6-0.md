@@ -176,21 +176,21 @@ not (List.null (from e in emps where e.sal > 1000.0));
 > val it = true : bool
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Using new "exists" keyword. *)</span>
-<span class="kr">exists</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
-  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val it = true : bool</span></code></pre>
-<pre class="morel-input highlight"><code>
-<span class="c">(*</span><span class="cm"> Equivalent using "from" and "List.null". *)</span>
-<span class="kr">not</span> <span class="p">(</span><span class="nn">List</span><span class="p">.</span><span class="n">null</span> <span class="p">(</span><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span> <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">));</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val it = true : bool</span></code></pre>
-<pre class="morel-input highlight"><code>
-<span class="c">(*</span><span class="cm"> Equivalent using "from" and "compute". *)</span>
-<span class="p">(</span><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
-  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span>
-  <span class="kr">compute</span> <span class="n">count</span><span class="p">)</span> &gt; <span class="mi">0</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val it = true : bool</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="cmt">(* Using new "exists" keyword. *)</span>
+<span class="kw">exists</span> e <span class="kw">in</span> emps
+  <span class="kw">where</span> <span class="ctor">e</span>.sal &gt; <span class="num">1000</span>.<span class="num">0</span>;</div>
+<div class="code-output">val it = true : bool</div>
+<div class="code-input">
+<span class="cmt">(* Equivalent using "from" and "List.null". *)</span>
+<span class="kw">not</span> (<span class="ctor">List</span>.null (<span class="kw">from</span> e <span class="kw">in</span> emps <span class="kw">where</span> <span class="ctor">e</span>.sal &gt; <span class="num">1000</span>.<span class="num">0</span>));</div>
+<div class="code-output">val it = true : bool</div>
+<div class="code-input">
+<span class="cmt">(* Equivalent using "from" and "compute". *)</span>
+(<span class="kw">from</span> e <span class="kw">in</span> emps
+  <span class="kw">where</span> <span class="ctor">e</span>.sal &gt; <span class="num">1000</span>.<span class="num">0</span>
+  <span class="kw">compute</span> count) &gt; <span class="num">0</span></div>
+<div class="code-output">val it = true : bool</div>
 </div>
 
 
@@ -225,23 +225,23 @@ List.null (from e in emps
 > val it = true : bool
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Using new "forall" keyword. *)</span>
-<span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
-  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span>
-  <span class="kr">require</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val it = true : bool</span></code></pre>
-<pre class="morel-input highlight"><code>
-<span class="c">(*</span><span class="cm"> Equivalent using "exists". *)</span>
-<span class="kr">not</span> <span class="p">(</span><span class="kr">exists</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
-  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span>
-  <span class="kr">andalso</span> <span class="kr">not</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">.</span><span class="mi">0</span><span class="p">));</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val it = true : bool</span></code></pre>
-<pre class="morel-input highlight"><code>
-<span class="c">(*</span><span class="cm"> Equivalent using "from" and "List.null". *)</span>
-<span class="nn">List</span><span class="p">.</span><span class="n">null</span> <span class="p">(</span><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
-           <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span> <span class="kr">andalso</span> <span class="kr">not</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">.</span><span class="mi">0</span><span class="p">));</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val it = true : bool</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="cmt">(* Using new "forall" keyword. *)</span>
+<span class="kw">forall</span> e <span class="kw">in</span> emps
+  <span class="kw">where</span> <span class="ctor">e</span>.job = <span class="str">"PROGRAMMER"</span>
+  <span class="kw">require</span> <span class="ctor">e</span>.sal &gt; <span class="num">900</span>.<span class="num">0</span>;</div>
+<div class="code-output">val it = true : bool</div>
+<div class="code-input">
+<span class="cmt">(* Equivalent using "exists". *)</span>
+<span class="kw">not</span> (<span class="kw">exists</span> e <span class="kw">in</span> emps
+  <span class="kw">where</span> <span class="ctor">e</span>.job = <span class="str">"PROGRAMMER"</span>
+  <span class="kw">andalso</span> <span class="kw">not</span> (<span class="ctor">e</span>.sal &gt; <span class="num">900</span>.<span class="num">0</span>));</div>
+<div class="code-output">val it = true : bool</div>
+<div class="code-input">
+<span class="cmt">(* Equivalent using "from" and "List.null". *)</span>
+<span class="ctor">List</span>.null (<span class="kw">from</span> e <span class="kw">in</span> emps
+           <span class="kw">where</span> <span class="ctor">e</span>.job = <span class="str">"PROGRAMMER"</span> <span class="kw">andalso</span> <span class="kw">not</span> (<span class="ctor">e</span>.sal &gt; <span class="num">900</span>.<span class="num">0</span>));</div>
+<div class="code-output">val it = true : bool</div>
 </div>
 
 
@@ -267,11 +267,11 @@ forall e in emps
   where e.job = "PROGRAMMER" andalso e.sal > 900;
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> A query using "where" is invalid and not equivalent to the
+<div class="code-block">
+<div class="code-input"><span class="cmt">(* A query using "where" is invalid and not equivalent to the
    original query. *)</span>
-<span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
-  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span> <span class="kr">andalso</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">;</span></code></pre>
+<span class="kw">forall</span> e <span class="kw">in</span> emps
+  <span class="kw">where</span> <span class="ctor">e</span>.job = <span class="str">"PROGRAMMER"</span> <span class="kw">andalso</span> <span class="ctor">e</span>.sal &gt; <span class="num">900</span>;</div>
 </div>
 
 
@@ -296,11 +296,11 @@ forall e in emps
 > val it = true : bool
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Valid, and equivalent to the original query. *)</span>
-<span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
-  <span class="kr">require</span> <span class="kr">not</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span><span class="p">)</span> <span class="kr">orelse</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">;</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val it = true : bool</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="cmt">(* Valid, and equivalent to the original query. *)</span>
+<span class="kw">forall</span> e <span class="kw">in</span> emps
+  <span class="kw">require</span> <span class="kw">not</span> (<span class="ctor">e</span>.job = <span class="str">"PROGRAMMER"</span>) <span class="kw">orelse</span> <span class="ctor">e</span>.sal &gt; <span class="num">900</span>;</div>
+<div class="code-output">val it = true : bool</div>
 </div>
 
 
@@ -319,12 +319,12 @@ forall e in emps
 > val it = true : bool
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Valid, equivalent to the original query, and we think
+<div class="code-block">
+<div class="code-input"><span class="cmt">(* Valid, equivalent to the original query, and we think
    quite nice even if you're not a logician. *)</span>
-<span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
-  <span class="kr">require</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span> <span class="kr">implies</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">;</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val it = true : bool</span></code></pre>
+<span class="kw">forall</span> e <span class="kw">in</span> emps
+  <span class="kw">require</span> <span class="ctor">e</span>.job = <span class="str">"PROGRAMMER"</span> <span class="kw">implies</span> <span class="ctor">e</span>.sal &gt; <span class="num">900</span>;</div>
+<div class="code-output">val it = true : bool</div>
 </div>
 
 
@@ -354,13 +354,13 @@ val emp = List.hd scott.emps;
 >      job:string, mgr:int, sal:real}
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">emp</span> <span class="p">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">hd</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span><span class="p">;</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val emp =</span>
-<span class="c">  {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",</span>
-<span class="c">   job="CLERK",mgr=7902,sal=800.0}</span>
-<span class="c">  : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,</span>
-<span class="c">     job:string, mgr:int, sal:real}</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="kw">val</span> emp = <span class="ctor">List</span>.hd <span class="ctor">scott</span>.emps;</div>
+<div class="code-output">val emp =
+  {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",
+   job="CLERK",mgr=7902,sal=800.0}
+  : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,
+     job:string, mgr:int, sal:real}</div>
 </div>
 
 
@@ -377,14 +377,14 @@ val emp2 = {emp.comm, emp.deptno, emp.empno, emp.ename, emp.hiredate,
 >      job:string, mgr:int, sal:real}
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">emp2</span> <span class="p">=</span> <span class="p">{</span><span class="nn">emp</span><span class="p">.</span><span class="n">comm</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">deptno</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">empno</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">ename</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">hiredate</span><span class="p">,</span>
-    <span class="nn">emp</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">mgr</span><span class="p">,</span> <span class="n">sal</span> <span class="p">=</span> <span class="nn">emp</span><span class="p">.</span><span class="n">sal</span> <span class="o">*</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">};</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val emp2 =</span>
-<span class="c">  {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",</span>
-<span class="c">   job="CLERK",mgr=7902,sal=1600.0}</span>
-<span class="c">  : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,</span>
-<span class="c">     job:string, mgr:int, sal:real}</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="kw">val</span> emp2 = {<span class="ctor">emp</span>.comm, <span class="ctor">emp</span>.deptno, <span class="ctor">emp</span>.empno, <span class="ctor">emp</span>.ename, <span class="ctor">emp</span>.hiredate,
+    <span class="ctor">emp</span>.job, <span class="ctor">emp</span>.mgr, sal = <span class="ctor">emp</span>.sal <span class="op">*</span> <span class="num">2</span>.<span class="num">0</span>};</div>
+<div class="code-output">val emp2 =
+  {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",
+   job="CLERK",mgr=7902,sal=1600.0}
+  : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,
+     job:string, mgr:int, sal:real}</div>
 </div>
 
 
@@ -404,13 +404,13 @@ val emp3 = {emp with sal = emp.sal * 2.0};
 >      job:string, mgr:int, sal:real}
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">emp3</span> <span class="p">=</span> <span class="p">{</span><span class="n">emp</span> <span class="kr">with</span> <span class="n">sal</span> <span class="p">=</span> <span class="nn">emp</span><span class="p">.</span><span class="n">sal</span> <span class="o">*</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">};</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val emp3 =</span>
-<span class="c">  {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",</span>
-<span class="c">   job="CLERK",mgr=7902,sal=1600.0}</span>
-<span class="c">  : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,</span>
-<span class="c">     job:string, mgr:int, sal:real}</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="kw">val</span> emp3 = {emp <span class="kw">with</span> sal = <span class="ctor">emp</span>.sal <span class="op">*</span> <span class="num">2</span>.<span class="num">0</span>};</div>
+<div class="code-output">val emp3 =
+  {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",
+   job="CLERK",mgr=7902,sal=1600.0}
+  : {comm:real, deptno:int, empno:int, ename:string, hiredate:string,
+     job:string, mgr:int, sal:real}</div>
 </div>
 
 
@@ -441,15 +441,15 @@ from d in scott.depts
 >   : {dname:string, empno:int} list
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">d</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">depts</span>
-    <span class="kr">join</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
-  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"CLERK"</span>
-  <span class="kr">yield</span> <span class="p">{</span><span class="nn">d</span><span class="p">.</span><span class="n">dname</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">empno</span><span class="p">};</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val it =</span>
-<span class="c">  [{dname="ACCOUNTING",empno=7934},{dname="RESEARCH",empno=7369},</span>
-<span class="c">   {dname="RESEARCH",empno=7876},{dname="SALES",empno=7900}]</span>
-<span class="c">  : {dname:string, empno:int} list</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="kw">from</span> d <span class="kw">in</span> <span class="ctor">scott</span>.depts
+    <span class="kw">join</span> e <span class="kw">in</span> <span class="ctor">scott</span>.emps <span class="kw">on</span> <span class="ctor">e</span>.deptno = <span class="ctor">d</span>.deptno
+  <span class="kw">where</span> <span class="ctor">e</span>.job = <span class="str">"CLERK"</span>
+  <span class="kw">yield</span> {<span class="ctor">d</span>.dname, <span class="ctor">e</span>.empno};</div>
+<div class="code-output">val it =
+  [{dname="ACCOUNTING",empno=7934},{dname="RESEARCH",empno=7369},
+   {dname="RESEARCH",empno=7876},{dname="SALES",empno=7900}]
+  : {dname:string, empno:int} list</div>
 </div>
 
 
@@ -463,9 +463,9 @@ set ("output", "tabular");
 > val it = () : unit
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="n">set</span> <span class="p">(</span><span class="s2">"output"</span><span class="p">,</span> <span class="s2">"tabular"</span><span class="p">);</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">val it = () : unit</span></code></pre>
+<div class="code-block">
+<div class="code-input">set (<span class="str">"output"</span>, <span class="str">"tabular"</span>);</div>
+<div class="code-output">val it = () : unit</div>
 </div>
 
 
@@ -486,19 +486,19 @@ from d in scott.depts
 > val it : {dname:string, empno:int} list
 -->
 
-<div class="highlighter-rouge morel">
-<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">d</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">depts</span>
-    <span class="kr">join</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
-  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"CLERK"</span>
-  <span class="kr">yield</span> <span class="p">{</span><span class="nn">d</span><span class="p">.</span><span class="n">dname</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">empno</span><span class="p">};</span></code></pre>
-<pre class="morel-output highlight"><code><span class="c">dname      empno</span>
-<span class="c">---------- -----</span>
-<span class="c">ACCOUNTING  7934</span>
-<span class="c">RESEARCH    7369</span>
-<span class="c">RESEARCH    7876</span>
-<span class="c">SALES       7900</span>
-<span class="c"></span>
-<span class="c">val it : {dname:string, empno:int} list</span></code></pre>
+<div class="code-block">
+<div class="code-input"><span class="kw">from</span> d <span class="kw">in</span> <span class="ctor">scott</span>.depts
+    <span class="kw">join</span> e <span class="kw">in</span> <span class="ctor">scott</span>.emps <span class="kw">on</span> <span class="ctor">e</span>.deptno = <span class="ctor">d</span>.deptno
+  <span class="kw">where</span> <span class="ctor">e</span>.job = <span class="str">"CLERK"</span>
+  <span class="kw">yield</span> {<span class="ctor">d</span>.dname, <span class="ctor">e</span>.empno};</div>
+<div class="code-output">dname      empno
+---------- -----
+ACCOUNTING  7934
+RESEARCH    7369
+RESEARCH    7876
+SALES       7900
+
+val it : {dname:string, empno:int} list</div>
 </div>
 
 
