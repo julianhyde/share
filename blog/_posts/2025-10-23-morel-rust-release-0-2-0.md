@@ -50,7 +50,7 @@ val sumOfSquares =
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Define a recursive function *)</span>
+<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Define a recursive function *)</span>
 <span class="kr">fun</span> <span class="nf">factorial</span> <span class="n">n</span> <span class="p">=</span>
   <span class="kr">if</span> <span class="n">n</span> &lt;<span class="p">=</span> <span class="mi">1</span> <span class="kr">then</span> <span class="mi">1</span>
   <span class="kr">else</span> <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>

@@ -106,7 +106,7 @@ fun product [] = 1
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">factorize</span> <span class="n">n</span> <span class="p">=</span>
+<pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">factorize</span> <span class="n">n</span> <span class="p">=</span>
   <span class="kr">let</span>
     <span class="kr">fun</span> <span class="nf">factorize'</span> <span class="n">n</span> <span class="n">d</span> <span class="p">=</span>
       <span class="kr">if</span> <span class="n">n</span> &lt; <span class="n">d</span> <span class="kr">then</span> <span class="p">[]</span> <span class="kr">else</span>
@@ -115,11 +115,11 @@ fun product [] = 1
   <span class="kr">in</span>
     <span class="n">factorize'</span> <span class="n">n</span> <span class="mi">2</span>
   <span class="kr">end</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val factorize = fn : int -&gt; int list</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-output highlight"><code><span class="c">val factorize = fn : int -&gt; int list</span></code></pre>
+<pre class="morel-input highlight"><code>
 <span class="kr">fun</span> <span class="nf">product</span> <span class="p">[]</span> <span class="p">=</span> <span class="mi">1</span>
   <span class="p">|</span> <span class="n">product</span> <span class="p">(</span><span class="n">x</span><span class="o">::</span><span class="n">xs</span><span class="p">)</span> <span class="p">=</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">product</span> <span class="n">xs</span><span class="p">);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val product = fn : int list -&gt; int</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val product = fn : int list -&gt; int</span></code></pre>
 </div>
 
 
@@ -133,10 +133,10 @@ product (factorize 120);
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="n">factorize</span> <span class="mi">120</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [2,2,2,3,5] : int list</span></code></pre>
-<pre class="morel-input"><code><span class="n">product</span> <span class="p">(</span><span class="n">factorize</span> <span class="mi">120</span><span class="p">);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = 120 : int</span></code></pre>
+<pre class="morel-input highlight"><code><span class="n">factorize</span> <span class="mi">120</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [2,2,2,3,5] : int list</span></code></pre>
+<pre class="morel-input highlight"><code><span class="n">product</span> <span class="p">(</span><span class="n">factorize</span> <span class="mi">120</span><span class="p">);</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = 120 : int</span></code></pre>
 </div>
 
 
@@ -151,11 +151,11 @@ fun gcd (m, n) =
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">gcd</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
+<pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">gcd</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
   <span class="kr">from</span> <span class="n">f</span> <span class="kr">in</span> <span class="n">factorize</span> <span class="n">m</span>
     <span class="kr">intersect</span> <span class="n">factorize</span> <span class="n">n</span>
     <span class="kr">compute</span> <span class="n">product</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val gcd = fn : int * int -&gt; int</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val gcd = fn : int * int -&gt; int</span></code></pre>
 </div>
 
 
@@ -174,9 +174,9 @@ fun lcm (m, n) =
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">lcm</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
+<pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">lcm</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
   <span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="n">div</span> <span class="n">gcd</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val lcm = fn : int * int -&gt; int</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val lcm = fn : int * int -&gt; int</span></code></pre>
 </div>
 
 
@@ -199,7 +199,7 @@ fun lcm' (m, n) =
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">lcm'</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
+<pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">lcm'</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
   <span class="kr">let</span>
     <span class="kr">val</span> <span class="nv">m_factors</span> <span class="p">=</span> <span class="n">factorize</span> <span class="n">m</span>
     <span class="kr">val</span> <span class="nv">n_factors</span> <span class="p">=</span> <span class="n">factorize</span> <span class="n">n</span>
@@ -210,7 +210,7 @@ fun lcm' (m, n) =
         <span class="kr">intersect</span> <span class="n">n_factors</span><span class="p">)</span>
     <span class="kr">compute</span> <span class="n">product</span>
   <span class="kr">end</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val lcm' = fn : int * int -&gt; int</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val lcm' = fn : int * int -&gt; int</span></code></pre>
 </div>
 
 
@@ -226,12 +226,12 @@ lcm' (36, 120);
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="n">gcd</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = 12 : int</span></code></pre>
-<pre class="morel-input"><code><span class="n">lcm</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = 360 : int</span></code></pre>
-<pre class="morel-input"><code><span class="n">lcm'</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = 360 : int</span></code></pre>
+<pre class="morel-input highlight"><code><span class="n">gcd</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = 12 : int</span></code></pre>
+<pre class="morel-input highlight"><code><span class="n">lcm</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = 360 : int</span></code></pre>
+<pre class="morel-input highlight"><code><span class="n">lcm'</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = 360 : int</span></code></pre>
 </div>
 
 

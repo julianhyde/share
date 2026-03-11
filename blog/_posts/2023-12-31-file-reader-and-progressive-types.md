@@ -106,18 +106,18 @@ from e in employees yield e.age;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">fred</span> <span class="p">=</span> <span class="p">{</span><span class="n">name</span><span class="p">=</span><span class="s2">"Fred"</span><span class="p">,</span> <span class="n">age</span><span class="p">=</span><span class="mi">27</span><span class="p">};</span></code></pre>
-<pre class="morel-output"><code><span class="c">val fred = {age=27,name="Fred"} : {age:int, name:string}</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">fred</span> <span class="p">=</span> <span class="p">{</span><span class="n">name</span><span class="p">=</span><span class="s2">"Fred"</span><span class="p">,</span> <span class="n">age</span><span class="p">=</span><span class="mi">27</span><span class="p">};</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val fred = {age=27,name="Fred"} : {age:int, name:string}</span></code></pre>
+<pre class="morel-input highlight"><code>
 <span class="kr">val</span> <span class="nv">velma</span> <span class="p">=</span> <span class="p">{</span><span class="n">name</span><span class="p">=</span><span class="s2">"Velma"</span><span class="p">,</span> <span class="n">age</span><span class="p">=</span><span class="mi">20</span><span class="p">};</span></code></pre>
-<pre class="morel-output"><code><span class="c">val velma = {age=20,name="Velma"} : {age:int, name:string}</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-output highlight"><code><span class="c">val velma = {age=20,name="Velma"} : {age:int, name:string}</span></code></pre>
+<pre class="morel-input highlight"><code>
 <span class="kr">val</span> <span class="nv">employees</span> <span class="p">=</span> <span class="p">[</span><span class="n">fred</span><span class="p">,</span> <span class="n">velma</span><span class="p">];</span></code></pre>
-<pre class="morel-output"><code><span class="c">val employees = [{age=27,name="Fred"},{age=20,name="Velma"}]</span>
+<pre class="morel-output highlight"><code><span class="c">val employees = [{age=27,name="Fred"},{age=20,name="Velma"}]</span>
 <span class="c">  : {age:int, name:string} list</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-input highlight"><code>
 <span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">employees</span> <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">age</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [27,20] : int list</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [27,20] : int list</span></code></pre>
 </div>
 
 
@@ -133,8 +133,8 @@ file;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="n">file</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = {scott={},wordle={}} : {scott:{...}, wordle:{...}, ...}</span></code></pre>
+<pre class="morel-input highlight"><code><span class="n">file</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = {scott={},wordle={}} : {scott:{...}, wordle:{...}, ...}</span></code></pre>
 </div>
 
 
@@ -152,8 +152,8 @@ file.scott;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="nn">file</span><span class="p">.</span><span class="n">scott</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = {bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;}</span>
+<pre class="morel-input highlight"><code><span class="nn">file</span><span class="p">.</span><span class="n">scott</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = {bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;}</span>
 <span class="c">  : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,</span>
 <span class="c">     ...}</span></code></pre>
 </div>
@@ -175,10 +175,10 @@ from d in file.scott.dept
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">d</span> <span class="kr">in</span> <span class="nn">file</span><span class="p">.</span><span class="nn">scott</span><span class="p">.</span><span class="n">dept</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">d</span> <span class="kr">in</span> <span class="nn">file</span><span class="p">.</span><span class="nn">scott</span><span class="p">.</span><span class="n">dept</span>
   <span class="kr">join</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">file</span><span class="p">.</span><span class="nn">scott</span><span class="p">.</span><span class="n">emp</span> <span class="kr">on</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
   <span class="kr">group</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span> <span class="kr">compute</span> <span class="n">sum</span> <span class="kr">of</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it =</span>
+<pre class="morel-output highlight"><code><span class="c">val it =</span>
 <span class="c">  [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},</span>
 <span class="c">   {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list</span></code></pre>
 </div>
@@ -201,8 +201,8 @@ file;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="n">file</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it =</span>
+<pre class="morel-input highlight"><code><span class="n">file</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it =</span>
 <span class="c">  {scott={bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;},</span>
 <span class="c">   wordle={}}</span>
 <span class="c">  : {</span>
@@ -276,15 +276,15 @@ from d in s.dept
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">s</span> <span class="p">=</span> <span class="nn">file</span><span class="p">.</span><span class="n">scott</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val s = {bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;}</span>
+<pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">s</span> <span class="p">=</span> <span class="nn">file</span><span class="p">.</span><span class="n">scott</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val s = {bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;}</span>
 <span class="c">  : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,</span>
 <span class="c">     ...}</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-input highlight"><code>
 <span class="kr">from</span> <span class="n">d</span> <span class="kr">in</span> <span class="nn">s</span><span class="p">.</span><span class="n">dept</span>
   <span class="kr">join</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">s</span><span class="p">.</span><span class="n">emp</span> <span class="kr">on</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
   <span class="kr">group</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span> <span class="kr">compute</span> <span class="n">sum</span> <span class="kr">of</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it =</span>
+<pre class="morel-output highlight"><code><span class="c">val it =</span>
 <span class="c">  [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},</span>
 <span class="c">   {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list</span></code></pre>
 </div>

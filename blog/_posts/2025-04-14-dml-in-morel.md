@@ -83,7 +83,7 @@ commit;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Delete employees who earn more than 1,000. *)</span>
+<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Delete employees who earn more than 1,000. *)</span>
 <span class="n">delete</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
   <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">;</span>
 
@@ -185,7 +185,7 @@ commit {scott with emps = emps4};
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Delete employees who earn more than 1,000. *)</span>
+<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Delete employees who earn more than 1,000. *)</span>
 <span class="kr">val</span> <span class="nv">emps2</span> <span class="p">=</span>
   <span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
     <span class="kr">where</span> <span class="kr">not</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">);</span>

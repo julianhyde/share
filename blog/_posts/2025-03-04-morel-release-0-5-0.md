@@ -75,31 +75,31 @@ explode "abc";
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> "sum" adds a list of integers. *)</span>
+<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> "sum" adds a list of integers. *)</span>
 <span class="n">sum</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">];</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = 7 : int</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-output highlight"><code><span class="c">val it = 7 : int</span></code></pre>
+<pre class="morel-input highlight"><code>
 <span class="c">(*</span><span class="cm"> "into" applies a function to its input, collected into a list. *)</span>
 <span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
   <span class="n">into</span> <span class="n">sum</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = 7 : int</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-output highlight"><code><span class="c">val it = 7 : int</span></code></pre>
+<pre class="morel-input highlight"><code>
 <span class="c">(*</span><span class="cm"> Rewrite "into" to apply the function directly. *)</span>
 <span class="n">sum</span> <span class="p">(</span><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = 7 : int</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-output highlight"><code><span class="c">val it = 7 : int</span></code></pre>
+<pre class="morel-input highlight"><code>
 <span class="c">(*</span><span class="cm"> "into" is equivalent to existing keyword "compute". *)</span>
 <span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
   <span class="kr">compute</span> <span class="n">sum</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = 7 : int</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-output highlight"><code><span class="c">val it = 7 : int</span></code></pre>
+<pre class="morel-input highlight"><code>
 <span class="c">(*</span><span class="cm"> Actually, "a into b" is equivalent to "(b) a" for any types, not
    just lists. *)</span>
 <span class="n">explode</span> <span class="s2">"abc"</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [#"a",#"b",#"c"] : char list</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-output highlight"><code><span class="c">val it = [#"a",#"b",#"c"] : char list</span></code></pre>
+<pre class="morel-input highlight"><code>
 <span class="s2">"abc"</span> <span class="n">into</span> <span class="n">explode</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [#"a",#"b",#"c"] : char list</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [#"a",#"b",#"c"] : char list</span></code></pre>
 </div>
 
 
@@ -143,11 +143,11 @@ fun pipeline orders =
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Function that converts a list of orders to a list of orders with
+<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Function that converts a list of orders to a list of orders with
    corrected state and zipcode. *)</span>
 <span class="kr">fun</span> <span class="nf">clean_address</span> <span class="p">...</span></code></pre>
-<pre class="morel-output"><code><span class="c">val clean_address = fn : order list -&gt; order list;</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-output highlight"><code><span class="c">val clean_address = fn : order list -&gt; order list;</span></code></pre>
+<pre class="morel-input highlight"><code>
 <span class="c">(*</span><span class="cm"> Define a function that takes a collection of orders, removes orders with
    more than 1,000 items, cleans addresses, and summarizes by state. *)</span>
 <span class="kr">fun</span> <span class="nf">pipeline</span> <span class="n">orders</span> <span class="p">=</span>
@@ -155,7 +155,7 @@ fun pipeline orders =
        <span class="kr">where</span> <span class="kr">order</span><span class="p">.</span><span class="n">units</span> &lt; <span class="mi">1000</span>
        <span class="n">through</span> <span class="n">clean_order</span> <span class="kr">in</span> <span class="n">clean_address</span>
        <span class="kr">group</span> <span class="nn">clean_order</span><span class="p">.</span><span class="n">state</span> <span class="kr">compute</span> <span class="n">count</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val pipeline = fn : order list -&gt; {count: int, state: string} list;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val pipeline = fn : order list -&gt; {count: int, state: string} list;</span></code></pre>
 </div>
 
 
@@ -228,11 +228,11 @@ from e in emps
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span><span class="p">,</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span><span class="p">,</span>
     <span class="n">d</span> <span class="kr">in</span> <span class="n">depts</span>
   <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
   <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">,</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span><span class="p">};</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it =</span>
+<pre class="morel-output highlight"><code><span class="c">val it =</span>
 <span class="c">  [{dname="ACCOUNTING",ename="CLARK"},{dname="ACCOUNTING",ename="KING"},</span>
 <span class="c">   {dname="ACCOUNTING",ename="MILLER"},{dname="RESEARCH",ename="JONES"},</span>
 <span class="c">   {dname="RESEARCH",ename="FORD"},{dname="RESEARCH",ename="ADAMS"},</span>
@@ -241,11 +241,11 @@ from e in emps
 <span class="c">   {dname="SALES",ename="ALLEN"},{dname="SALES",ename="JAMES"},</span>
 <span class="c">   {dname="SALES",ename="BLAKE"},{dname="SALES",ename="MARTIN"}]</span>
 <span class="c">  : {dname:string, ename:string} list</span></code></pre>
-<pre class="morel-input"><code>
+<pre class="morel-input highlight"><code>
 <span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
   <span class="kr">join</span> <span class="n">d</span> <span class="kr">in</span> <span class="n">depts</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
   <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">,</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span><span class="p">};</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it =</span>
+<pre class="morel-output highlight"><code><span class="c">val it =</span>
 <span class="c">  [{dname="ACCOUNTING",ename="CLARK"},{dname="ACCOUNTING",ename="KING"},</span>
 <span class="c">   {dname="ACCOUNTING",ename="MILLER"},{dname="RESEARCH",ename="JONES"},</span>
 <span class="c">   {dname="RESEARCH",ename="FORD"},{dname="RESEARCH",ename="ADAMS"},</span>
@@ -276,12 +276,12 @@ from a in [1, 2],
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">a</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">a</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
     <span class="n">b</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="kr">on</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="p">=</span> <span class="mi">6</span>
   <span class="kr">where</span> <span class="n">b</span> &lt; <span class="mi">5</span>
   <span class="kr">join</span> <span class="n">c</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span> <span class="kr">on</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="p">=</span> <span class="mi">10</span><span class="p">,</span>
       <span class="n">d</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">];</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [{a=2,b=4,c=6,d=7},{a=2,b=4,c=6,d=8}]</span>
+<pre class="morel-output highlight"><code><span class="c">val it = [{a=2,b=4,c=6,d=7},{a=2,b=4,c=6,d=8}]</span>
 <span class="c">  : {a:int, b:int, c:int, d:int} list</span></code></pre>
 </div>
 
@@ -308,7 +308,7 @@ join c, d, e
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
   <span class="kr">where</span> <span class="n">a</span> &lt; <span class="n">b</span>
 <span class="kr">join</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span>
   <span class="kr">where</span> <span class="n">a</span> &gt; <span class="mi">0</span>
@@ -317,7 +317,7 @@ join c, d, e
     <span class="kr">andalso</span> <span class="n">d</span> &gt; <span class="mi">0</span>
     <span class="kr">andalso</span> <span class="n">e</span> &gt; <span class="mi">0</span>
     <span class="kr">andalso</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">e</span> &lt; <span class="mi">8</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it =</span>
+<pre class="morel-output highlight"><code><span class="c">val it =</span>
 <span class="c">  [{a=1,b=2,c=1,d=1,e=1},{a=1,b=2,c=1,d=1,e=2},{a=1,b=2,c=1,d=2,e=1},</span>
 <span class="c">   {a=1,b=2,c=2,d=1,e=1},{a=1,b=3,c=1,d=1,e=1}]</span>
 <span class="c">  : {a:int, b:int, c:int, d:int, e:int} list</span></code></pre>
@@ -341,10 +341,10 @@ from e in scott.emp
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emp</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emp</span>
   <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">}</span>
   <span class="kr">distinct</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it =</span>
+<pre class="morel-output highlight"><code><span class="c">val it =</span>
 <span class="c">  [{job="CLERK"},{job="SALESMAN"},{job="ANALYST"},{job="MANAGER"},</span>
 <span class="c">   {job="PRESIDENT"}] : {job:string} list</span></code></pre>
 </div>
@@ -366,8 +366,8 @@ fn [] => 0 | x :: _ => x + 1;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">fn</span> <span class="p">[]</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">|</span> <span class="n">x</span> <span class="o">::</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = fn : int list -&gt; int</span></code></pre>
+<pre class="morel-input highlight"><code><span class="kr">fn</span> <span class="p">[]</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">|</span> <span class="n">x</span> <span class="o">::</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = fn : int list -&gt; int</span></code></pre>
 </div>
 
 
@@ -377,8 +377,8 @@ fn list => case list of [] => 0 | x :: _ => x + 1;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">fn</span> <span class="n">list</span> <span class="o">=&gt;</span> <span class="kr">case</span> <span class="n">list</span> <span class="kr">of</span> <span class="p">[]</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">|</span> <span class="n">x</span> <span class="o">::</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = fn : int list -&gt; int</span></code></pre>
+<pre class="morel-input highlight"><code><span class="kr">fn</span> <span class="n">list</span> <span class="o">=&gt;</span> <span class="kr">case</span> <span class="n">list</span> <span class="kr">of</span> <span class="p">[]</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">|</span> <span class="n">x</span> <span class="o">::</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = fn : int list -&gt; int</span></code></pre>
 </div>
 
 
@@ -431,7 +431,7 @@ val fromString : string -> int option   (* Overflow      *)
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">precision</span> <span class="o">:</span> <span class="n">int</span> <span class="n">option</span>
+<pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">precision</span> <span class="o">:</span> <span class="n">int</span> <span class="n">option</span>
 <span class="kr">val</span> <span class="nv">minInt</span>    <span class="o">:</span> <span class="n">int</span> <span class="n">option</span>
 <span class="kr">val</span> <span class="nv">maxInt</span>    <span class="o">:</span> <span class="n">int</span> <span class="n">option</span>
 
@@ -481,12 +481,12 @@ Int.maxInt;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = fn : int * int -&gt; order</span></code></pre>
-<pre class="morel-input"><code><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = LESS : order</span></code></pre>
-<pre class="morel-input"><code><span class="nn">Int</span><span class="p">.</span><span class="n">maxInt</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = SOME 2147483647 : int option</span></code></pre>
+<pre class="morel-input highlight"><code><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = fn : int * int -&gt; order</span></code></pre>
+<pre class="morel-input highlight"><code><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = LESS : order</span></code></pre>
+<pre class="morel-input highlight"><code><span class="nn">Int</span><span class="p">.</span><span class="n">maxInt</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = SOME 2147483647 : int option</span></code></pre>
 </div>
 
 

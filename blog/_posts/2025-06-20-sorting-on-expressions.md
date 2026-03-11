@@ -92,7 +92,7 @@ end;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">let</span>
+<pre class="morel-input highlight"><code><span class="kr">let</span>
   <span class="kr">val</span> <span class="nv">pairs</span> <span class="p">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">)];</span>
 <span class="kr">in</span>
   <span class="n">foo</span> <span class="p">(</span><span class="kr">from</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="kr">in</span> <span class="n">pairs</span> <span class="kr">order</span> <span class="n">i</span> <span class="kr">desc</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
@@ -137,11 +137,11 @@ fun compareInt (x: int, y: int) =
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">compareInt</span> <span class="p">(</span><span class="n">x</span><span class="o">:</span> <span class="n">int</span><span class="p">,</span> <span class="n">y</span><span class="o">:</span> <span class="n">int</span><span class="p">)</span> <span class="p">=</span>
+<pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">compareInt</span> <span class="p">(</span><span class="n">x</span><span class="o">:</span> <span class="n">int</span><span class="p">,</span> <span class="n">y</span><span class="o">:</span> <span class="n">int</span><span class="p">)</span> <span class="p">=</span>
   <span class="kr">if</span> <span class="n">x</span> &lt; <span class="n">y</span> <span class="kr">then</span> <span class="n">LESS</span>
   <span class="kr">else</span> <span class="kr">if</span> <span class="n">x</span> &gt; <span class="n">y</span> <span class="kr">then</span> <span class="n">GREATER</span>
   <span class="kr">else</span> <span class="n">EQUAL</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val compareInt = fn : int * int -&gt; order</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val compareInt = fn : int * int -&gt; order</span></code></pre>
 </div>
 
 
@@ -157,12 +157,12 @@ String.compare;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = fn : int * int -&gt; order</span></code></pre>
-<pre class="morel-input"><code><span class="nn">Real</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = fn : real * real -&gt; order</span></code></pre>
-<pre class="morel-input"><code><span class="nn">String</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = fn : string * string -&gt; order</span></code></pre>
+<pre class="morel-input highlight"><code><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = fn : int * int -&gt; order</span></code></pre>
+<pre class="morel-input highlight"><code><span class="nn">Real</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = fn : real * real -&gt; order</span></code></pre>
+<pre class="morel-input highlight"><code><span class="nn">String</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = fn : string * string -&gt; order</span></code></pre>
 </div>
 
 
@@ -180,11 +180,11 @@ fun compareStringRealPair ((s1, r1), (s2, r2)) =
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">compareStringRealPair</span> <span class="p">((</span><span class="n">s1</span><span class="p">,</span> <span class="n">r1</span><span class="p">),</span> <span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">r2</span><span class="p">))</span> <span class="p">=</span>
+<pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">compareStringRealPair</span> <span class="p">((</span><span class="n">s1</span><span class="p">,</span> <span class="n">r1</span><span class="p">),</span> <span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">r2</span><span class="p">))</span> <span class="p">=</span>
     <span class="kr">case</span> <span class="nn">String</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span> <span class="kr">of</span>
         <span class="n">EQUAL</span> <span class="o">=&gt;</span> <span class="nn">Real</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">r1</span><span class="p">)</span>
       <span class="p">|</span> <span class="n">result</span> <span class="o">=&gt;</span> <span class="n">result</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val compareStringRealPair = fn : string * real * (string * real) -&gt; order</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val compareStringRealPair = fn : string * real * (string * real) -&gt; order</span></code></pre>
 </div>
 
 
@@ -201,7 +201,7 @@ from e in scott.emps
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Sort employees by job, and then by descending salary. *)</span>
+<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Sort employees by job, and then by descending salary. *)</span>
 <span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
   <span class="kr">order</span> <span class="n">using</span> <span class="kr">fn</span> <span class="p">(</span><span class="n">emp1</span><span class="p">,</span> <span class="n">emp2</span><span class="p">)</span> <span class="o">=&gt;</span>
     <span class="kr">case</span> <span class="nn">String</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="nn">emp1</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">emp2</span><span class="p">.</span><span class="n">job</span><span class="p">)</span> <span class="kr">of</span>
@@ -239,7 +239,7 @@ from e in scott.emps
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> Old syntax. *)</span>
+<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Old syntax. *)</span>
 <span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
   <span class="kr">order</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="kr">desc</span><span class="p">;</span></code></pre>
 </div>
@@ -255,7 +255,7 @@ from e in scott.emps
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="c">(*</span><span class="cm"> New syntax. *)</span>
+<pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> New syntax. *)</span>
 <span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
   <span class="kr">order</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="n">DESC</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">);</span></code></pre>
 </div>
@@ -316,7 +316,7 @@ rankedEmployees (fn e => (e.job,  DESC e.sal));
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">rankedEmployees</span> <span class="n">extractKey</span> <span class="p">=</span>
+<pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">rankedEmployees</span> <span class="n">extractKey</span> <span class="p">=</span>
   <span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
     <span class="kr">order</span> <span class="n">extractKey</span> <span class="n">e</span><span class="p">;</span>
 
@@ -341,10 +341,10 @@ from e in scott.emps
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
   <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span>
   <span class="kr">order</span> <span class="p">();</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it =</span>
+<pre class="morel-output highlight"><code><span class="c">val it =</span>
 <span class="c">  ["SMITH","ALLEN","WARD","JONES","MARTIN","BLAKE","CLARK",</span>
 <span class="c">   "SCOTT","KING","TURNER","ADAMS","JAMES","FORD","MILLER"]</span>
 <span class="c">  : string list</span></code></pre>
@@ -381,7 +381,7 @@ datatype option 'a = NONE | SOME of 'a;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">datatype</span> <span class="n">option</span> <span class="nd">'a</span> <span class="p">=</span> <span class="n">NONE</span> <span class="p">|</span> <span class="n">SOME</span> <span class="kr">of</span> <span class="nd">'a</span><span class="p">;</span></code></pre>
+<pre class="morel-input highlight"><code><span class="kr">datatype</span> <span class="n">option</span> <span class="nd">'a</span> <span class="p">=</span> <span class="n">NONE</span> <span class="p">|</span> <span class="n">SOME</span> <span class="kr">of</span> <span class="nd">'a</span><span class="p">;</span></code></pre>
 </div>
 
 
@@ -395,9 +395,9 @@ from i in [SOME 1, SOME ~100, NONE]
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
   <span class="kr">order</span> <span class="n">i</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [NONE,SOME ~100,SOME 1] : int option list</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [NONE,SOME ~100,SOME 1] : int option list</span></code></pre>
 </div>
 
 
@@ -409,7 +409,7 @@ datatype 'a noneLast = NONE_LAST of 'a;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">datatype</span> <span class="nd">'a</span> <span class="n">noneLast</span> <span class="p">=</span> <span class="n">NONE_LAST</span> <span class="kr">of</span> <span class="nd">'a</span><span class="p">;</span></code></pre>
+<pre class="morel-input highlight"><code><span class="kr">datatype</span> <span class="nd">'a</span> <span class="n">noneLast</span> <span class="p">=</span> <span class="n">NONE_LAST</span> <span class="kr">of</span> <span class="nd">'a</span><span class="p">;</span></code></pre>
 </div>
 
 
@@ -422,9 +422,9 @@ from i in [SOME 1, SOME ~100, NONE]
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
   <span class="kr">order</span> <span class="n">NONE_LAST</span> <span class="n">i</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [SOME ~100, SOME 1, NONE] : int option list</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [SOME ~100, SOME 1, NONE] : int option list</span></code></pre>
 </div>
 
 
@@ -437,9 +437,9 @@ from i in [SOME 1, SOME ~100, NONE]
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
   <span class="kr">order</span> <span class="n">DESC</span> <span class="p">(</span><span class="n">NONE_LAST</span> <span class="n">i</span><span class="p">);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [NONE, SOME 1, SOME ~100] : int option list</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [NONE, SOME 1, SOME ~100] : int option list</span></code></pre>
 </div>
 
 

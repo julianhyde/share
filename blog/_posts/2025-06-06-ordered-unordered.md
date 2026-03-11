@@ -21,8 +21,8 @@ No, the integer list
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5,9,2,6,5,3] : int list</span></code></pre>
+<pre class="morel-input highlight"><code><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [3,1,4,1,5,9,2,6,5,3] : int list</span></code></pre>
 </div>
 
 
@@ -41,11 +41,11 @@ and the string list
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="p">[</span><span class="s2">"Shall I compare thee to a summer's day?"</span><span class="p">,</span>
+<pre class="morel-input highlight"><code><span class="p">[</span><span class="s2">"Shall I compare thee to a summer's day?"</span><span class="p">,</span>
   <span class="s2">"Thou art more lovely and more temperate"</span><span class="p">,</span>
   <span class="s2">"Rough winds do shake the darling buds of May"</span><span class="p">,</span>
   <span class="s2">"And summer's lease hath all too short a date"</span><span class="p">]</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it =</span>
+<pre class="morel-output highlight"><code><span class="c">val it =</span>
 <span class="c">  ["Shall I compare thee to a summer's day?",</span>
 <span class="c">   "Thou art more lovely and more temperate",</span>
 <span class="c">   "Rough winds do shake the darling buds of May",</span>
@@ -95,9 +95,9 @@ fun allPositive [] = true
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">fun</span> <span class="nf">allPositive</span> <span class="p">[]</span> <span class="p">=</span> <span class="n">true</span>
+<pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">allPositive</span> <span class="p">[]</span> <span class="p">=</span> <span class="n">true</span>
   <span class="p">|</span> <span class="n">allPositive</span> <span class="p">(</span><span class="n">x</span><span class="o">::</span><span class="n">xs</span><span class="p">)</span> <span class="p">=</span> <span class="n">x</span> &gt; <span class="mi">0</span> <span class="kr">andalso</span> <span class="n">allPositive</span> <span class="n">xs</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val allPositive = fn : int list -&gt; bool</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val allPositive = fn : int list -&gt; bool</span></code></pre>
 </div>
 
 
@@ -134,14 +134,14 @@ Bag.fromList [3, 1, 4, 1, 5];
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">b</span> <span class="p">=</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span></code></pre>
-<pre class="morel-output"><code><span class="c">val b = [3,1,4,1,5] : int bag</span></code></pre>
-<pre class="morel-input"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">length</span> <span class="n">b</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = 5 : int</span></code></pre>
-<pre class="morel-input"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">toList</span> <span class="n">b</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5] : int list</span></code></pre>
-<pre class="morel-input"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5] : int bag</span></code></pre>
+<pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">b</span> <span class="p">=</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val b = [3,1,4,1,5] : int bag</span></code></pre>
+<pre class="morel-input highlight"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">length</span> <span class="n">b</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = 5 : int</span></code></pre>
+<pre class="morel-input highlight"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">toList</span> <span class="n">b</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [3,1,4,1,5] : int list</span></code></pre>
+<pre class="morel-input highlight"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">fromList</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [3,1,4,1,5] : int bag</span></code></pre>
 </div>
 
 
@@ -157,10 +157,10 @@ Bag.drop (b, 2);
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">hd</span> <span class="n">b</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = 3 : int</span></code></pre>
-<pre class="morel-input"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">drop</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [4,1,5] : int bag</span></code></pre>
+<pre class="morel-input highlight"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">hd</span> <span class="n">b</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = 3 : int</span></code></pre>
+<pre class="morel-input highlight"><code><span class="nn">Bag</span><span class="p">.</span><span class="n">drop</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [4,1,5] : int bag</span></code></pre>
 </div>
 
 
@@ -179,8 +179,8 @@ from e in scott.depts;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">depts</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">deptno dname      loc</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">depts</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">deptno dname      loc</span>
 <span class="c">------ ---------- --------</span>
 <span class="c">10     ACCOUNTING NEW YORK</span>
 <span class="c">20     RESEARCH   DALLAS</span>
@@ -222,12 +222,12 @@ from i in bag [3, 1, 4, 1, 5]
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
   <span class="kr">order</span> <span class="n">DESC</span> <span class="n">i</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [5,4,3,1,1] : int list</span></code></pre>
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<pre class="morel-output highlight"><code><span class="c">val it = [5,4,3,1,1] : int list</span></code></pre>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
   <span class="kr">order</span> <span class="n">DESC</span> <span class="n">i</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [5,4,3,1,1] : int list</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [5,4,3,1,1] : int list</span></code></pre>
 </div>
 
 
@@ -242,9 +242,9 @@ from i in bag [3, 1, 4, 1, 5]
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
   <span class="kr">order</span> <span class="n">i</span> <span class="n">mod</span> <span class="mi">2</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [4, 1, 5, 1, 3]</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [4, 1, 5, 1, 3]</span></code></pre>
 </div>
 
 
@@ -257,9 +257,9 @@ from i in bag [3, 1, 4, 1, 5]
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">bag</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
   <span class="kr">order</span> <span class="p">();</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [5, 4, 1, 1, 3]</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [5, 4, 1, 1, 3]</span></code></pre>
 </div>
 
   
@@ -273,9 +273,9 @@ from i in [3, 1, 4, 1, 5]
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
   <span class="kr">unorder</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5] : int bag</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [3,1,4,1,5] : int bag</span></code></pre>
 </div>
 
 
@@ -297,12 +297,12 @@ from i in [3, 1, 4, 1, 5]
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
   <span class="kr">yield</span> <span class="p">{</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="p">=</span> <span class="kr">ordinal</span><span class="p">}</span>
   <span class="kr">unorder</span>
   <span class="kr">order</span> <span class="n">j</span>
   <span class="kr">yield</span> <span class="n">i</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5] : int list</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [3,1,4,1,5] : int list</span></code></pre>
 </div>
 
 
@@ -332,11 +332,11 @@ from e in scott.emps
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
   <span class="kr">order</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span>
   <span class="kr">yield</span> <span class="p">{</span><span class="n">e</span><span class="p">,</span> <span class="n">rank</span> <span class="p">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="kr">ordinal</span><span class="p">}</span>
   <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"CLERK"</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">ename  rank</span>
+<pre class="morel-output highlight"><code><span class="c">ename  rank</span>
 <span class="c">------ ----</span>
 <span class="c">MILLER 9</span>
 <span class="c">ADAMS  12</span>
@@ -384,12 +384,12 @@ from e in scott.emps
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
   <span class="kr">order</span> <span class="n">DESC</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span>
   <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> &lt;&gt; <span class="mi">20</span>
   <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">}</span>
   <span class="kr">order</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="kr">ordinal</span><span class="p">);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it =</span>
+<pre class="morel-output highlight"><code><span class="c">val it =</span>
 <span class="c">  [{ename="MILLER",job="CLERK",sal=1300.0},</span>
 <span class="c">   {ename="JAMES",job="CLERK",sal=950.0},</span>
 <span class="c">   {ename="BLAKE",job="MANAGER",sal=2850.0},</span>
@@ -502,11 +502,11 @@ from hundreds in [100, 200, 300],
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">hundreds</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">],</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">hundreds</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">],</span>
     <span class="n">tens</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
   <span class="kr">join</span> <span class="n">units</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
   <span class="kr">yield</span> <span class="n">hundreds</span> <span class="o">+</span> <span class="n">tens</span> <span class="o">+</span> <span class="n">units</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [111,112,113,121,122,123,131,132,133,211,212,213,...] : int list</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [111,112,113,121,122,123,131,132,133,211,212,213,...] : int list</span></code></pre>
 </div>
 
 
@@ -526,13 +526,13 @@ from i in [3, 1, 4, 1, 5, 9, 2, 6]
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
   <span class="kr">union</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">];</span>
 <span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
   <span class="kr">intersect</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">];</span>
 <span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
   <span class="kr">except</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">];</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [3,1,4,1,5,9,2,6,2,7,1,8,...] : int list</span>
+<pre class="morel-output highlight"><code><span class="c">val it = [3,1,4,1,5,9,2,6,2,7,1,8,...] : int list</span>
 <span class="c">val it = [1,1,2] : int list</span>
 <span class="c">val it = [3,4,5,9,6] : int list</span></code></pre>
 </div>
@@ -573,11 +573,11 @@ from deptno in [10, 20, 30]
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">deptno</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">deptno</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
   <span class="kr">join</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="n">deptno</span>
   <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="kr">elem</span> <span class="p">[</span><span class="s2">"CLERK"</span><span class="p">,</span> <span class="s2">"MANAGER"</span><span class="p">]</span>
   <span class="kr">yield</span> <span class="p">{</span><span class="n">deptno</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">};</span></code></pre>
-<pre class="morel-output"><code><span class="c">deptno ename</span>
+<pre class="morel-output highlight"><code><span class="c">deptno ename</span>
 <span class="c">------ ------</span>
 <span class="c">30     JAMES</span>
 <span class="c">10     CLARK</span>
@@ -614,14 +614,14 @@ end;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">let</span>
+<pre class="morel-input highlight"><code><span class="kr">let</span>
   <span class="kr">fun</span> <span class="nf">f</span> <span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span> <span class="p">=</span>
     <span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="n">xs</span>
       <span class="kr">intersect</span> <span class="n">ys</span>
 <span class="kr">in</span>
   <span class="n">f</span> <span class="p">((</span><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">empno</span><span class="p">),</span> <span class="p">[</span><span class="mi">7521</span><span class="p">,</span> <span class="mi">7782</span><span class="p">,</span> <span class="mi">8000</span><span class="p">])</span>
 <span class="kr">end</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [7521,7782] : int bag</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">val it = [7521,7782] : int bag</span></code></pre>
 </div>
 
 

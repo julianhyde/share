@@ -58,7 +58,7 @@ from e in scott.emps
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
   <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span>
   <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">;</span></code></pre>
 </div>
@@ -92,10 +92,10 @@ from i in ["a", "b"],
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">],</span>
+<pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">i</span> <span class="kr">in</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">],</span>
     <span class="n">j</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
   <span class="kr">yield</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span></code></pre>
-<pre class="morel-output"><code><span class="c">val it = [("a",1),("a",2),("a",3),("b",1),("b",2),("b",3)]</span>
+<pre class="morel-output highlight"><code><span class="c">val it = [("a",1),("a",2),("a",3),("b",1),("b",2),("b",3)]</span>
 <span class="c">  : (string * int) list</span></code></pre>
 </div>
 
@@ -121,7 +121,7 @@ val x = 42;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="mi">42</span><span class="p">;</span></code></pre>
+<pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="mi">42</span><span class="p">;</span></code></pre>
 </div>
 
 
@@ -132,7 +132,7 @@ val x = fn y => y + 1;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="kr">fn</span> <span class="n">y</span> <span class="o">=&gt;</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
+<pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="kr">fn</span> <span class="n">y</span> <span class="o">=&gt;</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
 </div>
 
 
@@ -144,8 +144,8 @@ int z = x - 2;
 -->
 
 <div class="morel">
-<pre class="morel-input"><code><span class="n">int</span> <span class="n">z</span> <span class="p">=</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span></code></pre>
-<pre class="morel-output"><code><span class="c">0.0-0.0 Error: Cannot deduce type: conflict: fn(int, int) vs int</span>
+<pre class="morel-input highlight"><code><span class="n">int</span> <span class="n">z</span> <span class="p">=</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span></code></pre>
+<pre class="morel-output highlight"><code><span class="c">0.0-0.0 Error: Cannot deduce type: conflict: fn(int, int) vs int</span>
 <span class="c">  raised at: 0.0-0.0</span></code></pre>
 </div>
 
