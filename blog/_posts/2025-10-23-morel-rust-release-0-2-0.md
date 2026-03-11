@@ -49,7 +49,7 @@ val sumOfSquares =
   List.foldl (fn (x, y) => x + y) 0 (List.map (fn x => x * x) [1, 2, 3, 4, 5]);
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Define a recursive function *)</span>
 <span class="kr">fun</span> <span class="nf">factorial</span> <span class="n">n</span> <span class="p">=</span>
   <span class="kr">if</span> <span class="n">n</span> &lt;<span class="p">=</span> <span class="mi">1</span> <span class="kr">then</span> <span class="mi">1</span>

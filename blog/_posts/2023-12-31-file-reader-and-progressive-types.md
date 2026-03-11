@@ -105,7 +105,7 @@ from e in employees yield e.age;
 > val it = [27,20] : int list
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">fred</span> <span class="p">=</span> <span class="p">{</span><span class="n">name</span><span class="p">=</span><span class="s2">"Fred"</span><span class="p">,</span> <span class="n">age</span><span class="p">=</span><span class="mi">27</span><span class="p">};</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val fred = {age=27,name="Fred"} : {age:int, name:string}</span></code></pre>
 <pre class="morel-input highlight"><code>
@@ -132,7 +132,7 @@ file;
 > val it = {scott={},wordle={}} : {scott:{...}, wordle:{...}, ...}
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="n">file</span><span class="p">;</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val it = {scott={},wordle={}} : {scott:{...}, wordle:{...}, ...}</span></code></pre>
 </div>
@@ -151,7 +151,7 @@ file.scott;
 >      ...}
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="nn">file</span><span class="p">.</span><span class="n">scott</span><span class="p">;</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val it = {bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;}</span>
 <span class="c">  : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,</span>
@@ -174,7 +174,7 @@ from d in file.scott.dept
 >    {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">d</span> <span class="kr">in</span> <span class="nn">file</span><span class="p">.</span><span class="nn">scott</span><span class="p">.</span><span class="n">dept</span>
   <span class="kr">join</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">file</span><span class="p">.</span><span class="nn">scott</span><span class="p">.</span><span class="n">emp</span> <span class="kr">on</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
   <span class="kr">group</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span> <span class="kr">compute</span> <span class="n">sum</span> <span class="kr">of</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">;</span></code></pre>
@@ -200,7 +200,7 @@ file;
 >             salgrade:{...} list, ...}, wordle:{...}, ...}
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="n">file</span><span class="p">;</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val it =</span>
 <span class="c">  {scott={bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;},</span>
@@ -275,7 +275,7 @@ from d in s.dept
 >    {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">s</span> <span class="p">=</span> <span class="nn">file</span><span class="p">.</span><span class="n">scott</span><span class="p">;</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val s = {bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;}</span>
 <span class="c">  : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,</span>

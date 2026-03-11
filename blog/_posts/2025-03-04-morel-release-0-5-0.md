@@ -74,7 +74,7 @@ explode "abc";
 > val it = [#"a",#"b",#"c"] : char list
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> "sum" adds a list of integers. *)</span>
 <span class="n">sum</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">];</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val it = 7 : int</span></code></pre>
@@ -142,7 +142,7 @@ fun pipeline orders =
 > val pipeline = fn : order list -> {count: int, state: string} list;
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Function that converts a list of orders to a list of orders with
    corrected state and zipcode. *)</span>
 <span class="kr">fun</span> <span class="nf">clean_address</span> <span class="p">...</span></code></pre>
@@ -227,7 +227,7 @@ from e in emps
 >   : {dname:string, ename:string} list
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span><span class="p">,</span>
     <span class="n">d</span> <span class="kr">in</span> <span class="n">depts</span>
   <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
@@ -275,7 +275,7 @@ from a in [1, 2],
 >   : {a:int, b:int, c:int, d:int} list
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">a</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
     <span class="n">b</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="kr">on</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="p">=</span> <span class="mi">6</span>
   <span class="kr">where</span> <span class="n">b</span> &lt; <span class="mi">5</span>
@@ -307,7 +307,7 @@ join c, d, e
 >   : {a:int, b:int, c:int, d:int, e:int} list
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
   <span class="kr">where</span> <span class="n">a</span> &lt; <span class="n">b</span>
 <span class="kr">join</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span>
@@ -340,7 +340,7 @@ from e in scott.emp
 >    {job="PRESIDENT"}] : {job:string} list
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emp</span>
   <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">}</span>
   <span class="kr">distinct</span><span class="p">;</span></code></pre>
@@ -365,7 +365,7 @@ fn [] => 0 | x :: _ => x + 1;
 > val it = fn : int list -> int
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">fn</span> <span class="p">[]</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">|</span> <span class="n">x</span> <span class="o">::</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val it = fn : int list -&gt; int</span></code></pre>
 </div>
@@ -376,7 +376,7 @@ fn list => case list of [] => 0 | x :: _ => x + 1;
 > val it = fn : int list -> int
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">fn</span> <span class="n">list</span> <span class="o">=&gt;</span> <span class="kr">case</span> <span class="n">list</span> <span class="kr">of</span> <span class="p">[]</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">|</span> <span class="n">x</span> <span class="o">::</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val it = fn : int list -&gt; int</span></code></pre>
 </div>
@@ -430,7 +430,7 @@ val toString  : int -> string
 val fromString : string -> int option   (* Overflow      *)
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">precision</span> <span class="o">:</span> <span class="n">int</span> <span class="n">option</span>
 <span class="kr">val</span> <span class="nv">minInt</span>    <span class="o">:</span> <span class="n">int</span> <span class="n">option</span>
 <span class="kr">val</span> <span class="nv">maxInt</span>    <span class="o">:</span> <span class="n">int</span> <span class="n">option</span>
@@ -480,7 +480,7 @@ Int.maxInt;
 > val it = SOME 2147483647 : int option
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val it = fn : int * int -&gt; order</span></code></pre>
 <pre class="morel-input highlight"><code><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span></code></pre>

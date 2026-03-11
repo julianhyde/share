@@ -176,7 +176,7 @@ not (List.null (from e in emps where e.sal > 1000.0));
 > val it = true : bool
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Using new "exists" keyword. *)</span>
 <span class="kr">exists</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
   <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span></code></pre>
@@ -225,7 +225,7 @@ List.null (from e in emps
 > val it = true : bool
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Using new "forall" keyword. *)</span>
 <span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
   <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span>
@@ -267,7 +267,7 @@ forall e in emps
   where e.job = "PROGRAMMER" andalso e.sal > 900;
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> A query using "where" is invalid and not equivalent to the
    original query. *)</span>
 <span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
@@ -296,7 +296,7 @@ forall e in emps
 > val it = true : bool
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Valid, and equivalent to the original query. *)</span>
 <span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
   <span class="kr">require</span> <span class="kr">not</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"PROGRAMMER"</span><span class="p">)</span> <span class="kr">orelse</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> &gt; <span class="mi">900</span><span class="p">;</span></code></pre>
@@ -319,7 +319,7 @@ forall e in emps
 > val it = true : bool
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Valid, equivalent to the original query, and we think
    quite nice even if you're not a logician. *)</span>
 <span class="kr">forall</span> <span class="n">e</span> <span class="kr">in</span> <span class="n">emps</span>
@@ -354,7 +354,7 @@ val emp = List.hd scott.emps;
 >      job:string, mgr:int, sal:real}
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">emp</span> <span class="p">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">hd</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span><span class="p">;</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val emp =</span>
 <span class="c">  {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",</span>
@@ -377,7 +377,7 @@ val emp2 = {emp.comm, emp.deptno, emp.empno, emp.ename, emp.hiredate,
 >      job:string, mgr:int, sal:real}
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">emp2</span> <span class="p">=</span> <span class="p">{</span><span class="nn">emp</span><span class="p">.</span><span class="n">comm</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">deptno</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">empno</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">ename</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">hiredate</span><span class="p">,</span>
     <span class="nn">emp</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">emp</span><span class="p">.</span><span class="n">mgr</span><span class="p">,</span> <span class="n">sal</span> <span class="p">=</span> <span class="nn">emp</span><span class="p">.</span><span class="n">sal</span> <span class="o">*</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">};</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val emp2 =</span>
@@ -404,7 +404,7 @@ val emp3 = {emp with sal = emp.sal * 2.0};
 >      job:string, mgr:int, sal:real}
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">val</span> <span class="nv">emp3</span> <span class="p">=</span> <span class="p">{</span><span class="n">emp</span> <span class="kr">with</span> <span class="n">sal</span> <span class="p">=</span> <span class="nn">emp</span><span class="p">.</span><span class="n">sal</span> <span class="o">*</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">};</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val emp3 =</span>
 <span class="c">  {comm=0.0,deptno=20,empno=7369,ename="SMITH",hiredate="1980-12-16",</span>
@@ -441,7 +441,7 @@ from d in scott.depts
 >   : {dname:string, empno:int} list
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">d</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">depts</span>
     <span class="kr">join</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
   <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"CLERK"</span>
@@ -463,7 +463,7 @@ set ("output", "tabular");
 > val it = () : unit
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="n">set</span> <span class="p">(</span><span class="s2">"output"</span><span class="p">,</span> <span class="s2">"tabular"</span><span class="p">);</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val it = () : unit</span></code></pre>
 </div>
@@ -486,7 +486,7 @@ from d in scott.depts
 > val it : {dname:string, empno:int} list
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">from</span> <span class="n">d</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">depts</span>
     <span class="kr">join</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
   <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"CLERK"</span>

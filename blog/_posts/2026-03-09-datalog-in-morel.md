@@ -130,7 +130,7 @@ path(X,Z) :- path(X,Y), edge(Y,Z).
 >   : {path:{x:int, y:int} list} variant
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="nn">Datalog</span><span class="p">.</span><span class="n">execute</span> <span class="s2">"
 .decl edge(x:int, y:int)
 .decl path(x:int, y:int)
@@ -194,7 +194,7 @@ in
 end
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">let</span>
   <span class="kr">val</span> <span class="nv">edge_facts</span> <span class="p">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
   <span class="kr">fun</span> <span class="nf">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="kr">elem</span> <span class="n">edge_facts</span>
@@ -279,7 +279,7 @@ from source in [1, 2, 3, 4]
                                     where reachable (source, target))}
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="c">(*</span><span class="cm"> Calculus style: recursive reachability *)</span>
 <span class="kr">fun</span> <span class="nf">edge</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="kr">elem</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)];</span>
 <span class="kr">fun</span> <span class="nf">reachable</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="p">=</span>

@@ -105,7 +105,7 @@ fun product [] = 1
 > val product = fn : int list -> int
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">factorize</span> <span class="n">n</span> <span class="p">=</span>
   <span class="kr">let</span>
     <span class="kr">fun</span> <span class="nf">factorize'</span> <span class="n">n</span> <span class="n">d</span> <span class="p">=</span>
@@ -132,7 +132,7 @@ product (factorize 120);
 > val it = 120 : int
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="n">factorize</span> <span class="mi">120</span><span class="p">;</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val it = [2,2,2,3,5] : int list</span></code></pre>
 <pre class="morel-input highlight"><code><span class="n">product</span> <span class="p">(</span><span class="n">factorize</span> <span class="mi">120</span><span class="p">);</span></code></pre>
@@ -150,7 +150,7 @@ fun gcd (m, n) =
 > val gcd = fn : int * int -> int
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">gcd</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
   <span class="kr">from</span> <span class="n">f</span> <span class="kr">in</span> <span class="n">factorize</span> <span class="n">m</span>
     <span class="kr">intersect</span> <span class="n">factorize</span> <span class="n">n</span>
@@ -173,7 +173,7 @@ fun lcm (m, n) =
 > val lcm = fn : int * int -> int
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">lcm</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
   <span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="n">div</span> <span class="n">gcd</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val lcm = fn : int * int -&gt; int</span></code></pre>
@@ -198,7 +198,7 @@ fun lcm' (m, n) =
 > val lcm' = fn : int * int -> int
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="kr">fun</span> <span class="nf">lcm'</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
   <span class="kr">let</span>
     <span class="kr">val</span> <span class="nv">m_factors</span> <span class="p">=</span> <span class="n">factorize</span> <span class="n">m</span>
@@ -225,7 +225,7 @@ lcm' (36, 120);
 > val it = 360 : int
 -->
 
-<div class="morel">
+<div class="highlighter-rouge morel">
 <pre class="morel-input highlight"><code><span class="n">gcd</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></code></pre>
 <pre class="morel-output highlight"><code><span class="c">val it = 12 : int</span></code></pre>
 <pre class="morel-input highlight"><code><span class="n">lcm</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></code></pre>
