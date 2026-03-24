@@ -83,21 +83,21 @@ commit;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="cmt">(* Delete employees who earn more than 1,000. *)</span>
-delete e <span class="kw">in</span> <span class="ctor">scott</span>.emps
-  <span class="kw">where</span> <span class="ctor">e</span>.sal &gt; <span class="num">1000</span>;
+<div class="code-input"><span class="c">(*</span><span class="cm"> Delete employees who earn more than 1,000. *)</span>
+<span class="kr">delete</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">;</span>
 
-<span class="cmt">(* Add one employee. *)</span>
-insert <span class="ctor">scott</span>.emps
-  [{empno = <span class="num">100</span>, deptno = <span class="num">20</span>, ename = <span class="str">"HYDE"</span>, job = <span class="str">"ANALYST"</span>, sal = <span class="num">1150</span>}];
+<span class="c">(*</span><span class="cm"> Add one employee. *)</span>
+<span class="kr">insert</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="p">[{</span><span class="n">empno</span> <span class="p">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">deptno</span> <span class="p">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">ename</span> <span class="p">=</span> <span class="s2">"HYDE"</span><span class="p">,</span> <span class="n">job</span> <span class="p">=</span> <span class="s2">"ANALYST"</span><span class="p">,</span> <span class="n">sal</span> <span class="p">=</span> <span class="mi">1150</span><span class="p">}];</span>
 
-<span class="cmt">(* Double the salary of all managers. *)</span>
-update e <span class="kw">in</span> <span class="ctor">scott</span>.emps
-  <span class="kw">where</span> <span class="ctor">e</span>.job = <span class="ctor">'MANAGER'</span>
-  assign (e, {e <span class="kw">with</span> sal = <span class="ctor">e</span>.sal <span class="op">*</span> <span class="num">2</span>});
+<span class="c">(*</span><span class="cm"> Double the salary of all managers. *)</span>
+<span class="kr">update</span> <span class="n">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="nn">'MANAGER'</span>
+  <span class="kr">assign</span> <span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="p">{</span><span class="n">e</span> <span class="kr">with</span> <span class="n">sal</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="o">*</span> <span class="mi">2</span><span class="p">});</span>
 
-<span class="cmt">(* Commit. *)</span>
-commit;</div>
+<span class="c">(*</span><span class="cm"> Commit. *)</span>
+<span class="kr">commit</span><span class="p">;</span></div>
 </div>
 
 
@@ -185,22 +185,22 @@ commit {scott with emps = emps4};
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="cmt">(* Delete employees who earn more than 1,000. *)</span>
-<span class="kw">val</span> emps2 =
-  <span class="kw">from</span> e <span class="kw">in</span> <span class="ctor">scott</span>.emps
-    <span class="kw">where</span> <span class="kw">not</span> (<span class="ctor">e</span>.sal &gt; <span class="num">1000</span>);
+<div class="code-input"><span class="c">(*</span><span class="cm"> Delete employees who earn more than 1,000. *)</span>
+<span class="kr">val</span> <span class="nv">emps2</span> <span class="p">=</span>
+  <span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+    <span class="kr">where</span> <span class="kr">not</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">);</span>
 
-<span class="cmt">(* Add one employee. *)</span>
-<span class="kw">val</span> emps3 = emps2 <span class="kw">union</span>
-  [{empno = <span class="num">100</span>, deptno = <span class="num">20</span>, ename = <span class="str">"HYDE"</span>, job = <span class="str">"ANALYST"</span>, sal = <span class="num">1150</span>}];
+<span class="c">(*</span><span class="cm"> Add one employee. *)</span>
+<span class="kr">val</span> <span class="nv">emps3</span> <span class="p">=</span> <span class="n">emps2</span> <span class="kr">union</span>
+  <span class="p">[{</span><span class="n">empno</span> <span class="p">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">deptno</span> <span class="p">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">ename</span> <span class="p">=</span> <span class="s2">"HYDE"</span><span class="p">,</span> <span class="n">job</span> <span class="p">=</span> <span class="s2">"ANALYST"</span><span class="p">,</span> <span class="n">sal</span> <span class="p">=</span> <span class="mi">1150</span><span class="p">}];</span>
 
-<span class="cmt">(* Double the salary of all managers. *)</span>
-<span class="kw">val</span> emps4 =
-  <span class="kw">from</span> e <span class="kw">in</span> emps3
-    <span class="kw">yield</span> <span class="kw">if</span> <span class="ctor">e</span>.job = <span class="str">"MANAGER"</span> <span class="kw">then</span> {e <span class="kw">with</span> sal = <span class="ctor">e</span>.sal <span class="op">*</span> <span class="num">2</span>} <span class="kw">else</span> e;
+<span class="c">(*</span><span class="cm"> Double the salary of all managers. *)</span>
+<span class="kr">val</span> <span class="nv">emps4</span> <span class="p">=</span>
+  <span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps3</span>
+    <span class="kr">yield</span> <span class="kr">if</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"MANAGER"</span> <span class="kr">then</span> <span class="p">{</span><span class="n">e</span> <span class="kr">with</span> <span class="n">sal</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="o">*</span> <span class="mi">2</span><span class="p">}</span> <span class="kr">else</span> <span class="n">e</span><span class="p">;</span>
 
-<span class="cmt">(* Commit. *)</span>
-commit {scott <span class="kw">with</span> emps = emps4};</div>
+<span class="c">(*</span><span class="cm"> Commit. *)</span>
+<span class="kr">commit</span> <span class="p">{</span><span class="n">scott</span> <span class="kr">with</span> <span class="n">emps</span> <span class="p">=</span> <span class="n">emps4</span><span class="p">};</span></div>
 </div>
 
 

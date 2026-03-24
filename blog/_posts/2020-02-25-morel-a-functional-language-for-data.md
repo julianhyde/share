@@ -52,12 +52,19 @@ similar to the equivalent SQL query.
 
 For example, here is a query in Morel:
 
-```sml
+<!-- morel skip
 from e in hr.emps,
     d in hr.depts
 where e.deptno = d.deptno
 yield {e.id, e.deptno, ename = e.name, dname = d.name};
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">hr</span><span class="p">.</span><span class="n">emps</span><span class="p">,</span>
+    <span class="nv">d</span> <span class="kr">in</span> <span class="nn">hr</span><span class="p">.</span><span class="n">depts</span>
+<span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
+<span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span><span class="p">,</span> <span class="n">ename</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dname</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">name</span><span class="p">};</span></div>
+</div>
 
 The equivalent query in SQL looks very similar:
 

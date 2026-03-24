@@ -75,30 +75,30 @@ explode "abc";
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="cmt">(* "sum" adds a list of integers. *)</span>
-sum [<span class="num">1</span>, <span class="num">2</span>, <span class="num">4</span>];</div>
+<div class="code-input"><span class="c">(*</span><span class="cm"> "sum" adds a list of integers. *)</span>
+<span class="n">sum</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">];</span></div>
 <div class="code-output">val it = 7 : int</div>
 <div class="code-input">
-<span class="cmt">(* "into" applies a function to its input, collected into a list. *)</span>
-<span class="kw">from</span> i <span class="kw">in</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">4</span>]
-  into sum;</div>
+<span class="c">(*</span><span class="cm"> "into" applies a function to its input, collected into a list. *)</span>
+<span class="kr">from</span> <span class="nv">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+  <span class="n">into</span> <span class="n">sum</span><span class="p">;</span></div>
 <div class="code-output">val it = 7 : int</div>
 <div class="code-input">
-<span class="cmt">(* Rewrite "into" to apply the function directly. *)</span>
-sum (<span class="kw">from</span> e <span class="kw">in</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">4</span>]);</div>
+<span class="c">(*</span><span class="cm"> Rewrite "into" to apply the function directly. *)</span>
+<span class="n">sum</span> <span class="p">(</span><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]);</span></div>
 <div class="code-output">val it = 7 : int</div>
 <div class="code-input">
-<span class="cmt">(* "into" is equivalent to existing keyword "compute". *)</span>
-<span class="kw">from</span> e <span class="kw">in</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">4</span>]
-  <span class="kw">compute</span> sum;</div>
+<span class="c">(*</span><span class="cm"> "into" is equivalent to existing keyword "compute". *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+  <span class="kr">compute</span> <span class="n">sum</span><span class="p">;</span></div>
 <div class="code-output">val it = 7 : int</div>
 <div class="code-input">
-<span class="cmt">(* Actually, "a into b" is equivalent to "(b) a" for any types, not
+<span class="c">(*</span><span class="cm"> Actually, "a into b" is equivalent to "(b) a" for any types, not
    just lists. *)</span>
-explode <span class="str">"abc"</span>;</div>
+<span class="n">explode</span> <span class="s2">"abc"</span><span class="p">;</span></div>
 <div class="code-output">val it = [#"a",#"b",#"c"] : char list</div>
 <div class="code-input">
-<span class="str">"abc"</span> into explode;</div>
+<span class="s2">"abc"</span> <span class="n">into</span> <span class="n">explode</span><span class="p">;</span></div>
 <div class="code-output">val it = [#"a",#"b",#"c"] : char list</div>
 </div>
 
@@ -143,18 +143,18 @@ fun pipeline orders =
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="cmt">(* Function that converts a list of orders to a list of orders with
+<div class="code-input"><span class="c">(*</span><span class="cm"> Function that converts a list of orders to a list of orders with
    corrected state and zipcode. *)</span>
-<span class="kw">fun</span> clean_address ...</div>
+<span class="kr">fun</span> <span class="nf">clean_address</span> <span class="p">...</span></div>
 <div class="code-output">val clean_address = fn : order list -&gt; order list;</div>
 <div class="code-input">
-<span class="cmt">(* Define a function that takes a collection of orders, removes orders with
+<span class="c">(*</span><span class="cm"> Define a function that takes a collection of orders, removes orders with
    more than 1,000 items, cleans addresses, and summarizes by state. *)</span>
-<span class="kw">fun</span> pipeline orders =
-    <span class="kw">from</span> <span class="kw">order</span> <span class="kw">in</span> orders
-       <span class="kw">where</span> <span class="kw">order</span>.units &lt; <span class="num">1000</span>
-       through clean_order <span class="kw">in</span> clean_address
-       <span class="kw">group</span> <span class="ctor">clean_order</span>.state <span class="kw">compute</span> count;</div>
+<span class="kr">fun</span> <span class="nf">pipeline</span> <span class="n">orders</span> <span class="p">=</span>
+    <span class="kr">from</span> <span class="kr">order</span> <span class="kr">in</span> <span class="n">orders</span>
+       <span class="kr">where</span> <span class="kr">order</span><span class="p">.</span><span class="n">units</span> <span class="o">&lt;</span> <span class="mi">1000</span>
+       <span class="n">through</span> <span class="n">clean_order</span> <span class="kr">in</span> <span class="n">clean_address</span>
+       <span class="kr">group</span> <span class="nn">clean_order</span><span class="p">.</span><span class="n">state</span> <span class="kr">compute</span> <span class="n">count</span><span class="p">;</span></div>
 <div class="code-output">val pipeline = fn : order list -&gt; {count: int, state: string} list;</div>
 </div>
 
@@ -190,14 +190,13 @@ Morel has analogous syntax:
 
 <!-- morel silent
 val emps = scott.emps;
-val depts = scott.depts;
 > val emps = <relation>
 >   :
 >     {comm:real, deptno:int, empno:int, ename:string, hiredate:string,
 >      job:string, mgr:int, sal:real} bag
+val depts = scott.depts;
 > val depts = <relation> : {deptno:int, dname:string, loc:string} bag
 -->
-
 <!-- morel skip
 from e in emps,
     d in depts
@@ -228,10 +227,10 @@ from e in emps
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">from</span> e <span class="kw">in</span> emps,
-    d <span class="kw">in</span> depts
-  <span class="kw">where</span> <span class="ctor">e</span>.deptno = <span class="ctor">d</span>.deptno
-  <span class="kw">yield</span> {<span class="ctor">e</span>.ename, <span class="ctor">d</span>.dname};</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span><span class="p">,</span>
+    <span class="nv">d</span> <span class="kr">in</span> <span class="n">depts</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">,</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span><span class="p">};</span></div>
 <div class="code-output">val it =
   [{dname="ACCOUNTING",ename="CLARK"},{dname="ACCOUNTING",ename="KING"},
    {dname="ACCOUNTING",ename="MILLER"},{dname="RESEARCH",ename="JONES"},
@@ -242,9 +241,9 @@ from e in emps
    {dname="SALES",ename="BLAKE"},{dname="SALES",ename="MARTIN"}]
   : {dname:string, ename:string} list</div>
 <div class="code-input">
-<span class="kw">from</span> e <span class="kw">in</span> emps
-  <span class="kw">join</span> d <span class="kw">in</span> depts <span class="kw">on</span> <span class="ctor">e</span>.deptno = <span class="ctor">d</span>.deptno
-  <span class="kw">yield</span> {<span class="ctor">e</span>.ename, <span class="ctor">d</span>.dname};</div>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">join</span> <span class="nv">d</span> <span class="kr">in</span> <span class="n">depts</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">,</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span><span class="p">};</span></div>
 <div class="code-output">val it =
   [{dname="ACCOUNTING",ename="CLARK"},{dname="ACCOUNTING",ename="KING"},
    {dname="ACCOUNTING",ename="MILLER"},{dname="RESEARCH",ename="JONES"},
@@ -276,11 +275,11 @@ from a in [1, 2],
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">from</span> a <span class="kw">in</span> [<span class="num">1</span>, <span class="num">2</span>],
-    b <span class="kw">in</span> [<span class="num">3</span>, <span class="num">4</span>, <span class="num">5</span>] <span class="kw">on</span> a <span class="op">+</span> b = <span class="num">6</span>
-  <span class="kw">where</span> b &lt; <span class="num">5</span>
-  <span class="kw">join</span> c <span class="kw">in</span> [<span class="num">6</span>, <span class="num">7</span>] <span class="kw">on</span> b <span class="op">+</span> c = <span class="num">10</span>,
-      d <span class="kw">in</span> [<span class="num">7</span>, <span class="num">8</span>];</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">a</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="nv">b</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="kr">on</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="p">=</span> <span class="mi">6</span>
+  <span class="kr">where</span> <span class="n">b</span> <span class="o">&lt;</span> <span class="mi">5</span>
+  <span class="kr">join</span> <span class="n">c</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span> <span class="kr">on</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="p">=</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="n">d</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">];</span></div>
 <div class="code-output">val it = [{a=2,b=4,c=6,d=7},{a=2,b=4,c=6,d=8}]
   : {a:int, b:int, c:int, d:int} list</div>
 </div>
@@ -308,15 +307,15 @@ join c, d, e
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">from</span> a, b
-  <span class="kw">where</span> a &lt; b
-<span class="kw">join</span> c, d, e
-  <span class="kw">where</span> a &gt; <span class="num">0</span>
-    <span class="kw">andalso</span> b &gt; <span class="num">0</span>
-    <span class="kw">andalso</span> c &gt; <span class="num">0</span>
-    <span class="kw">andalso</span> d &gt; <span class="num">0</span>
-    <span class="kw">andalso</span> e &gt; <span class="num">0</span>
-    <span class="kw">andalso</span> a <span class="op">+</span> b <span class="op">+</span> c <span class="op">+</span> d <span class="op">+</span> e &lt; <span class="num">8</span>;</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">a</span><span class="p">,</span> <span class="nv">b</span>
+  <span class="kr">where</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span>
+<span class="kr">join</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span>
+  <span class="kr">where</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="kr">andalso</span> <span class="n">b</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="kr">andalso</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="kr">andalso</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="kr">andalso</span> <span class="n">e</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="kr">andalso</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">d</span> <span class="o">+</span> <span class="n">e</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span></div>
 <div class="code-output">val it =
   [{a=1,b=2,c=1,d=1,e=1},{a=1,b=2,c=1,d=1,e=2},{a=1,b=2,c=1,d=2,e=1},
    {a=1,b=2,c=2,d=1,e=1},{a=1,b=3,c=1,d=1,e=1}]
@@ -341,9 +340,9 @@ from e in scott.emp
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">from</span> e <span class="kw">in</span> <span class="ctor">scott</span>.emp
-  <span class="kw">yield</span> {<span class="ctor">e</span>.job}
-  <span class="kw">distinct</span>;</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emp</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">}</span>
+  <span class="kr">distinct</span><span class="p">;</span></div>
 <div class="code-output">val it =
   [{job="CLERK"},{job="SALESMAN"},{job="ANALYST"},{job="MANAGER"},
    {job="PRESIDENT"}] : {job:string} list</div>
@@ -366,7 +365,7 @@ fn [] => 0 | x :: _ => x + 1;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">fn</span> [] <span class="op">=&gt;</span> <span class="num">0</span> | x <span class="op">::</span> _ <span class="op">=&gt;</span> x <span class="op">+</span> <span class="num">1</span>;</div>
+<div class="code-input"><span class="kr">fn</span> <span class="p">[]</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">|</span> <span class="n">x</span> <span class="o">::</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></div>
 <div class="code-output">val it = fn : int list -&gt; int</div>
 </div>
 
@@ -377,7 +376,7 @@ fn list => case list of [] => 0 | x :: _ => x + 1;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">fn</span> list <span class="op">=&gt;</span> <span class="kw">case</span> list <span class="kw">of</span> [] <span class="op">=&gt;</span> <span class="num">0</span> | x <span class="op">::</span> _ <span class="op">=&gt;</span> x <span class="op">+</span> <span class="num">1</span>;</div>
+<div class="code-input"><span class="kr">fn</span> <span class="n">list</span> <span class="o">=&gt;</span> <span class="kr">case</span> <span class="n">list</span> <span class="kr">of</span> <span class="p">[]</span> <span class="o">=&gt;</span> <span class="mi">0</span> <span class="p">|</span> <span class="n">x</span> <span class="o">::</span> <span class="n">_</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></div>
 <div class="code-output">val it = fn : int list -&gt; int</div>
 </div>
 
@@ -431,41 +430,41 @@ val fromString : string -> int option   (* Overflow      *)
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">val</span> precision <span class="op">:</span> int option
-<span class="kw">val</span> minInt    <span class="op">:</span> int option
-<span class="kw">val</span> maxInt    <span class="op">:</span> int option
+<div class="code-input"><span class="kr">val</span> <span class="nv">precision</span> <span class="p">:</span> <span class="nv">int</span> <span class="nv">option</span>
+<span class="kr">val</span> <span class="nv">minInt</span>    <span class="p">:</span> <span class="nv">int</span> <span class="nv">option</span>
+<span class="kr">val</span> <span class="nv">maxInt</span>    <span class="p">:</span> <span class="nv">int</span> <span class="nv">option</span>
 
-<span class="kw">val</span> ~         <span class="op">:</span> int <span class="op">-&gt;</span> int              <span class="cmt">(* Overflow      *)</span>
-<span class="kw">val</span> <span class="op">*</span>         <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> int        <span class="cmt">(* Overflow      *)</span>
-<span class="kw">val</span> div       <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> int        <span class="cmt">(* Div, Overflow *)</span>
-<span class="kw">val</span> mod       <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> int        <span class="cmt">(* Div           *)</span>
-<span class="kw">val</span> quot      <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> int        <span class="cmt">(* Div, Overflow *)</span>
-<span class="kw">val</span> rem       <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> int        <span class="cmt">(* Div           *)</span>
-<span class="kw">val</span> <span class="op">+</span>         <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> int        <span class="cmt">(* Overflow      *)</span>
-<span class="kw">val</span> <span class="op">-</span>         <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> int        <span class="cmt">(* Overflow      *)</span>
-<span class="kw">val</span> &gt;         <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> bool
-<span class="kw">val</span> &gt;=        <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> bool
-<span class="kw">val</span> &lt;         <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> bool
-<span class="kw">val</span> &lt;=        <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> bool
-<span class="kw">val</span> abs       <span class="op">:</span> int <span class="op">-&gt;</span> int              <span class="cmt">(* Overflow      *)</span>
-<span class="kw">val</span> min       <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> int
-<span class="kw">val</span> max       <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> int
+<span class="kr">val</span> ~         <span class="p">:</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>              <span class="c">(*</span><span class="cm"> Overflow      *)</span>
+<span class="kr">val</span> <span class="o">*</span>         <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>        <span class="c">(*</span><span class="cm"> Overflow      *)</span>
+<span class="kr">val</span> <span class="kr">div</span>       <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>        <span class="c">(*</span><span class="cm"> Div, Overflow *)</span>
+<span class="kr">val</span> <span class="kr">mod</span>       <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>        <span class="c">(*</span><span class="cm"> Div           *)</span>
+<span class="kr">val</span> <span class="nv">quot</span>      <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>        <span class="c">(*</span><span class="cm"> Div, Overflow *)</span>
+<span class="kr">val</span> <span class="nv">rem</span>       <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>        <span class="c">(*</span><span class="cm"> Div           *)</span>
+<span class="kr">val</span> <span class="o">+</span>         <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>        <span class="c">(*</span><span class="cm"> Overflow      *)</span>
+<span class="kr">val</span> <span class="o">-</span>         <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>        <span class="c">(*</span><span class="cm"> Overflow      *)</span>
+<span class="kr">val</span> <span class="o">&gt;</span>         <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">bool</span>
+<span class="kr">val</span> <span class="o">&gt;</span><span class="p">=</span>        <span class="p">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">bool</span>
+<span class="kr">val</span> <span class="o">&lt;</span>         <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">bool</span>
+<span class="kr">val</span> <span class="o">&lt;</span><span class="p">=</span>        <span class="p">:</span> <span class="n">int</span> <span class="o">*</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">bool</span>
+<span class="kr">val</span> <span class="nv">abs</span>       <span class="p">:</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>              <span class="c">(*</span><span class="cm"> Overflow      *)</span>
+<span class="kr">val</span> <span class="nv">min</span>       <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>
+<span class="kr">val</span> <span class="nv">max</span>       <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>
 
-<span class="kw">val</span> sign      <span class="op">:</span> int <span class="op">-&gt;</span> int
-<span class="kw">val</span> sameSign  <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> bool
-<span class="kw">val</span> compare   <span class="op">:</span> int <span class="op">*</span> int <span class="op">-&gt;</span> <span class="kw">order</span>
+<span class="kr">val</span> <span class="nv">sign</span>      <span class="p">:</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>
+<span class="kr">val</span> <span class="nv">sameSign</span>  <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">bool</span>
+<span class="kr">val</span> <span class="nv">compare</span>   <span class="p">:</span> <span class="nv">int</span> <span class="o">*</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="kr">order</span>
 
-<span class="kw">val</span> toInt     <span class="op">:</span> int <span class="op">-&gt;</span> int
-<span class="kw">val</span> fromInt   <span class="op">:</span> int <span class="op">-&gt;</span> int
-<span class="kw">val</span> toLarge   <span class="op">:</span> int <span class="op">-&gt;</span> int
-<span class="kw">val</span> fromLarge <span class="op">:</span> int <span class="op">-&gt;</span> int
+<span class="kr">val</span> <span class="nv">toInt</span>     <span class="p">:</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>
+<span class="kr">val</span> <span class="nv">fromInt</span>   <span class="p">:</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>
+<span class="kr">val</span> <span class="nv">toLarge</span>   <span class="p">:</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>
+<span class="kr">val</span> <span class="nv">fromLarge</span> <span class="p">:</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">int</span>
 
-<span class="kw">val</span> scan      <span class="op">:</span> <span class="ctor">StringCvt</span>.radix
-                <span class="op">-&gt;</span> (char, <span class="ctor">'a</span>) <span class="ctor">StringCvt</span>.reader <span class="op">-&gt;</span> (int, <span class="ctor">'a</span>) <span class="ctor">StringCvt</span>.reader
-<span class="kw">val</span> fmt       <span class="op">:</span> <span class="ctor">StringCvt</span>.radix <span class="op">-&gt;</span> int <span class="op">-&gt;</span> string
+<span class="kr">val</span> <span class="nv">scan</span>      <span class="p">:</span> <span class="nn">StringCvt</span><span class="p">.</span><span class="n">radix</span>
+                <span class="o">-&gt;</span> <span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="nn">'a</span><span class="p">)</span> <span class="nn">StringCvt</span><span class="p">.</span><span class="n">reader</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">int</span><span class="p">,</span> <span class="nn">'a</span><span class="p">)</span> <span class="nn">StringCvt</span><span class="p">.</span><span class="n">reader</span>
+<span class="kr">val</span> <span class="nv">fmt</span>       <span class="p">:</span> <span class="nn">StringCvt</span><span class="p">.</span><span class="n">radix</span> <span class="o">-&gt;</span> <span class="n">int</span> <span class="o">-&gt;</span> <span class="n">string</span>
 
-<span class="kw">val</span> toString  <span class="op">:</span> int <span class="op">-&gt;</span> string
-<span class="kw">val</span> fromString <span class="op">:</span> string <span class="op">-&gt;</span> int option   <span class="cmt">(* Overflow      *)</span></div>
+<span class="kr">val</span> <span class="nv">toString</span>  <span class="p">:</span> <span class="nv">int</span> <span class="o">-&gt;</span> <span class="nv">string</span>
+<span class="kr">val</span> <span class="nv">fromString</span> <span class="p">:</span> <span class="nv">string</span> <span class="o">-&gt;</span> <span class="nv">int</span> <span class="nv">option</span>   <span class="c">(*</span><span class="cm"> Overflow      *)</span></div>
 </div>
 
 
@@ -481,11 +480,11 @@ Int.maxInt;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="ctor">Int</span>.compare;</div>
+<div class="code-input"><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></div>
 <div class="code-output">val it = fn : int * int -&gt; order</div>
-<div class="code-input"><span class="ctor">Int</span>.compare (<span class="num">2</span>, <span class="num">3</span>);</div>
+<div class="code-input"><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span></div>
 <div class="code-output">val it = LESS : order</div>
-<div class="code-input"><span class="ctor">Int</span>.maxInt;</div>
+<div class="code-input"><span class="nn">Int</span><span class="p">.</span><span class="n">maxInt</span><span class="p">;</span></div>
 <div class="code-output">val it = SOME 2147483647 : int option</div>
 </div>
 

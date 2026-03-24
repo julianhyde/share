@@ -106,19 +106,19 @@ fun product [] = 1
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">fun</span> factorize n =
-  <span class="kw">let</span>
-    <span class="kw">fun</span> factorize' n d =
-      <span class="kw">if</span> n &lt; d <span class="kw">then</span> [] <span class="kw">else</span>
-      <span class="kw">if</span> n mod d = <span class="num">0</span> <span class="kw">then</span> d <span class="op">::</span> (factorize' (n div d) d)
-      <span class="kw">else</span> factorize' n (d <span class="op">+</span> <span class="num">1</span>)
-  <span class="kw">in</span>
-    factorize' n <span class="num">2</span>
-  <span class="kw">end</span>;</div>
+<div class="code-input"><span class="kr">fun</span> <span class="nf">factorize</span> <span class="n">n</span> <span class="p">=</span>
+  <span class="kr">let</span>
+    <span class="kr">fun</span> <span class="nf">factorize'</span> <span class="n">n</span> <span class="n">d</span> <span class="p">=</span>
+      <span class="kr">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">d</span> <span class="kr">then</span> <span class="p">[]</span> <span class="kr">else</span>
+      <span class="kr">if</span> <span class="n">n</span> <span class="kr">mod</span> <span class="n">d</span> <span class="p">=</span> <span class="mi">0</span> <span class="kr">then</span> <span class="n">d</span> <span class="o">::</span> <span class="p">(</span><span class="n">factorize'</span> <span class="p">(</span><span class="n">n</span> <span class="kr">div</span> <span class="n">d</span><span class="p">)</span> <span class="n">d</span><span class="p">)</span>
+      <span class="kr">else</span> <span class="n">factorize'</span> <span class="n">n</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="kr">in</span>
+    <span class="n">factorize'</span> <span class="n">n</span> <span class="mi">2</span>
+  <span class="kr">end</span><span class="p">;</span></div>
 <div class="code-output">val factorize = fn : int -&gt; int list</div>
 <div class="code-input">
-<span class="kw">fun</span> product [] = <span class="num">1</span>
-  | product (x<span class="op">::</span>xs) = x <span class="op">*</span> (product xs);</div>
+<span class="kr">fun</span> <span class="nf">product</span> <span class="p">[]</span> <span class="p">=</span> <span class="mi">1</span>
+  <span class="p">|</span> <span class="n">product</span> <span class="p">(</span><span class="n">x</span><span class="o">::</span><span class="n">xs</span><span class="p">)</span> <span class="p">=</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">product</span> <span class="n">xs</span><span class="p">);</span></div>
 <div class="code-output">val product = fn : int list -&gt; int</div>
 </div>
 
@@ -133,9 +133,9 @@ product (factorize 120);
 -->
 
 <div class="code-block">
-<div class="code-input">factorize <span class="num">120</span>;</div>
+<div class="code-input"><span class="n">factorize</span> <span class="mi">120</span><span class="p">;</span></div>
 <div class="code-output">val it = [2,2,2,3,5] : int list</div>
-<div class="code-input">product (factorize <span class="num">120</span>);</div>
+<div class="code-input"><span class="n">product</span> <span class="p">(</span><span class="n">factorize</span> <span class="mi">120</span><span class="p">);</span></div>
 <div class="code-output">val it = 120 : int</div>
 </div>
 
@@ -151,10 +151,10 @@ fun gcd (m, n) =
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">fun</span> gcd (m, n) =
-  <span class="kw">from</span> f <span class="kw">in</span> factorize m
-    <span class="kw">intersect</span> factorize n
-    <span class="kw">compute</span> product;</div>
+<div class="code-input"><span class="kr">fun</span> <span class="nf">gcd</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
+  <span class="kr">from</span> <span class="nv">f</span> <span class="kr">in</span> <span class="n">factorize</span> <span class="n">m</span>
+    <span class="kr">intersect</span> <span class="n">factorize</span> <span class="n">n</span>
+    <span class="kr">compute</span> <span class="n">product</span><span class="p">;</span></div>
 <div class="code-output">val gcd = fn : int * int -&gt; int</div>
 </div>
 
@@ -174,8 +174,8 @@ fun lcm (m, n) =
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">fun</span> lcm (m, n) =
-  (m <span class="op">*</span> n) div gcd (m, n);</div>
+<div class="code-input"><span class="kr">fun</span> <span class="nf">lcm</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
+  <span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span> <span class="kr">div</span> <span class="n">gcd</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span></div>
 <div class="code-output">val lcm = fn : int * int -&gt; int</div>
 </div>
 
@@ -199,17 +199,17 @@ fun lcm' (m, n) =
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">fun</span> lcm' (m, n) =
-  <span class="kw">let</span>
-    <span class="kw">val</span> m_factors = factorize m
-    <span class="kw">val</span> n_factors = factorize n
-  <span class="kw">in</span>
-    <span class="kw">from</span> f <span class="kw">in</span> m_factors
-      <span class="kw">union</span> (n_factors)
-      <span class="kw">except</span> (<span class="kw">from</span> f <span class="kw">in</span> m_factors
-        <span class="kw">intersect</span> n_factors)
-    <span class="kw">compute</span> product
-  <span class="kw">end</span>;</div>
+<div class="code-input"><span class="kr">fun</span> <span class="nf">lcm'</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="p">=</span>
+  <span class="kr">let</span>
+    <span class="kr">val</span> <span class="nv">m_factors</span> <span class="p">=</span> <span class="n">factorize</span> <span class="n">m</span>
+    <span class="kr">val</span> <span class="nv">n_factors</span> <span class="p">=</span> <span class="n">factorize</span> <span class="n">n</span>
+  <span class="kr">in</span>
+    <span class="kr">from</span> <span class="nv">f</span> <span class="kr">in</span> <span class="n">m_factors</span>
+      <span class="kr">union</span> <span class="p">(</span><span class="n">n_factors</span><span class="p">)</span>
+      <span class="kr">except</span> <span class="p">(</span><span class="kr">from</span> <span class="nv">f</span> <span class="kr">in</span> <span class="n">m_factors</span>
+        <span class="kr">intersect</span> <span class="n">n_factors</span><span class="p">)</span>
+    <span class="kr">compute</span> <span class="n">product</span>
+  <span class="kr">end</span><span class="p">;</span></div>
 <div class="code-output">val lcm' = fn : int * int -&gt; int</div>
 </div>
 
@@ -226,11 +226,11 @@ lcm' (36, 120);
 -->
 
 <div class="code-block">
-<div class="code-input">gcd (<span class="num">36</span>, <span class="num">120</span>);</div>
+<div class="code-input"><span class="n">gcd</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></div>
 <div class="code-output">val it = 12 : int</div>
-<div class="code-input">lcm (<span class="num">36</span>, <span class="num">120</span>);</div>
+<div class="code-input"><span class="n">lcm</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></div>
 <div class="code-output">val it = 360 : int</div>
-<div class="code-input">lcm' (<span class="num">36</span>, <span class="num">120</span>);</div>
+<div class="code-input"><span class="n">lcm'</span> <span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">120</span><span class="p">);</span></div>
 <div class="code-output">val it = 360 : int</div>
 </div>
 

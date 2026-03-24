@@ -106,17 +106,17 @@ from e in employees yield e.age;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">val</span> fred = {name=<span class="str">"Fred"</span>, age=<span class="num">27</span>};</div>
+<div class="code-input"><span class="kr">val</span> <span class="nv">fred</span> <span class="p">=</span> <span class="p">{</span><span class="n">name</span><span class="p">=</span><span class="s2">"Fred"</span><span class="p">,</span> <span class="n">age</span><span class="p">=</span><span class="mi">27</span><span class="p">};</span></div>
 <div class="code-output">val fred = {age=27,name="Fred"} : {age:int, name:string}</div>
 <div class="code-input">
-<span class="kw">val</span> velma = {name=<span class="str">"Velma"</span>, age=<span class="num">20</span>};</div>
+<span class="kr">val</span> <span class="nv">velma</span> <span class="p">=</span> <span class="p">{</span><span class="n">name</span><span class="p">=</span><span class="s2">"Velma"</span><span class="p">,</span> <span class="n">age</span><span class="p">=</span><span class="mi">20</span><span class="p">};</span></div>
 <div class="code-output">val velma = {age=20,name="Velma"} : {age:int, name:string}</div>
 <div class="code-input">
-<span class="kw">val</span> employees = [fred, velma];</div>
+<span class="kr">val</span> <span class="nv">employees</span> <span class="p">=</span> <span class="p">[</span><span class="n">fred</span><span class="p">,</span> <span class="n">velma</span><span class="p">];</span></div>
 <div class="code-output">val employees = [{age=27,name="Fred"},{age=20,name="Velma"}]
   : {age:int, name:string} list</div>
 <div class="code-input">
-<span class="kw">from</span> e <span class="kw">in</span> employees <span class="kw">yield</span> <span class="ctor">e</span>.age;</div>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">employees</span> <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">age</span><span class="p">;</span></div>
 <div class="code-output">val it = [27,20] : int list</div>
 </div>
 
@@ -133,7 +133,7 @@ file;
 -->
 
 <div class="code-block">
-<div class="code-input">file;</div>
+<div class="code-input"><span class="n">file</span><span class="p">;</span></div>
 <div class="code-output">val it = {scott={},wordle={}} : {scott:{...}, wordle:{...}, ...}</div>
 </div>
 
@@ -152,7 +152,7 @@ file.scott;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="ctor">file</span>.scott;</div>
+<div class="code-input"><span class="nn">file</span><span class="p">.</span><span class="n">scott</span><span class="p">;</span></div>
 <div class="code-output">val it = {bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;}
   : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,
      ...}</div>
@@ -175,9 +175,9 @@ from d in file.scott.dept
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">from</span> d <span class="kw">in</span> <span class="ctor">file</span>.<span class="ctor">scott</span>.dept
-  <span class="kw">join</span> e <span class="kw">in</span> <span class="ctor">file</span>.<span class="ctor">scott</span>.emp <span class="kw">on</span> <span class="ctor">d</span>.deptno = <span class="ctor">e</span>.deptno
-  <span class="kw">group</span> <span class="ctor">d</span>.dname <span class="kw">compute</span> sum <span class="kw">of</span> <span class="ctor">e</span>.sal;</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">d</span> <span class="kr">in</span> <span class="nn">file</span><span class="p">.</span><span class="nn">scott</span><span class="p">.</span><span class="n">dept</span>
+  <span class="kr">join</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">file</span><span class="p">.</span><span class="nn">scott</span><span class="p">.</span><span class="n">emp</span> <span class="kr">on</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">group</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span> <span class="kr">compute</span> <span class="n">sum</span> <span class="kr">of</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">;</span></div>
 <div class="code-output">val it =
   [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},
    {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list</div>
@@ -201,7 +201,7 @@ file;
 -->
 
 <div class="code-block">
-<div class="code-input">file;</div>
+<div class="code-input"><span class="n">file</span><span class="p">;</span></div>
 <div class="code-output">val it =
   {scott={bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;},
    wordle={}}
@@ -266,7 +266,6 @@ val s = file.scott;
 > val s = {bonus=<relation>,dept=<relation>,emp=<relation>,salgrade=<relation>}
 >   : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,
 >      ...}
-
 from d in s.dept
   join e in s.emp on d.deptno = e.deptno
   group d.dname compute sum of e.sal;
@@ -276,14 +275,13 @@ from d in s.dept
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">val</span> s = <span class="ctor">file</span>.scott;</div>
+<div class="code-input"><span class="kr">val</span> <span class="nv">s</span> <span class="p">=</span> <span class="nn">file</span><span class="p">.</span><span class="n">scott</span><span class="p">;</span></div>
 <div class="code-output">val s = {bonus=&lt;relation&gt;,dept=&lt;relation&gt;,emp=&lt;relation&gt;,salgrade=&lt;relation&gt;}
   : {bonus:{...} list, dept:{...} list, emp:{...} list, salgrade:{...} list,
      ...}</div>
-<div class="code-input">
-<span class="kw">from</span> d <span class="kw">in</span> <span class="ctor">s</span>.dept
-  <span class="kw">join</span> e <span class="kw">in</span> <span class="ctor">s</span>.emp <span class="kw">on</span> <span class="ctor">d</span>.deptno = <span class="ctor">e</span>.deptno
-  <span class="kw">group</span> <span class="ctor">d</span>.dname <span class="kw">compute</span> sum <span class="kw">of</span> <span class="ctor">e</span>.sal;</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">d</span> <span class="kr">in</span> <span class="nn">s</span><span class="p">.</span><span class="n">dept</span>
+  <span class="kr">join</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">s</span><span class="p">.</span><span class="n">emp</span> <span class="kr">on</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">group</span> <span class="nn">d</span><span class="p">.</span><span class="n">dname</span> <span class="kr">compute</span> <span class="n">sum</span> <span class="kr">of</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">;</span></div>
 <div class="code-output">val it =
   [{dname="RESEARCH",sum=10875.0},{dname="SALES",sum=9400.0},
    {dname="ACCOUNTING",sum=8750.0}] : {dname:string, sum:real} list</div>

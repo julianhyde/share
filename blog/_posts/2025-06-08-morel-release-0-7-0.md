@@ -58,9 +58,9 @@ from e in scott.emps
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">from</span> e <span class="kw">in</span> <span class="ctor">scott</span>.emps
-  <span class="kw">where</span> <span class="ctor">e</span>.sal &gt; <span class="num">1000</span>.<span class="num">0</span>
-  <span class="kw">yield</span> <span class="ctor">e</span>.ename;</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">.</span><span class="mi">0</span>
+  <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">;</span></div>
 </div>
 
 
@@ -92,13 +92,12 @@ from i in ["a", "b"],
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">from</span> i <span class="kw">in</span> [<span class="str">"a"</span>, <span class="str">"b"</span>],
-    j <span class="kw">in</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]
-  <span class="kw">yield</span> (i, j);</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">i</span> <span class="kr">in</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">],</span>
+    <span class="nv">j</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+  <span class="kr">yield</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span></div>
 <div class="code-output">val it = [("a",1),("a",2),("a",3),("b",1),("b",2),("b",3)]
   : (string * int) list</div>
 </div>
-
 
 which do have a defined order.
 
@@ -121,7 +120,7 @@ val x = 42;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">val</span> x = <span class="num">42</span>;</div>
+<div class="code-input"><span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="mi">42</span><span class="p">;</span></div>
 </div>
 
 
@@ -132,21 +131,22 @@ val x = fn y => y + 1;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">val</span> x = <span class="kw">fn</span> y <span class="op">=&gt;</span> y <span class="op">+</span> <span class="num">1</span>;</div>
+<div class="code-input"><span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="kr">fn</span> <span class="n">y</span> <span class="o">=&gt;</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></div>
 </div>
 
 
 then the previous declaration of `x` is no longer accessible.
+
 <!-- morel fail
-int z = x - 2;
-> stdIn:1.5 Error: unbound variable or constructor: z
->   raised at: stdIn:1.5
+val z = x - 2;
+> stdIn:1.9 Error: unbound variable or constructor: x
+>   raised at: stdIn:1.9
 -->
 
 <div class="code-block">
-<div class="code-input">int z = x <span class="op">-</span> <span class="num">2</span>;</div>
-<div class="code-output">stdIn:1.5 Error: unbound variable or constructor: z
-  raised at: stdIn:1.5</div>
+<div class="code-input"><span class="kr">val</span> <span class="nv">z</span> <span class="p">=</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span></div>
+<div class="code-error">stdIn:1.9 Error: unbound variable or constructor: x
+  raised at: stdIn:1.9</div>
 </div>
 
 
@@ -155,53 +155,98 @@ To create
 we need declare that an identifier is special; we do this using the
 new `over` keyword:
 
-```sml
+<!-- morel
 over f;
-(*[> over f]*)
-```
+> over f
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">over</span> <span class="n">f</span><span class="p">;</span></div>
+<div class="code-output">over f</div>
+</div>
+
 
 Now we can define several instances of `f`:
 
-```sml
+<!-- morel
 val inst f = fn (x : int, y : int) => x + y;
-(*[> val f = fn : int * int -> int]*)
+> val f = fn : int * int -> int
 val inst f = fn list => length list;
-(*[> val f = fn : 'a list -> int]*)
+> val f = fn : 'a list -> int
 val inst f = fn SOME x => x ^ "!" | NONE => ":(";
-(*[> val f = fn : string option -> string]*)
-```
+> val f = fn : string option -> string
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">val</span> <span class="kr">inst</span> <span class="nv">f</span> <span class="p">=</span> <span class="kr">fn</span> <span class="p">(</span><span class="n">x</span> <span class="p">:</span> <span class="n">int</span><span class="p">,</span> <span class="n">y</span> <span class="p">:</span> <span class="n">int</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">;</span></div>
+<div class="code-output">val f = fn : int * int -&gt; int</div>
+<div class="code-input"><span class="kr">val</span> <span class="kr">inst</span> <span class="nv">f</span> <span class="p">=</span> <span class="kr">fn</span> <span class="n">list</span> <span class="o">=&gt;</span> <span class="n">length</span> <span class="n">list</span><span class="p">;</span></div>
+<div class="code-output">val f = fn : 'a list -&gt; int</div>
+<div class="code-input"><span class="kr">val</span> <span class="kr">inst</span> <span class="nv">f</span> <span class="p">=</span> <span class="kr">fn</span> <span class="n">SOME</span> <span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span> ^ <span class="s2">"!"</span> <span class="p">|</span> <span class="n">NONE</span> <span class="o">=&gt;</span> <span class="s2">":("</span><span class="p">;</span></div>
+<div class="code-output">val f = fn : string option -&gt; string</div>
+</div>
+
 
 All must be functions, because the overloads are resolved based on
 the type of the first argument.
 
 Calls to `f` will be resolved based on the types of the arguments:
-```sml
+
+<!-- morel
 (* Call the "int * int -> int" overload. *)
 f (7, 8);
-(*[> val it = 15 : int]*)
-
+> val it = 15 : int
 (* Call the "'a list -> int" overload. *)
 f ["a", "b", "c"];
-(*[> val it = 3 : int]*)
+> val it = 3 : int
 f [1, 2, 3, 4];
-(*[> val it = 4 : int]*)
+> val it = 4 : int
 f [];
-(*[> val it = 0 : int]*)
-
+> val it = 0 : int
 (* Call the "string option -> string" overload. *)
 f (SOME "happy");
-(*[> val it = "happy!" : string]*)
+> val it = "happy!" : string
 f NONE;
-(*[> val it = ":(" : string]*)
+> val it = ":(" : string
+-->
 
+<div class="code-block">
+<div class="code-input"><span class="c">(*</span><span class="cm"> Call the "int * int -&gt; int" overload. *)</span>
+<span class="n">f</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span></div>
+<div class="code-output">val it = 15 : int</div>
+<div class="code-input"><span class="c">(*</span><span class="cm"> Call the "'a list -&gt; int" overload. *)</span>
+<span class="n">f</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">];</span></div>
+<div class="code-output">val it = 3 : int</div>
+<div class="code-input"><span class="n">f</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">];</span></div>
+<div class="code-output">val it = 4 : int</div>
+<div class="code-input"><span class="n">f</span> <span class="p">[];</span></div>
+<div class="code-output">val it = 0 : int</div>
+<div class="code-input"><span class="c">(*</span><span class="cm"> Call the "string option -&gt; string" overload. *)</span>
+<span class="n">f</span> <span class="p">(</span><span class="n">SOME</span> <span class="s2">"happy"</span><span class="p">);</span></div>
+<div class="code-output">val it = "happy!" : string</div>
+<div class="code-input"><span class="n">f</span> <span class="n">NONE</span><span class="p">;</span></div>
+<div class="code-output">val it = ":(" : string</div>
+</div>
+
+<!-- morel fail
 (* No overloads match "int option" or "(int, int, int)" arguments. *)
 f (SOME 42);
-(*[> 0.0-0.0 Error: Cannot deduce type: no valid overloads
->   raised at: 0.0-0.0]*)
+> 0.0-0.0 Error: Cannot deduce type: no valid overloads
+>   raised at: 0.0-0.0
 f (1, 2, 3);
-(*[> 0.0-0.0 Error: Cannot deduce type: no valid overloads
->   raised at: 0.0-0.0]*)
-```
+> 0.0-0.0 Error: Cannot deduce type: no valid overloads
+>   raised at: 0.0-0.0
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="c">(*</span><span class="cm"> No overloads match "int option" or "(int, int, int)" arguments. *)</span>
+<span class="n">f</span> <span class="p">(</span><span class="n">SOME</span> <span class="mi">42</span><span class="p">);</span></div>
+<div class="code-error">0.0-0.0 Error: Cannot deduce type: no valid overloads
+  raised at: 0.0-0.0</div>
+<div class="code-input"><span class="n">f</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span></div>
+<div class="code-error">0.0-0.0 Error: Cannot deduce type: no valid overloads
+  raised at: 0.0-0.0</div>
+</div>
 
 ## 3. Sorting on expressions
 
@@ -213,9 +258,13 @@ the list could not be empty.
 
 The commas were a problem. In the expression
 
-```sml
+<!-- morel skip
 foo (from i in [1, 2, 3] order i desc, j);
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="n">foo</span> <span class="p">(</span><span class="kr">from</span> <span class="nv">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="kr">order</span> <span class="n">i</span> <span class="kr">desc</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span></div>
+</div>
 
 it is not clear whether `j` is a second argument for the call to the
 function `foo` or the second item in the `order` clause.
@@ -234,7 +283,7 @@ commas, but now enclosed in parentheses.  If a sort key is descending,
 you now wrap it in the `Descending` data type by preceding it with the
 `DESC`.  Thus:
 
-```sml
+<!-- morel skip
 (* Old syntax *)
 from e in scott.emps
   order e.job, e.sal desc;
@@ -242,7 +291,17 @@ from e in scott.emps
 (* New syntax *)
 from e in scott.emps
   order (e.job, DESC e.sal);
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="c">(*</span><span class="cm"> Old syntax *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="kr">desc</span><span class="p">;</span>
+
+<span class="c">(*</span><span class="cm"> New syntax *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="n">DESC</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">);</span></div>
+</div>
 
 You can now sort by any data type, including tuples, records,
 sum-types such as `Option` and `Descending`, lists, bags, and any
@@ -252,15 +311,24 @@ To achieve the trivial sort, you can sort by any constant value, such
 as the integer `0` or the `Option` constructor `NONE`, but
 conventionally you would sort by the empty tuple `()`:
 
-```sml
+<!-- morel
 from e in scott.emps
   yield e.ename
   order ();
-(*[> val it =
->   ["SMITH","ALLEN","WARD","JONES","MARTIN","BLAKE","CLARK",
->    "SCOTT","KING","TURNER","ADAMS","JAMES","FORD","MILLER"]
->   : string list]*)
-```
+> val it =
+>   ["SMITH","ALLEN","WARD","JONES","MARTIN","BLAKE","CLARK","SCOTT","KING",
+>    "TURNER","ADAMS","JAMES",...] : string list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span>
+  <span class="kr">order</span> <span class="p">();</span></div>
+<div class="code-output">val it =
+  ["SMITH","ALLEN","WARD","JONES","MARTIN","BLAKE","CLARK","SCOTT","KING",
+   "TURNER","ADAMS","JAMES",...] : string list</div>
+</div>
+
 
 The key thing is that the result is a `list`.  The elements are in
 arbitrary order (because any order is consistent with the empty sort
@@ -274,29 +342,53 @@ you can use to reference parts of the current row.  For example, the
 `where` step in the following query refers to both fields, `i` and
 `j`.
 
-```sml
+<!-- morel silent
+Sys.set ("output", "tabular");
+> val it = () : unit
+-->
+<!-- morel
 from i in [1, 2, 3],
     j in [4, 5, 6]
   where i + j > 7;
-
-(*[> i j
+> i j
 > - -
 > 2 6
 > 3 5
 > 3 6
 >
-> val it : {i:int, j:int} list]*)
-```
+> val it : {i:int, j:int} list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="nv">j</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+  <span class="kr">where</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">7</span><span class="p">;</span></div>
+<div class="code-output">i j
+- -
+2 6
+3 5
+3 6
+
+val it : {i:int, j:int} list</div>
+</div>
+
 
 But there is one circumstance where a step does not produce any named
 fields: a `yield` whose expression is not a record, what we call an
 "atomic yield". Here is an example:
 
-```sml
+<!-- morel skip
 from i in [1, 2, 3],
     j in [4, 5, 6]
   yield i + j;
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="nv">j</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+  <span class="kr">yield</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">;</span></div>
+</div>
+
 
 That query is valid, but suppose we wished to sort or filter the
 results.  If we added an `order` or `where` step it would have no way
@@ -323,42 +415,99 @@ will be a collection of that type, not a collection of records.)
 
 Here are some examples of `current` in action.
 
-```sml
+<!-- morel
 from i in [1, 2, 3],
     j in [4, 5, 6]
   yield i + j
   order DESC current;
-(*[> val it = [9,8,8,7,7,7,6,6,5] : int list]*)
+> val it = [9,8,8,7,7,7,6,6,5] : int list
+-->
 
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+    <span class="nv">j</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+  <span class="kr">yield</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span>
+  <span class="kr">order</span> <span class="n">DESC</span> <span class="kr">current</span><span class="p">;</span></div>
+<div class="code-output">val it = [9,8,8,7,7,7,6,6,5] : int list</div>
+</div>
+
+
+<!-- morel
 from maker in ["ford", "ferrari"],
     color in ["red", "green"]
   order current.color;
-(*[> color maker
+> color maker
 > ----- -------
 > green ford
 > green ferrari
 > red   ford
 > red   ferrari
 >
-> val it : {color:string, maker:string} list]*)
+> val it : {color:string, maker:string} list
+-->
 
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">maker</span> <span class="kr">in</span> <span class="p">[</span><span class="s2">"ford"</span><span class="p">,</span> <span class="s2">"ferrari"</span><span class="p">],</span>
+    <span class="nv">color</span> <span class="kr">in</span> <span class="p">[</span><span class="s2">"red"</span><span class="p">,</span> <span class="s2">"green"</span><span class="p">]</span>
+  <span class="kr">order</span> <span class="kr">current</span><span class="p">.</span><span class="n">color</span><span class="p">;</span></div>
+<div class="code-output">color maker
+----- -------
+green ford
+green ferrari
+red   ford
+red   ferrari
+
+val it : {color:string, maker:string} list</div>
+</div>
+
+
+<!-- morel
 from i in [1, 2, 3, 4]
   yield 4 * (i mod 2) + (i div 2)
   order current;
-(*[> val it = [1,2,4,5] : int list]*)
+> val it = [1,2,4,5] : int list
+-->
 
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">i</span> <span class="kr">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+  <span class="kr">yield</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="kr">mod</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="kr">div</span> <span class="mi">2</span><span class="p">)</span>
+  <span class="kr">order</span> <span class="kr">current</span><span class="p">;</span></div>
+<div class="code-output">val it = [1,2,4,5] : int list</div>
+</div>
+
+
+<!-- morel
 from e in scott.emps
   yield e.deptno
   distinct
   order current;
-(*[> val it = [10,20,30] : int list]*)
+> val it = [10,20,30] : int list
+-->
 
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">distinct</span>
+  <span class="kr">order</span> <span class="kr">current</span><span class="p">;</span></div>
+<div class="code-output">val it = [10,20,30] : int list</div>
+</div>
+
+
+<!-- morel
 from e in scott.emps
   yield e.deptno
   distinct
   order deptno;
-(*[> val it = [10,20,30] : int list]*)
-```
+> val it = [10,20,30] : int list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">distinct</span>
+  <span class="kr">order</span> <span class="n">deptno</span><span class="p">;</span></div>
+<div class="code-output">val it = [10,20,30] : int list</div>
+</div>
 
 ## 5. Set operators in pipelines
 
@@ -374,13 +523,21 @@ duplicates.
 For example, here is a query that finds all employees in departments
 10 and 20, but excludes those who are managers or clerks:
 
-```sml
+<!-- morel skip
 from e in scott.emps
   where e.deptno = 10
   union (from e in scott.emps where e.deptno = 20)
   except (from e in scott.emps where e.job = "MANAGER"),
      (from e in scott.emps where e.job = "CLERK");
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="mi">10</span>
+  <span class="kr">union</span> <span class="p">(</span><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="mi">20</span><span class="p">)</span>
+  <span class="kr">except</span> <span class="p">(</span><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"MANAGER"</span><span class="p">),</span>
+     <span class="p">(</span><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span> <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span> <span class="p">=</span> <span class="s2">"CLERK"</span><span class="p">);</span></div>
+</div>
 
 If you have ever wondered about the semantics of `intersect` and
 `except` with duplicates, wonder no more!
@@ -398,25 +555,45 @@ specification.
 
 This gives you comprehensive text manipulation capabilities:
 
-```sml
+<!-- morel
 String.size "hello world";
-(*[> val it = 11 : int]*)
+> val it = 11 : int
 
 String.substring ("hello world", 6, 5);
-(*[> val it = "world" : string]*)
+> val it = "world" : string
 
 String.tokens (fn c => c = #" ") "hello world morel";
-(*[> val it = ["hello","world","morel"] : string list]*)
+> val it = ["hello","world","morel"] : string list
 
 Char.isAlpha #"a";
-(*[> val it = true : bool]*)
+> val it = true : bool
 
 Char.toUpper #"a";
-(*[> val it = #"A" : char]*)
+> val it = #"A" : char
 
 String.map Char.toUpper "hello";
-(*[> val it = "HELLO" : string]*)
-```
+> val it = "HELLO" : string
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="nn">String</span><span class="p">.</span><span class="n">size</span> <span class="s2">"hello world"</span><span class="p">;</span></div>
+<div class="code-output">val it = 11 : int</div>
+<div class="code-input">
+<span class="nn">String</span><span class="p">.</span><span class="n">substring</span> <span class="p">(</span><span class="s2">"hello world"</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span></div>
+<div class="code-output">val it = "world" : string</div>
+<div class="code-input">
+<span class="nn">String</span><span class="p">.</span><span class="n">tokens</span> <span class="p">(</span><span class="kr">fn</span> <span class="n">c</span> <span class="o">=&gt;</span> <span class="n">c</span> <span class="p">=</span> #<span class="s2">" "</span><span class="p">)</span> <span class="s2">"hello world morel"</span><span class="p">;</span></div>
+<div class="code-output">val it = ["hello","world","morel"] : string list</div>
+<div class="code-input">
+<span class="nn">Char</span><span class="p">.</span><span class="n">isAlpha</span> #<span class="s2">"a"</span><span class="p">;</span></div>
+<div class="code-output">val it = true : bool</div>
+<div class="code-input">
+<span class="nn">Char</span><span class="p">.</span><span class="n">toUpper</span> #<span class="s2">"a"</span><span class="p">;</span></div>
+<div class="code-output">val it = #"A" : char</div>
+<div class="code-input">
+<span class="nn">String</span><span class="p">.</span><span class="n">map</span> <span class="nn">Char</span><span class="p">.</span><span class="n">toUpper</span> <span class="s2">"hello"</span><span class="p">;</span></div>
+<div class="code-output">val it = "HELLO" : string</div>
+</div>
 
 These structures provide everything you need for serious text
 processing, from basic operations like substring extraction to
@@ -433,7 +610,7 @@ The `scott` sample database now uses
 mapping the `emps` value maps to the `EMP` table, and `depts` to the
 `DEPT` table.
 
-```sml
+<!-- morel skip
 (* Old *)
 from e in scott.emp
   join d in scott.dept on e.deptno = d.deptno;
@@ -441,7 +618,17 @@ from e in scott.emp
 (* New *)
 from e in scott.emps
   join d in scott.depts on e.deptno = d.deptno;
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="c">(*</span><span class="cm"> Old *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emp</span>
+  <span class="kr">join</span> <span class="nv">d</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">dept</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span><span class="p">;</span>
+
+<span class="c">(*</span><span class="cm"> New *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">join</span> <span class="nv">d</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">depts</span> <span class="kr">on</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span><span class="p">;</span></div>
+</div>
 
 This change aligns with the modern programming convention that
 collections have plural names.
@@ -452,7 +639,7 @@ The previous `order` syntax no longer works.
 
 You should convert a following `desc` to preceding `DESC`:
 
-```sml
+<!-- morel skip
 (* Old syntax *)
 from e in scott.emps
   order e.sal desc;
@@ -460,11 +647,21 @@ from e in scott.emps
 (* New syntax *)
 from e in scott.emps
   order DESC e.sal;
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="c">(*</span><span class="cm"> Old syntax *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="kr">desc</span><span class="p">;</span>
+
+<span class="c">(*</span><span class="cm"> New syntax *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="n">DESC</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">;</span></div>
+</div>
 
 and put parentheses around composite orderings:
 
-```sml
+<!-- morel skip
 (* Old syntax *)
 from e in scott.emps
   order e.job, e.sal desc;
@@ -472,7 +669,17 @@ from e in scott.emps
 (* New syntax *)
 from e in scott.emps
   order (e.job, DESC e.sal);
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="c">(*</span><span class="cm"> Old syntax *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="kr">desc</span><span class="p">;</span>
+
+<span class="c">(*</span><span class="cm"> New syntax *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="n">DESC</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">);</span></div>
+</div>
 
 ## Conclusion
 

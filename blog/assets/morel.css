@@ -40,43 +40,240 @@
 }
 
 .code-input {
-  background: #f6f8fa;
+  background: #eef;
   padding: 13px 18px;
   color: #1f2328;
   white-space: pre;
   overflow-x: auto;
 }
 
-/* When a .code-input follows any other section, add a separator */
+/* When a .code-input follows output, add a top separator and reduce top gap */
 .code-output + .code-input,
 .code-error  + .code-input {
   border-top: 1px solid #d8dde3;
+  padding-top: 5px;
 }
 
-.code-output {
-  background: #f0fff4;
-  border-top: 1px solid #b7e4c7;
-  padding: 10px 18px;
-  color: #1a6430;
-  white-space: pre;
-  overflow-x: auto;
+/* Reduce bottom padding of input when directly followed by output */
+.code-input:has(+ .code-output),
+.code-input:has(+ .code-error) {
+  padding-bottom: 5px;
 }
 
+.code-output,
 .code-error {
-  background: #fff5f5;
-  border-top: 1px solid #f5c2c2;
-  padding: 10px 18px;
-  color: #b91c1c;
+  padding: 3px 18px 10px 13px;
+  border-left: 5px solid;
   white-space: pre;
   overflow-x: auto;
 }
 
-/* Syntax highlight token classes (inside .code-input only) */
-.kw   { color: #d73a49; font-weight: 500; }   /* keywords           */
-.str  { color: #032f62; }                      /* string / char lit  */
-.cmt  { color: #6a737d; font-style: italic; }  /* comments           */
-.num  { color: #005cc5; }                      /* numeric literals   */
-.ctor { color: #6f42c1; }                      /* constructors/types */
-.op   { color: #d73a49; }                      /* operators          */
+.code-output { border-color: #2da44e; color: #1f2328; }
+.code-error  { border-color: #cf222e; color: #b91c1c; }
+
+.code-input > pre {
+  border: 0;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+/**
+ * Syntax highlighting styles
+ */
+.code-input {
+  background: #eef;
+}
+.code-input .c {
+  color: #c8940a;
+  font-weight: bold;
+}
+.code-input .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+.code-input .k {
+  font-weight: bold;
+}
+.code-input .o {
+  font-weight: bold;
+}
+.code-input .cm {
+  color: #c8940a;
+  font-weight: bold;
+}
+.code-input .cp {
+  color: #999;
+  font-weight: bold;
+}
+.code-input .c1 {
+  color: #998;
+  font-style: italic;
+}
+.code-input .cs {
+  color: #999;
+  font-weight: bold;
+  font-style: italic;
+}
+.code-input .gd {
+  color: #000;
+  background-color: #fdd;
+}
+.code-input .gd .x {
+  color: #000;
+  background-color: #faa;
+}
+.code-input .ge {
+  font-style: italic;
+}
+.code-input .gr {
+  color: #a00;
+}
+.code-input .gh {
+  color: #999;
+}
+.code-input .gi {
+  color: #000;
+  background-color: #dfd;
+}
+.code-input .gi .x {
+  color: #000;
+  background-color: #afa;
+}
+.code-input .go {
+  color: #888;
+}
+.code-input .gp {
+  color: #555;
+}
+.code-input .gs {
+  font-weight: bold;
+}
+.code-input .gu {
+  color: #aaa;
+}
+.code-input .gt {
+  color: #a00;
+}
+.code-input .kc {
+  font-weight: bold;
+}
+.code-input .kd {
+  font-weight: bold;
+}
+.code-input .kp {
+  font-weight: bold;
+}
+.code-input .kr {
+  font-weight: bold;
+}
+.code-input .kt {
+  color: #458;
+  font-weight: bold;
+}
+.code-input .m {
+  color: #099;
+}
+.code-input .s {
+  color: #d14;
+}
+.code-input .na {
+  color: #008080;
+}
+.code-input .nb {
+  color: #0086B3;
+}
+.code-input .nc {
+  color: #458;
+  font-weight: bold;
+}
+.code-input .no {
+  color: #008080;
+}
+.code-input .ni {
+  color: #800080;
+}
+.code-input .ne {
+  color: #900;
+  font-weight: bold;
+}
+.code-input .nf {
+  color: #900;
+  font-weight: bold;
+}
+.code-input .nn {
+  color: #555;
+}
+.code-input .nt {
+  color: #000080;
+}
+.code-input .nv {
+  color: #008080;
+}
+.code-input .ow {
+  font-weight: bold;
+}
+.code-input .w {
+  color: #bbb;
+}
+.code-input .mf {
+  color: #099;
+}
+.code-input .mh {
+  color: #099;
+}
+.code-input .mi {
+  color: #e36209;
+}
+.code-input .mo {
+  color: #099;
+}
+.code-input .sb {
+  color: #d14;
+}
+.code-input .sc {
+  color: #d14;
+}
+.code-input .sd {
+  color: #d14;
+}
+.code-input .s2 {
+  color: #d14;
+}
+.code-input .se {
+  color: #d14;
+}
+.code-input .sh {
+  color: #d14;
+}
+.code-input .si {
+  color: #d14;
+}
+.code-input .sx {
+  color: #d14;
+}
+.code-input .sr {
+  color: #009926;
+}
+.code-input .s1 {
+  color: #d14;
+}
+.code-input .ss {
+  color: #990073;
+}
+.code-input .bp {
+  color: #999;
+}
+.code-input .vc {
+  color: #008080;
+}
+.code-input .vg {
+  color: #008080;
+}
+.code-input .vi {
+  color: #008080;
+}
+.code-input .il {
+  color: #099;
+}
 
 /* End morel.css */

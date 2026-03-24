@@ -92,11 +92,11 @@ end;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">let</span>
-  <span class="kw">val</span> pairs = [(<span class="num">1</span>, <span class="str">"a"</span>), (<span class="num">2</span>, <span class="str">"b"</span>), (<span class="num">1</span>, <span class="str">"c"</span>)];
-<span class="kw">in</span>
-  foo (<span class="kw">from</span> (i, j) <span class="kw">in</span> pairs <span class="kw">order</span> i <span class="kw">desc</span>, j)
-<span class="kw">end</span>;</div>
+<div class="code-input"><span class="kr">let</span>
+  <span class="kr">val</span> <span class="nv">pairs</span> <span class="p">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">)];</span>
+<span class="kr">in</span>
+  <span class="n">foo</span> <span class="p">(</span><span class="kr">from</span> <span class="p">(</span><span class="nv">i</span><span class="p">,</span> <span class="nv">j</span><span class="p">)</span> <span class="kr">in</span> <span class="n">pairs</span> <span class="kr">order</span> <span class="n">i</span> <span class="kr">desc</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">;</span></div>
 </div>
 
 
@@ -137,10 +137,10 @@ fun compareInt (x: int, y: int) =
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">fun</span> compareInt (x<span class="op">:</span> int, y<span class="op">:</span> int) =
-  <span class="kw">if</span> x &lt; y <span class="kw">then</span> LESS
-  <span class="kw">else</span> <span class="kw">if</span> x &gt; y <span class="kw">then</span> GREATER
-  <span class="kw">else</span> EQUAL;</div>
+<div class="code-input"><span class="kr">fun</span> <span class="nf">compareInt</span> <span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">int</span><span class="p">)</span> <span class="p">=</span>
+  <span class="kr">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span> <span class="kr">then</span> <span class="n">LESS</span>
+  <span class="kr">else</span> <span class="kr">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="kr">then</span> <span class="n">GREATER</span>
+  <span class="kr">else</span> <span class="n">EQUAL</span><span class="p">;</span></div>
 <div class="code-output">val compareInt = fn : int * int -&gt; order</div>
 </div>
 
@@ -157,11 +157,11 @@ String.compare;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="ctor">Int</span>.compare;</div>
+<div class="code-input"><span class="nn">Int</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></div>
 <div class="code-output">val it = fn : int * int -&gt; order</div>
-<div class="code-input"><span class="ctor">Real</span>.compare;</div>
+<div class="code-input"><span class="nn">Real</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></div>
 <div class="code-output">val it = fn : real * real -&gt; order</div>
-<div class="code-input"><span class="ctor">String</span>.compare;</div>
+<div class="code-input"><span class="nn">String</span><span class="p">.</span><span class="n">compare</span><span class="p">;</span></div>
 <div class="code-output">val it = fn : string * string -&gt; order</div>
 </div>
 
@@ -180,10 +180,10 @@ fun compareStringRealPair ((s1, r1), (s2, r2)) =
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">fun</span> compareStringRealPair ((s1, r1), (s2, r2)) =
-    <span class="kw">case</span> <span class="ctor">String</span>.compare (s1, s2) <span class="kw">of</span>
-        EQUAL <span class="op">=&gt;</span> <span class="ctor">Real</span>.compare (r2, r1)
-      | result <span class="op">=&gt;</span> result;</div>
+<div class="code-input"><span class="kr">fun</span> <span class="nf">compareStringRealPair</span> <span class="p">((</span><span class="n">s1</span><span class="p">,</span> <span class="n">r1</span><span class="p">),</span> <span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">r2</span><span class="p">))</span> <span class="p">=</span>
+    <span class="kr">case</span> <span class="nn">String</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">)</span> <span class="kr">of</span>
+        <span class="n">EQUAL</span> <span class="o">=&gt;</span> <span class="nn">Real</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="n">r2</span><span class="p">,</span> <span class="n">r1</span><span class="p">)</span>
+      <span class="p">|</span> <span class="n">result</span> <span class="o">=&gt;</span> <span class="n">result</span><span class="p">;</span></div>
 <div class="code-output">val compareStringRealPair = fn : string * real * (string * real) -&gt; order</div>
 </div>
 
@@ -201,12 +201,12 @@ from e in scott.emps
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="cmt">(* Sort employees by job, and then by descending salary. *)</span>
-<span class="kw">from</span> e <span class="kw">in</span> <span class="ctor">scott</span>.emps
-  <span class="kw">order</span> using <span class="kw">fn</span> (emp1, emp2) <span class="op">=&gt;</span>
-    <span class="kw">case</span> <span class="ctor">String</span>.compare (<span class="ctor">emp1</span>.job, <span class="ctor">emp2</span>.job) <span class="kw">of</span>
-       EQUAL <span class="op">=&gt;</span> <span class="ctor">Real</span>.compare (<span class="ctor">emp2</span>.sal, <span class="ctor">emp1</span>.sal)
-     | result <span class="op">=&gt;</span> result;</div>
+<div class="code-input"><span class="c">(*</span><span class="cm"> Sort employees by job, and then by descending salary. *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="n">using</span> <span class="kr">fn</span> <span class="p">(</span><span class="n">emp1</span><span class="p">,</span> <span class="n">emp2</span><span class="p">)</span> <span class="o">=&gt;</span>
+    <span class="kr">case</span> <span class="nn">String</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="nn">emp1</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">emp2</span><span class="p">.</span><span class="n">job</span><span class="p">)</span> <span class="kr">of</span>
+       <span class="n">EQUAL</span> <span class="o">=&gt;</span> <span class="nn">Real</span><span class="p">.</span><span class="n">compare</span> <span class="p">(</span><span class="nn">emp2</span><span class="p">.</span><span class="n">sal</span><span class="p">,</span> <span class="nn">emp1</span><span class="p">.</span><span class="n">sal</span><span class="p">)</span>
+     <span class="p">|</span> <span class="n">result</span> <span class="o">=&gt;</span> <span class="n">result</span><span class="p">;</span></div>
 </div>
 
 
@@ -239,9 +239,9 @@ from e in scott.emps
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="cmt">(* Old syntax. *)</span>
-<span class="kw">from</span> e <span class="kw">in</span> <span class="ctor">scott</span>.emps
-  <span class="kw">order</span> <span class="ctor">e</span>.job, <span class="ctor">e</span>.sal <span class="kw">desc</span>;</div>
+<div class="code-input"><span class="c">(*</span><span class="cm"> Old syntax. *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span> <span class="kr">desc</span><span class="p">;</span></div>
 </div>
 
 
@@ -255,9 +255,9 @@ from e in scott.emps
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="cmt">(* New syntax. *)</span>
-<span class="kw">from</span> e <span class="kw">in</span> <span class="ctor">scott</span>.emps
-  <span class="kw">order</span> (<span class="ctor">e</span>.job, DESC <span class="ctor">e</span>.sal);</div>
+<div class="code-input"><span class="c">(*</span><span class="cm"> New syntax. *)</span>
+<span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="n">DESC</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">);</span></div>
 </div>
 
 
@@ -288,10 +288,15 @@ behavior by introspecting that type.)
 Second, the `order` clause uses a form of lazy evaluation. If the
 query
 
-```sml
+<!-- morel skip
 from e in scott.emps
   order (e.job, DESC e.sal);
-```
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">order</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span> <span class="n">DESC</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">);</span></div>
+</div>
 
 created a tuple `(e.job, DESC(e.sal))` for every element, we would
 worry about the impact on performance, but those tuples are never
@@ -316,12 +321,12 @@ rankedEmployees (fn e => (e.job,  DESC e.sal));
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">fun</span> rankedEmployees extractKey =
-  <span class="kw">from</span> e <span class="kw">in</span> <span class="ctor">scott</span>.emps
-    <span class="kw">order</span> extractKey e;
+<div class="code-input"><span class="kr">fun</span> <span class="nf">rankedEmployees</span> <span class="n">extractKey</span> <span class="p">=</span>
+  <span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+    <span class="kr">order</span> <span class="n">extractKey</span> <span class="n">e</span><span class="p">;</span>
 
-rankedEmployees (<span class="kw">fn</span> e <span class="op">=&gt;</span> <span class="ctor">e</span>.ename);
-rankedEmployees (<span class="kw">fn</span> e <span class="op">=&gt;</span> (<span class="ctor">e</span>.job,  DESC <span class="ctor">e</span>.sal));</div>
+<span class="n">rankedEmployees</span> <span class="p">(</span><span class="kr">fn</span> <span class="n">e</span> <span class="o">=&gt;</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span><span class="p">);</span>
+<span class="n">rankedEmployees</span> <span class="p">(</span><span class="kr">fn</span> <span class="n">e</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nn">e</span><span class="p">.</span><span class="n">job</span><span class="p">,</span>  <span class="n">DESC</span> <span class="nn">e</span><span class="p">.</span><span class="n">sal</span><span class="p">));</span></div>
 </div>
 
 
@@ -341,9 +346,9 @@ from e in scott.emps
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">from</span> e <span class="kw">in</span> <span class="ctor">scott</span>.emps
-  <span class="kw">yield</span> <span class="ctor">e</span>.ename
-  <span class="kw">order</span> ();</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">scott</span><span class="p">.</span><span class="n">emps</span>
+  <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">ename</span>
+  <span class="kr">order</span> <span class="p">();</span></div>
 <div class="code-output">val it =
   ["SMITH","ALLEN","WARD","JONES","MARTIN","BLAKE","CLARK",
    "SCOTT","KING","TURNER","ADAMS","JAMES","FORD","MILLER"]
@@ -381,7 +386,7 @@ datatype option 'a = NONE | SOME of 'a;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">datatype</span> option <span class="ctor">'a</span> = NONE | SOME <span class="kw">of</span> <span class="ctor">'a</span>;</div>
+<div class="code-input"><span class="kr">datatype</span> <span class="n">option</span> <span class="nn">'a</span> <span class="p">=</span> <span class="n">NONE</span> <span class="p">|</span> <span class="n">SOME</span> <span class="kr">of</span> <span class="nn">'a</span><span class="p">;</span></div>
 </div>
 
 
@@ -395,8 +400,8 @@ from i in [SOME 1, SOME ~100, NONE]
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">from</span> i <span class="kw">in</span> [SOME <span class="num">1</span>, SOME ~<span class="num">100</span>, NONE]
-  <span class="kw">order</span> i;</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
+  <span class="kr">order</span> <span class="n">i</span><span class="p">;</span></div>
 <div class="code-output">val it = [NONE,SOME ~100,SOME 1] : int option list</div>
 </div>
 
@@ -409,7 +414,7 @@ datatype 'a noneLast = NONE_LAST of 'a;
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">datatype</span> <span class="ctor">'a</span> noneLast = NONE_LAST <span class="kw">of</span> <span class="ctor">'a</span>;</div>
+<div class="code-input"><span class="kr">datatype</span> <span class="nn">'a</span> <span class="n">noneLast</span> <span class="p">=</span> <span class="n">NONE_LAST</span> <span class="kr">of</span> <span class="nn">'a</span><span class="p">;</span></div>
 </div>
 
 
@@ -422,8 +427,8 @@ from i in [SOME 1, SOME ~100, NONE]
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">from</span> i <span class="kw">in</span> [SOME <span class="num">1</span>, SOME ~<span class="num">100</span>, NONE]
-  <span class="kw">order</span> NONE_LAST i;</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
+  <span class="kr">order</span> <span class="n">NONE_LAST</span> <span class="n">i</span><span class="p">;</span></div>
 <div class="code-output">val it = [SOME ~100, SOME 1, NONE] : int option list</div>
 </div>
 
@@ -437,8 +442,8 @@ from i in [SOME 1, SOME ~100, NONE]
 -->
 
 <div class="code-block">
-<div class="code-input"><span class="kw">from</span> i <span class="kw">in</span> [SOME <span class="num">1</span>, SOME ~<span class="num">100</span>, NONE]
-  <span class="kw">order</span> DESC (NONE_LAST i);</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">i</span> <span class="kr">in</span> <span class="p">[</span><span class="n">SOME</span> <span class="mi">1</span><span class="p">,</span> <span class="n">SOME</span> ~<span class="mi">100</span><span class="p">,</span> <span class="n">NONE</span><span class="p">]</span>
+  <span class="kr">order</span> <span class="n">DESC</span> <span class="p">(</span><span class="n">NONE_LAST</span> <span class="n">i</span><span class="p">);</span></div>
 <div class="code-output">val it = [NONE, SOME 1, SOME ~100] : int option list</div>
 </div>
 
