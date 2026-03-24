@@ -205,6 +205,7 @@ least one row.
 ### Example 2. Universal quantification
 
 Do all programmers have a salary greater than 900?
+
 <!-- morel skip
 (* Using new "forall" keyword. *)
 forall e in emps

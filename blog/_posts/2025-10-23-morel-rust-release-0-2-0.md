@@ -150,10 +150,8 @@ or Twitter:
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
 
-<!--
 This article
 [has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).
--->
 
 <small>Apache Arrow, Apache DataFusion, Apache Iceberg, Apache
 Parquet, and Apache Kafka are trademarks of the Apache Software
