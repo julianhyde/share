@@ -97,10 +97,10 @@ function usage() {
   echo "  calcite-regress.sh [ --batch ] [ --project project ] [ --exclusive ] <jdk> hash <commit> [flags]"
   echo "  calcite-regress.sh --help"
   echo
-  echo "For example, the following fetches the latest master branch from the"
+  echo "For example, the following fetches the latest main branch from the"
   echo "origin remote repository and runs the suite using JDK 1.8:"
   echo
-  echo "  calcite-regress.sh jdk8 origin master -DskipTests"
+  echo "  calcite-regress.sh jdk8 origin main -DskipTests"
   echo
   echo "Or, to check out a hash and run against JDK 9:"
   echo

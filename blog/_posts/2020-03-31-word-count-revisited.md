@@ -24,7 +24,7 @@ values (to tokenize a string into words), handling nested collections
 (because one line or document becomes a set of words), data
 parallelism (in case there are millions of documents and thousands of
 words), and reading from and writing to files.
-[Mike Stonebraker's protestations](https://cacm.acm.org/magazines/2010/1/55743-mapreduce-and-parallel-dbmss-friends-or-foes/fulltext) 
+[Mike Stonebraker's protestations](https://cacm.acm.org/magazines/2010/1/55743-mapreduce-and-parallel-dbmss-friends-or-foes/fulltext)
 notwithstanding, these are not things that an RDBMS does well.
 
 The deficiencies of RDBMS were the impetus for new data processing
@@ -104,74 +104,135 @@ time, and the program runs in a single thread -- but the point is that
 the framework could be made more efficient without the user having to
 rewrite their `mapper` and `reducer` functions.
 
-```sml
-- fun mapReduce mapper reducer list =
-    let
-      fun update (key, value, []) = [(key, [value])]
-        | update (key, value, ((key2, values) :: tail)) =
-            if key = key2 then
-              (key, (value :: values)) :: tail
-            else
-              (key2, values) :: (update (key, value, tail))
-      fun dedup ([], dict) = dict
-        | dedup ((key, value) :: tail, dict) =
-            dedup (tail, update (key, value, dict))
-      fun flatMap f list = List.foldl (op @) [] (List.map f list)
-      val keyValueList = flatMap mapper list
-      val keyValuesList = dedup (keyValueList, [])
-    in
-      List.map (fn (key, values) => (key, reducer (key, values))) keyValuesList
-    end;
-val mapReduce = fn
-  : ('a -> (''b * 'c) list)
-    -> (''b * 'c list -> 'd) -> 'a list -> (''b * 'd) list
-```
+<!-- morel
+fun mapReduce mapper reducer list =
+  let
+    fun update (key, value, []) = [(key, [value])]
+      | update (key, value, ((key2, values) :: tail)) =
+          if key = key2 then
+            (key, (value :: values)) :: tail
+          else
+            (key2, values) :: (update (key, value, tail))
+    fun dedup ([], dict) = dict
+      | dedup ((key, value) :: tail, dict) =
+          dedup (tail, update (key, value, dict))
+    fun flatMap f list = List.foldl (op @) [] (List.map f list)
+    val keyValueList = flatMap mapper list
+    val keyValuesList = dedup (keyValueList, [])
+  in
+    List.map (fn (key, values) => (key, reducer (key, values))) keyValuesList
+  end;
+> val mapReduce = fn
+>   : ('a -> ('b * 'c) list) -> ('b * 'c list -> 'd) -> 'a list -> ('b * 'd) list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">fun</span> <span class="nf">mapReduce</span> <span class="n">mapper</span> <span class="n">reducer</span> <span class="n">list</span> <span class="p">=</span>
+  <span class="kr">let</span>
+    <span class="kr">fun</span> <span class="nf">update</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="p">[])</span> <span class="p">=</span> <span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="p">[</span><span class="n">value</span><span class="p">])]</span>
+      <span class="p">|</span> <span class="n">update</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="p">((</span><span class="n">key2</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span> <span class="o">::</span> <span class="n">tail</span><span class="p">))</span> <span class="p">=</span>
+          <span class="kr">if</span> <span class="n">key</span> <span class="p">=</span> <span class="n">key2</span> <span class="kr">then</span>
+            <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">value</span> <span class="o">::</span> <span class="n">values</span><span class="p">))</span> <span class="o">::</span> <span class="n">tail</span>
+          <span class="kr">else</span>
+            <span class="p">(</span><span class="n">key2</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span> <span class="o">::</span> <span class="p">(</span><span class="n">update</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">tail</span><span class="p">))</span>
+    <span class="kr">fun</span> <span class="nf">dedup</span> <span class="p">([],</span> <span class="n">dict</span><span class="p">)</span> <span class="p">=</span> <span class="n">dict</span>
+      <span class="p">|</span> <span class="n">dedup</span> <span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">::</span> <span class="n">tail</span><span class="p">,</span> <span class="n">dict</span><span class="p">)</span> <span class="p">=</span>
+          <span class="n">dedup</span> <span class="p">(</span><span class="n">tail</span><span class="p">,</span> <span class="n">update</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">dict</span><span class="p">))</span>
+    <span class="kr">fun</span> <span class="nf">flatMap</span> <span class="n">f</span> <span class="n">list</span> <span class="p">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">foldl</span> <span class="p">(</span><span class="kr">op</span> @<span class="p">)</span> <span class="p">[]</span> <span class="p">(</span><span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="n">f</span> <span class="n">list</span><span class="p">)</span>
+    <span class="kr">val</span> <span class="nv">keyValueList</span> <span class="p">=</span> <span class="n">flatMap</span> <span class="n">mapper</span> <span class="n">list</span>
+    <span class="kr">val</span> <span class="nv">keyValuesList</span> <span class="p">=</span> <span class="n">dedup</span> <span class="p">(</span><span class="n">keyValueList</span><span class="p">,</span> <span class="p">[])</span>
+  <span class="kr">in</span>
+    <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="p">(</span><span class="kr">fn</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">reducer</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">values</span><span class="p">)))</span> <span class="n">keyValuesList</span>
+  <span class="kr">end</span><span class="p">;</span></div>
+<div class="code-output">val mapReduce = fn
+  : ('a -&gt; ('b * 'c) list) -&gt; ('b * 'c list -&gt; 'd) -&gt; 'a list -&gt; ('b * 'd) list</div>
+</div>
 
 Now let's define the `wc_mapper` and `wc_reducer` functions that will
 power the WordCount algorithm.
 
-```sml
-- fun wc_mapper line =
-    let
-      fun split0 [] word words = word :: words
-        | split0 (#" " :: s) word words = split0 s "" (word :: words)
-        | split0 (c :: s) word words = split0 s (word ^ (String.str c)) words
-      fun split s = List.rev (split0 (String.explode s) "" [])
-    in
-      List.map (fn w => (w, 1)) (split line)
-    end;
-val wc_mapper = fn : string -> (string * int) list
-- fun wc_reducer (key, values) = foldl (op +) 0 values;
-val wc_reducer = fn : 'a * int list -> int
-```
+<!-- morel
+fun wc_mapper line =
+  let
+    fun split0 [] word words = word :: words
+      | split0 (#" " :: s) word words = split0 s "" (word :: words)
+      | split0 (c :: s) word words = split0 s (word ^ (String.str c)) words
+    fun split s = List.rev (split0 (String.explode s) "" [])
+  in
+    List.map (fn w => (w, 1)) (split line)
+  end;
+> val wc_mapper = fn : string -> (string * int) list
+
+fun wc_reducer (key, values) = foldl (op +) 0 values;
+> val wc_reducer = fn : 'a * int list -> int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">fun</span> <span class="nf">wc_mapper</span> <span class="n">line</span> <span class="p">=</span>
+  <span class="kr">let</span>
+    <span class="kr">fun</span> <span class="nf">split0</span> <span class="p">[]</span> <span class="n">word</span> <span class="n">words</span> <span class="p">=</span> <span class="n">word</span> <span class="o">::</span> <span class="n">words</span>
+      <span class="p">|</span> <span class="n">split0</span> <span class="p">(</span>#<span class="s2">" "</span> <span class="o">::</span> <span class="n">s</span><span class="p">)</span> <span class="n">word</span> <span class="n">words</span> <span class="p">=</span> <span class="n">split0</span> <span class="n">s</span> <span class="s2">""</span> <span class="p">(</span><span class="n">word</span> <span class="o">::</span> <span class="n">words</span><span class="p">)</span>
+      <span class="p">|</span> <span class="n">split0</span> <span class="p">(</span><span class="n">c</span> <span class="o">::</span> <span class="n">s</span><span class="p">)</span> <span class="n">word</span> <span class="n">words</span> <span class="p">=</span> <span class="n">split0</span> <span class="n">s</span> <span class="p">(</span><span class="n">word</span> ^ <span class="p">(</span><span class="nn">String</span><span class="p">.</span><span class="n">str</span> <span class="n">c</span><span class="p">))</span> <span class="n">words</span>
+    <span class="kr">fun</span> <span class="nf">split</span> <span class="n">s</span> <span class="p">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">rev</span> <span class="p">(</span><span class="n">split0</span> <span class="p">(</span><span class="nn">String</span><span class="p">.</span><span class="n">explode</span> <span class="n">s</span><span class="p">)</span> <span class="s2">""</span> <span class="p">[])</span>
+  <span class="kr">in</span>
+    <span class="nn">List</span><span class="p">.</span><span class="n">map</span> <span class="p">(</span><span class="kr">fn</span> <span class="n">w</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="p">(</span><span class="n">split</span> <span class="n">line</span><span class="p">)</span>
+  <span class="kr">end</span><span class="p">;</span></div>
+<div class="code-output">val wc_mapper = fn : string -&gt; (string * int) list</div>
+<div class="code-input">
+<span class="kr">fun</span> <span class="nf">wc_reducer</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span> <span class="p">=</span> <span class="n">foldl</span> <span class="p">(</span><span class="kr">op</span> <span class="o">+</span><span class="p">)</span> <span class="mi">0</span> <span class="n">values</span><span class="p">;</span></div>
+<div class="code-output">val wc_reducer = fn : 'a * int list -&gt; int</div>
+</div>
 
 Check that they work on discrete values:
-```sml
-- wc_mapper "a skunk sat on a stump";
-val it = [("a",1),("skunk",1),("sat",1),("on",1),("a",1),("stump",1)]
-  : (string * int) list
-- wc_reducer ("hello", [1, 4, 2]);
-val it = 7 : int
-```
+
+<!-- morel
+wc_mapper "a skunk sat on a stump";
+> val it = [("a",1),("skunk",1),("sat",1),("on",1),("a",1),("stump",1)]
+>   : (string * int) list
+wc_reducer ("hello", [1, 4, 2]);
+> val it = 7 : int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="n">wc_mapper</span> <span class="s2">"a skunk sat on a stump"</span><span class="p">;</span></div>
+<div class="code-output">val it = [("a",1),("skunk",1),("sat",1),("on",1),("a",1),("stump",1)]
+  : (string * int) list</div>
+<div class="code-input"><span class="n">wc_reducer</span> <span class="p">(</span><span class="s2">"hello"</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]);</span></div>
+<div class="code-output">val it = 7 : int</div>
+</div>
 
 Bind them to `mapReduce` to create a function tailored to the
 WordCount problem:
 
-```sml
-- fun wordCount lines = mapReduce wc_mapper wc_reducer lines;
-val wordCount = fn : string list -> (string * int) list
-```
+<!-- morel
+fun wordCount lines = mapReduce wc_mapper wc_reducer lines;
+> val wordCount = fn : string list -> (string * int) list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">fun</span> <span class="nf">wordCount</span> <span class="n">lines</span> <span class="p">=</span> <span class="n">mapReduce</span> <span class="n">wc_mapper</span> <span class="n">wc_reducer</span> <span class="n">lines</span><span class="p">;</span></div>
+<div class="code-output">val wordCount = fn : string list -&gt; (string * int) list</div>
+</div>
 
 And check that our `wordCount` function works:
 
-```sml
-- wordCount ["a skunk sat on a stump",
-    "and thunk the stump stunk",
-    "but the stump thunk the skunk stunk"];
-val it =
+<!-- morel
+wordCount ["a skunk sat on a stump",
+  "and thunk the stump stunk",
+  "but the stump thunk the skunk stunk"];
+> val it =
+>   [("but",1),("the",3),("stump",3),("thunk",2),("skunk",2),("stunk",2),
+>    ("and",1),("a",2),("sat",1),("on",1)] : (string * int) list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="n">wordCount</span> <span class="p">[</span><span class="s2">"a skunk sat on a stump"</span><span class="p">,</span>
+  <span class="s2">"and thunk the stump stunk"</span><span class="p">,</span>
+  <span class="s2">"but the stump thunk the skunk stunk"</span><span class="p">];</span></div>
+<div class="code-output">val it =
   [("but",1),("the",3),("stump",3),("thunk",2),("skunk",2),("stunk",2),
-   ("and",1),("a",2),("sat",1),("on",1)] : (string * int) list
-```
+   ("and",1),("a",2),("sat",1),("on",1)] : (string * int) list</div>
+</div>
 
 # WordCount in Pig
 
@@ -286,7 +347,7 @@ in the algebra. And those fragments of host language may be opaque to
 the optimizer and prevent advanced optimizations.
 
 Reflecting on these problems, I came up with
-[Morel](https://github.com/julianhyde/morel), a language that has the
+[Morel](https://github.com/hydromatic/morel), a language that has the
 power of a general-purpose language (due to its SML ancestry) but with
 support for relational expressions in the language, so that you
 naturally express data-oriented problems in relational algebra.
@@ -299,12 +360,16 @@ parser.
 
 The solution to the WordCount problem in Morel is very concise:
 
-<div class="language-sml highlighter-rouge">
-<div class="highlight">
-<pre class="highlight"><code><span class="kr">from</span> <span class="nv">line</span> <span class="kr">in</span> <span class="n">lines,</span>
-    <span class="nv">word</span> <span class="kr">in</span> <span class="n">split line</span>
-  <span class="kr">group</span> <span class="n">word</span> <span class="kr">compute</span> <span class="n">count</span></code></pre>
-</div>
+<!-- morel skip
+from line in lines,
+    word in split line
+  group word compute count over ()
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">line</span> <span class="kr">in</span> <span class="n">lines</span><span class="p">,</span>
+    <span class="nv">word</span> <span class="kr">in</span> <span class="n">split</span> <span class="n">line</span>
+  <span class="kr">group</span> <span class="n">word</span> <span class="kr">compute</span> <span class="n">count</span> <span class="kr">over</span> <span class="p">()</span></div>
 </div>
 
 So concise that it needs some explanation. The `from` keyword (an
@@ -364,7 +429,9 @@ The solution -- all 3 lines of it -- is a single `from` expression:
   <span class="kr">group</span>
   <span class="nv">word</span>
   <span class="kr">compute</span>
-  <span class="n">count</span></code></span>, gathers records into
+  <span class="n">count</span>
+  <span class="kr">over</span>
+  <span class="p">()</span></code></span>, gathers records into
   groups that have the same <code>word</code> value, then applies the
   built-in <code>count</code> aggregate function to those groups. The
   result is a list of records with fields <code>word</code> and
@@ -385,25 +452,35 @@ ideally in the same block of code, without requiring an extra
 compilation step. Because Morel is a general-purpose language, we can
 declare the `split` function inline:
 
-```sml
-fun wordCount lines =
+<!-- morel
+fun wordCount (lines: string list) =
   let
     fun split0 [] word words = word :: words
       | split0 (#" " :: s) word words = split0 s "" (word :: words)
-      | split0 (c :: s) word words = split0 s (word ^ (String_str c)) words
-    fun split s = List_rev (split0 (String_explode s) "" [])
+      | split0 (c :: s) word words = split0 s (word ^ (String.str c)) words
+    fun split s = List.rev (split0 (String.explode s) "" [])
   in
     from line in lines,
         word in split line
-    group word compute count
+    group word compute count over ()
   end;
-```
+> val wordCount = fn : string list -> {count:int, word:string} list
+-->
 
-gives signature
-
-```sml
-val wordCount = fn : string list -> {count:int, word:string} list
-```
+<div class="code-block">
+<div class="code-input"><span class="kr">fun</span> <span class="nf">wordCount</span> <span class="p">(</span><span class="n">lines</span><span class="p">:</span> <span class="n">string</span> <span class="n">list</span><span class="p">)</span> <span class="p">=</span>
+  <span class="kr">let</span>
+    <span class="kr">fun</span> <span class="nf">split0</span> <span class="p">[]</span> <span class="n">word</span> <span class="n">words</span> <span class="p">=</span> <span class="n">word</span> <span class="o">::</span> <span class="n">words</span>
+      <span class="p">|</span> <span class="n">split0</span> <span class="p">(</span>#<span class="s2">" "</span> <span class="o">::</span> <span class="n">s</span><span class="p">)</span> <span class="n">word</span> <span class="n">words</span> <span class="p">=</span> <span class="n">split0</span> <span class="n">s</span> <span class="s2">""</span> <span class="p">(</span><span class="n">word</span> <span class="o">::</span> <span class="n">words</span><span class="p">)</span>
+      <span class="p">|</span> <span class="n">split0</span> <span class="p">(</span><span class="n">c</span> <span class="o">::</span> <span class="n">s</span><span class="p">)</span> <span class="n">word</span> <span class="n">words</span> <span class="p">=</span> <span class="n">split0</span> <span class="n">s</span> <span class="p">(</span><span class="n">word</span> ^ <span class="p">(</span><span class="nn">String</span><span class="p">.</span><span class="n">str</span> <span class="n">c</span><span class="p">))</span> <span class="n">words</span>
+    <span class="kr">fun</span> <span class="nf">split</span> <span class="n">s</span> <span class="p">=</span> <span class="nn">List</span><span class="p">.</span><span class="n">rev</span> <span class="p">(</span><span class="n">split0</span> <span class="p">(</span><span class="nn">String</span><span class="p">.</span><span class="n">explode</span> <span class="n">s</span><span class="p">)</span> <span class="s2">""</span> <span class="p">[])</span>
+  <span class="kr">in</span>
+    <span class="kr">from</span> <span class="nv">line</span> <span class="kr">in</span> <span class="n">lines</span><span class="p">,</span>
+        <span class="nv">word</span> <span class="kr">in</span> <span class="n">split</span> <span class="n">line</span>
+    <span class="kr">group</span> <span class="n">word</span> <span class="kr">compute</span> <span class="n">count</span> <span class="kr">over</span> <span class="p">()</span>
+  <span class="kr">end</span><span class="p">;</span></div>
+<div class="code-output">val wordCount = fn : string list -&gt; {count:int, word:string} list</div>
+</div>
 
 Another improvement is that the new solution is not an expression, but
 a function. The previous solution was a expression that assumed that
@@ -411,16 +488,28 @@ there is a list called `lines` in the environment, but the function
 can easily be applied to any value.
 
 Now let's run it:
-```sml
+
+<!-- morel
 wordCount ["a skunk sat on a stump",
     "and thunk the stump stunk",
     "but the stump thunk the skunk stunk"];
-val it =
+> val it =
+>   [{count=2,word="a"},{count=3,word="the"},{count=1,word="but"},
+>    {count=1,word="sat"},{count=1,word="and"},{count=2,word="stunk"},
+>    {count=3,word="stump"},{count=1,word="on"},{count=2,word="thunk"},
+>    {count=2,word="skunk"}] : {count:int, word:string} list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="n">wordCount</span> <span class="p">[</span><span class="s2">"a skunk sat on a stump"</span><span class="p">,</span>
+    <span class="s2">"and thunk the stump stunk"</span><span class="p">,</span>
+    <span class="s2">"but the stump thunk the skunk stunk"</span><span class="p">];</span></div>
+<div class="code-output">val it =
   [{count=2,word="a"},{count=3,word="the"},{count=1,word="but"},
    {count=1,word="sat"},{count=1,word="and"},{count=2,word="stunk"},
    {count=3,word="stump"},{count=1,word="on"},{count=2,word="thunk"},
-   {count=2,word="skunk"}] : {count:int, word:string} list
-```
+   {count=2,word="skunk"}] : {count:int, word:string} list</div>
+</div>
 
 # Conclusion
 
@@ -446,3 +535,6 @@ If you have comments, please reply on Twitter:
 <div data_dnt="true">
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
+
+This article
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).

@@ -16,12 +16,12 @@
  */
 package net.hydromatic.scratch;
 
-import static java.lang.System.out;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
+
+import static java.lang.System.out;
 
 /**
  * Ecology simulator.

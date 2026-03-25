@@ -9,7 +9,7 @@ tweet:  https://twitter.com/julianhyde/status/1232572869315444736
 
 For the past few months, I have been working on an experimental
 functional/data language called
-[Morel](https://github.com/julianhyde/morel).
+[Morel](https://github.com/hydromatic/morel).
 
 [![Morel mushroom](/assets/img/OldDesignShop_MushroomSpringMorel-180x275.jpg "Morel mushroom (credit: OldDesignShop.com)"){:style="float: right;margin: 10px;width: 180px;height: 275px;"}](https://olddesignshop.com/wp-content/uploads/2015/03/OldDesignShop_MushroomSpringMorel-670x1024.jpg)
 
@@ -52,21 +52,28 @@ similar to the equivalent SQL query.
 
 For example, here is a query in Morel:
 
-{% highlight sml %}
+<!-- morel skip
 from e in hr.emps,
     d in hr.depts
 where e.deptno = d.deptno
 yield {e.id, e.deptno, ename = e.name, dname = d.name};
-{% endhighlight %}
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="nn">hr</span><span class="p">.</span><span class="n">emps</span><span class="p">,</span>
+    <span class="nv">d</span> <span class="kr">in</span> <span class="nn">hr</span><span class="p">.</span><span class="n">depts</span>
+<span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
+<span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span><span class="p">,</span> <span class="n">ename</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dname</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">name</span><span class="p">};</span></div>
+</div>
 
 The equivalent query in SQL looks very similar:
 
-{% highlight sml %}
+```sql
 SELECT e.id, e.deptno, e.name AS ename, d.name AS dname
 FROM hr.emps AS e,
     hr.depts AS d
 WHERE e.deptno = d.deptno;
-{% endhighlight %}
+```
 
 # External data
 
@@ -175,9 +182,9 @@ aspects of database query languages and functional programming.
 In this brief introduction, I have not gone into the details of
 Morel's syntax, semantics or implementation, but examples can be found
 on the
-[Morel site](https://github.com/julianhyde/morel/blob/master/README.md)
+[Morel site](https://github.com/hydromatic/morel/blob/main/README.md)
 and in
-[Morel's test suite](https://github.com/julianhyde/morel/tree/master/src/test/resources/script),
+[Morel's test suite](https://github.com/hydromatic/morel/tree/main/src/test/resources/script),
 and I plan to write more blog posts over the following months.
 
 If you have comments, please reply on Twitter:
@@ -185,3 +192,6 @@ If you have comments, please reply on Twitter:
 <div data_dnt="true">
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
+
+This article
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).

@@ -1,0 +1,151 @@
+#!/bin/bash
+#
+# Unit tests for tools.
+
+TOOLS=$(cd $(dirname $0); pwd -P)
+OUT=/tmp/$(basename $0)_out_$$.txt
+REF=/tmp/$(basename $0)_ref_$$.txt
+
+# Compares REF with OUT
+function compare {
+  if [ ! "$1" ]; then
+    echo "Failed: no description for test."
+    exit 1
+  fi
+  if ! diff $REF $OUT; then
+    echo "Failed test $1."
+    exit 1
+  fi
+}
+
+# Test globa
+
+# help
+TNAME=globa-help
+${TOOLS}/globa --help > $OUT
+cat > $REF <<EOF
+Usage: globa [--help] path
+
+Convert between paths of reference and actual files.
+
+Options:
+  --help Print help
+EOF
+compare $TNAME
+
+# 2 arguments
+TNAME=globa-0-args
+${TOOLS}/globa > $OUT
+cat > $REF <<EOF
+Require 2 arguments
+EOF
+compare $TNAME
+
+# from actual 0.0
+# build/resources/test is deprecated; build/diffrepo/test is preferred
+TNAME=globa-or-0.0
+${TOOLS}/globa or core/build/resources/test/foo_actual.xml > $OUT
+cat > $REF <<EOF
+core/build/resources/test/foo_actual.xml core/src/test/resources/foo.xml
+EOF
+compare $TNAME
+
+# from actual 0
+TNAME=globa-or-0
+${TOOLS}/globa or core/build/diffrepo/test/foo_actual.xml > $OUT
+cat > $REF <<EOF
+core/build/diffrepo/test/foo_actual.xml core/src/test/resources/foo.xml
+EOF
+compare $TNAME
+
+# from ref 0
+TNAME=globa-ref-0
+${TOOLS}/globa or core/src/test/resources/foo.xml > $OUT
+cat > $REF <<EOF
+core/build/diffrepo/test/foo_actual.xml core/src/test/resources/foo.xml
+EOF
+compare $TNAME
+
+# from actual 1
+TNAME=globa-or-1
+${TOOLS}/globa or ./core/build/diffrepo/test/org/apache/calcite/test/RelOptRulesTest_actual.xml > $OUT
+cat > $REF <<EOF
+./core/build/diffrepo/test/org/apache/calcite/test/RelOptRulesTest_actual.xml ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml
+EOF
+compare $TNAME
+
+# from ref 1
+TNAME=globa-ref-1
+${TOOLS}/globa or ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml > $OUT
+cat > $REF <<EOF
+./core/build/diffrepo/test/org/apache/calcite/test/RelOptRulesTest_actual.xml ./core/src/test/resources/org/apache/calcite/test/RelOptRulesTest.xml
+EOF
+compare $TNAME
+
+# from actual 2
+TNAME=globa-or-2
+${TOOLS}/globa or ./core/build/resources/test/sql/surefire/sql/spatial.iq > $OUT
+cat > $REF <<EOF
+./core/build/resources/test/sql/surefire/sql/spatial.iq ./core/src/test/resources/sql/spatial.iq
+EOF
+compare $TNAME
+
+# from actual 2b
+TNAME=globa-or-2b
+${TOOLS}/globa or ./core/build/quidem/test/sql/spatial.iq > $OUT
+cat > $REF <<EOF
+./core/build/quidem/test/sql/spatial.iq ./core/src/test/resources/sql/spatial.iq
+EOF
+compare $TNAME
+
+# from ref 2
+TNAME=globa-ref-2
+${TOOLS}/globa or core/src/test/resources/sql/spatial.iq > $OUT
+cat > $REF <<EOF
+core/build/quidem/test/sql/spatial.iq core/src/test/resources/sql/spatial.iq
+EOF
+compare $TNAME
+
+# from actual 3
+TNAME=globa-or-3
+${TOOLS}/globa or target/test-classes/script/surefire/script/foreign.sml.out > $OUT
+cat > $REF <<EOF
+target/test-classes/script/surefire/script/foreign.sml.out src/test/resources/script/foreign.sml.out
+EOF
+compare $TNAME
+
+# from ref 3
+TNAME=globa-ref-3
+${TOOLS}/globa or src/test/resources/script/foreign.sml.out > $OUT
+cat > $REF <<EOF
+target/test-classes/script/surefire/script/foreign.sml.out src/test/resources/script/foreign.sml.out
+EOF
+compare $TNAME
+
+# from actual 4 (tests/ directory)
+TNAME=globa-or-4
+${TOOLS}/globa or target/test-output/tests/script/simple.smli.out > $OUT
+cat > $REF <<EOF
+target/test-output/tests/script/simple.smli.out tests/script/simple.smli
+EOF
+compare $TNAME
+
+# from ref 4 (tests/ directory)
+TNAME=globa-ref-4
+${TOOLS}/globa or tests/script/simple.smli > $OUT
+cat > $REF <<EOF
+target/test-output/tests/script/simple.smli.out tests/script/simple.smli
+EOF
+compare $TNAME
+
+# from ref 4b (tests/ directory with ./)
+TNAME=globa-ref-4b
+${TOOLS}/globa or ./tests/script/simple.smli > $OUT
+cat > $REF <<EOF
+./target/test-output/tests/script/simple.smli.out ./tests/script/simple.smli
+EOF
+compare $TNAME
+
+echo Succeeded.
+
+# End

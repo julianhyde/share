@@ -25,14 +25,14 @@ starts Morel from macOS and evaluates a string literal.
 ```bash
 $ ./morel
 morel version 0.1.0 (java version "13", JRE null (build 13+33), JLine terminal, xterm-256color)
-= "hello, world!";
+- "hello, world!";
 val it = "hello, world!" : string
-=
+-
 ```
 
 (To build Morel and start the shell for yourself, follow the
 instructions on
-[GitHub](https://github.com/julianhyde/morel/blob/master/README.md).
+[GitHub](https://github.com/hydromatic/morel/blob/main/README.md).
 To exit the shell, type Ctrl+D.)
 
 # Primitive types and simple expressions
@@ -41,53 +41,94 @@ As a functional language, everything in Morel is an expression.  The
 basic types are `bool`, `int`, `real`, `string`, `char`, and `unit`.
 Here are literals in each.
 
-```sml
-= false;
-val it = false : bool
-= 10;
-val it = 10 : int
-= ~4.5;
-val it = ~4.5 : real
-= "morel";
-val it = "morel" : string
-= #"a";
-val it = #"a" : char
-= ();
-val it = () : unit
-```
+<!-- morel
+false;
+> val it = false : bool
+10;
+> val it = 10 : int
+~4.5;
+> val it = ~4.5 : real
+"morel";
+> val it = "morel" : string
+#"a";
+> val it = #"a" : char
+();
+> val it = () : unit
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="n">false</span><span class="p">;</span></div>
+<div class="code-output">val it = false : bool</div>
+<div class="code-input"><span class="mi">10</span><span class="p">;</span></div>
+<div class="code-output">val it = 10 : int</div>
+<div class="code-input">~<span class="mi">4</span><span class="p">.</span><span class="mi">5</span><span class="p">;</span></div>
+<div class="code-output">val it = ~4.5 : real</div>
+<div class="code-input"><span class="s2">"morel"</span><span class="p">;</span></div>
+<div class="code-output">val it = "morel" : string</div>
+<div class="code-input">#<span class="s2">"a"</span><span class="p">;</span></div>
+<div class="code-output">val it = #"a" : char</div>
+<div class="code-input"><span class="p">();</span></div>
+<div class="code-output">val it = () : unit</div>
+</div>
 
 As you'd expect, there are built-in operators for each data type. Here
 are a few examples:
 
-```sml
-= true andalso false;
-val it = false : bool
-= true orelse false;
-val it = true : bool
-= not false;
-val it = true : bool
-= 1 + 2;
-val it = 3 : int
-= ~(5 - 2);
-val it = ~3 : int
-= 10 mod 3;
-val it = 1 : int
-= "mo" ^ "rel";
-val it = "morel" : string
-```
+<!-- morel
+true andalso false;
+> val it = false : bool
+true orelse false;
+> val it = true : bool
+not false;
+> val it = true : bool
+1 + 2;
+> val it = 3 : int
+~(5 - 2);
+> val it = ~3 : int
+10 mod 3;
+> val it = 1 : int
+"mo" ^ "rel";
+> val it = "morel" : string
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="n">true</span> <span class="kr">andalso</span> <span class="n">false</span><span class="p">;</span></div>
+<div class="code-output">val it = false : bool</div>
+<div class="code-input"><span class="n">true</span> <span class="kr">orelse</span> <span class="n">false</span><span class="p">;</span></div>
+<div class="code-output">val it = true : bool</div>
+<div class="code-input"><span class="kr">not</span> <span class="n">false</span><span class="p">;</span></div>
+<div class="code-output">val it = true : bool</div>
+<div class="code-input"><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span></div>
+<div class="code-output">val it = 3 : int</div>
+<div class="code-input">~<span class="p">(</span><span class="mi">5</span> <span class="o">-</span> <span class="mi">2</span><span class="p">);</span></div>
+<div class="code-output">val it = ~3 : int</div>
+<div class="code-input"><span class="mi">10</span> <span class="kr">mod</span> <span class="mi">3</span><span class="p">;</span></div>
+<div class="code-output">val it = 1 : int</div>
+<div class="code-input"><span class="s2">"mo"</span> ^ <span class="s2">"rel"</span><span class="p">;</span></div>
+<div class="code-output">val it = "morel" : string</div>
+</div>
 
 # Variables
 
 You can assign values to variables.
 
-```sml
-= val x = 7;
-val x = 7 : int
-= val y = x mod 3;
-val y = 1 : int;
-= x + y;
-val it = 8 : int
-```
+<!-- morel
+val x = 7;
+> val x = 7 : int
+val y = x mod 3;
+> val y = 1 : int
+x + y;
+> val it = 8 : int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="mi">7</span><span class="p">;</span></div>
+<div class="code-output">val x = 7 : int</div>
+<div class="code-input"><span class="kr">val</span> <span class="nv">y</span> <span class="p">=</span> <span class="n">x</span> <span class="kr">mod</span> <span class="mi">3</span><span class="p">;</span></div>
+<div class="code-output">val y = 1 : int</div>
+<div class="code-input"><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">;</span></div>
+<div class="code-output">val it = 8 : int</div>
+</div>
 
 (Morel, following Standard ML, actually calls them "value bindings"
 rather than "variables" because you cannot change their value. It's
@@ -99,65 +140,111 @@ you evaluate an expression, the shell and assigns the value to a
 variable called `it`, and prints the value and its type.  You can use
 `it` in the next expression.
 
-```sml
-= "morel";
-val it = "morel" : string
-= String_size it;
-val it = 5 : int
-= it + 4;
-val it = 9 : int
-```
+<!-- morel
+"morel";
+> val it = "morel" : string
+String.size it;
+> val it = 5 : int
+it + 4;
+> val it = 9 : int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="s2">"morel"</span><span class="p">;</span></div>
+<div class="code-output">val it = "morel" : string</div>
+<div class="code-input"><span class="nn">String</span><span class="p">.</span><span class="n">size</span> <span class="n">it</span><span class="p">;</span></div>
+<div class="code-output">val it = 5 : int</div>
+<div class="code-input"><span class="n">it</span> <span class="o">+</span> <span class="mi">4</span><span class="p">;</span></div>
+<div class="code-output">val it = 9 : int</div>
+</div>
 
 A `let` expression binds one or more values and evaluates an expression.
 
-```sml
-= let
--   val x = 3
--   val y = 2
-- in
--   x + y
-- end;
-val it = 5 : int
-```
+<!-- morel
+let
+  val x = 3
+  val y = 2
+in
+  x + y
+end;
+> val it = 5 : int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">let</span>
+  <span class="kr">val</span> <span class="nv">x</span> <span class="p">=</span> <span class="mi">3</span>
+  <span class="kr">val</span> <span class="nv">y</span> <span class="p">=</span> <span class="mi">2</span>
+<span class="kr">in</span>
+  <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="kr">end</span><span class="p">;</span></div>
+<div class="code-output">val it = 5 : int</div>
+</div>
 
 # Lists, records and tuples
 
 In addition to primitive types, there are list, record, and tuple
 types.
 
-```sml
-= [1, 2, 3];
-val it = [1,2,3] : int list
-= {id = 10, name = "Scooby"};
-val it = {id=10,name="Scooby"} : {id:int, name:string}
-= (1, true, "yes");
-val it = (1,true,"yes") : int * bool * string
-```
+<!-- morel
+[1, 2, 3];
+> val it = [1,2,3] : int list
+{id = 10, name = "Scooby"};
+> val it = {id=10,name="Scooby"} : {id:int, name:string}
+(1, true, "yes");
+> val it = (1,true,"yes") : int * bool * string
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span></div>
+<div class="code-output">val it = [1,2,3] : int list</div>
+<div class="code-input"><span class="p">{</span><span class="n">id</span> <span class="p">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">name</span> <span class="p">=</span> <span class="s2">"Scooby"</span><span class="p">};</span></div>
+<div class="code-output">val it = {id=10,name="Scooby"} : {id:int, name:string}</div>
+<div class="code-input"><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="s2">"yes"</span><span class="p">);</span></div>
+<div class="code-output">val it = (1,true,"yes") : int * bool * string</div>
+</div>
 
 Tuples are actually just records with fields named "1", "2", and so
 on. The following example shows that the values are identical, and
 have the same type, whether you use tuple or record syntax.
 
-```sml
-= (1, true, "yes");
-val it = (1,true,"yes") : int * bool * string
-= {1 = 1, 2 = true, 3 = "yes"};
-val it = (1,true,"yes") : int * bool * string
-= (1, true, "yes") = {1 = 1, 2 = true, 3 = "yes"};
-val it = true : bool;
-```
+<!-- morel
+(1, true, "yes");
+> val it = (1,true,"yes") : int * bool * string
+{1 = 1, 2 = true, 3 = "yes"};
+> val it = (1,true,"yes") : int * bool * string
+(1, true, "yes") = {1 = 1, 2 = true, 3 = "yes"};
+> val it = true : bool
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="s2">"yes"</span><span class="p">);</span></div>
+<div class="code-output">val it = (1,true,"yes") : int * bool * string</div>
+<div class="code-input"><span class="p">{</span><span class="mi">1</span> <span class="p">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">=</span> <span class="n">true</span><span class="p">,</span> <span class="mi">3</span> <span class="p">=</span> <span class="s2">"yes"</span><span class="p">};</span></div>
+<div class="code-output">val it = (1,true,"yes") : int * bool * string</div>
+<div class="code-input"><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">true</span><span class="p">,</span> <span class="s2">"yes"</span><span class="p">)</span> <span class="p">=</span> <span class="p">{</span><span class="mi">1</span> <span class="p">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="p">=</span> <span class="n">true</span><span class="p">,</span> <span class="mi">3</span> <span class="p">=</span> <span class="s2">"yes"</span><span class="p">};</span></div>
+<div class="code-output">val it = true : bool</div>
+</div>
 
 The empty record and empty tuple are equal, and are the only value of
 the type `unit`. Morel outputs it as `()`.
 
-```sml
-= {};
-val it = () : unit
-= ();
-val it = () : unit
-= {} = ();
-val it = true : bool;
-```
+<!-- morel
+{};
+> val it = () : unit
+();
+> val it = () : unit
+{} = ();
+> val it = true : bool
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="p">{};</span></div>
+<div class="code-output">val it = () : unit</div>
+<div class="code-input"><span class="p">();</span></div>
+<div class="code-output">val it = () : unit</div>
+<div class="code-input"><span class="p">{}</span> <span class="p">=</span> <span class="p">();</span></div>
+<div class="code-output">val it = true : bool</div>
+</div>
 
 # Functions
 
@@ -165,59 +252,100 @@ Functions are expressions, too.  `fn` makes a lambda expression.
 After we have bound the lambda value to `plusOne`, we can use
 `plusOne` as a function.
 
-```sml
-= val plusOne = fn x => x + 1;
-val plusOne = fn : int -> int
-= plusOne 2;
-val it = 3 : int
-```
+<!-- morel
+val plusOne = fn x => x + 1;
+> val plusOne = fn : int -> int
+plusOne 2;
+> val it = 3 : int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">val</span> <span class="nv">plusOne</span> <span class="p">=</span> <span class="kr">fn</span> <span class="n">x</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></div>
+<div class="code-output">val plusOne = fn : int -&gt; int</div>
+<div class="code-input"><span class="n">plusOne</span> <span class="mi">2</span><span class="p">;</span></div>
+<div class="code-output">val it = 3 : int</div>
+</div>
 
 Function declarations are common, so the `fun` keyword provides a
 shorthand: "<code>fun <i>f</i> <i>arg</i> = <i>exp</i></code>" is
 short for "<code>val <i>f</i> = fn <i>arg</i> => <i>exp</i></code>".
 
-```sml
-= fun plusOne x = x + 1;
-val plusOne = fn : int -> int
-= plusOne 2;
-val it = 3 : int
-```
+<!-- morel
+fun plusOne x = x + 1;
+> val plusOne = fn : int -> int
+plusOne 2;
+> val it = 3 : int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">fun</span> <span class="nf">plusOne</span> <span class="n">x</span> <span class="p">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></div>
+<div class="code-output">val plusOne = fn : int -&gt; int</div>
+<div class="code-input"><span class="n">plusOne</span> <span class="mi">2</span><span class="p">;</span></div>
+<div class="code-output">val it = 3 : int</div>
+</div>
 
 Functions can have multiple arguments, separated by spaces.
 
-```sml
-= fun plus x y = x + y;
-val plus = fn : int -> int -> int
-= plus 3 4;
-val it = 7 : int
-```
+<!-- morel
+fun plus x y = x + y;
+> val plus = fn : int -> int -> int
+plus 3 4;
+> val it = 7 : int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">fun</span> <span class="nf">plus</span> <span class="n">x</span> <span class="n">y</span> <span class="p">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">;</span></div>
+<div class="code-output">val plus = fn : int -&gt; int -&gt; int</div>
+<div class="code-input"><span class="n">plus</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">;</span></div>
+<div class="code-output">val it = 7 : int</div>
+</div>
 
 If we supply too few arguments, we get a closure that captures
 the argument value and can be applied later.
 
-```sml
-= val plusTen = plus 10;
-val plusTen = fn : int -> int
-= plusTen 2;
-val it = 12 : int
-```
+<!-- morel
+val plusTen = plus 10;
+> val plusTen = fn : int -> int
+plusTen 2;
+> val it = 12 : int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">val</span> <span class="nv">plusTen</span> <span class="p">=</span> <span class="n">plus</span> <span class="mi">10</span><span class="p">;</span></div>
+<div class="code-output">val plusTen = fn : int -&gt; int</div>
+<div class="code-input"><span class="n">plusTen</span> <span class="mi">2</span><span class="p">;</span></div>
+<div class="code-output">val it = 12 : int</div>
+</div>
 
 Functions can be recursive. Here, the `factorial` function evaluates
 by calling itself, using the mathematical identity that `n! = n *
 (n-1)!`.
 
-```sml
-= fun factorial n =
--   if n = 1 then
--     1
--   else
--     n * factorial (n - 1);
-val factorial = fn : int -> int
-= factorial 1;
-val it = 1 : int
-= factorial 5;
-val it = 120 : int
-```
+<!-- morel
+fun factorial n =
+  if n = 1 then
+    1
+  else
+    n * factorial (n - 1);
+> val factorial = fn : int -> int
+factorial 1;
+> val it = 1 : int
+factorial 5;
+> val it = 120 : int
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">fun</span> <span class="nf">factorial</span> <span class="n">n</span> <span class="p">=</span>
+  <span class="kr">if</span> <span class="n">n</span> <span class="p">=</span> <span class="mi">1</span> <span class="kr">then</span>
+    <span class="mi">1</span>
+  <span class="kr">else</span>
+    <span class="n">n</span> <span class="o">*</span> <span class="n">factorial</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span></div>
+<div class="code-output">val factorial = fn : int -&gt; int</div>
+<div class="code-input"><span class="n">factorial</span> <span class="mi">1</span><span class="p">;</span></div>
+<div class="code-output">val it = 1 : int</div>
+<div class="code-input"><span class="n">factorial</span> <span class="mi">5</span><span class="p">;</span></div>
+<div class="code-output">val it = 120 : int</div>
+</div>
 
 # Higher-order functions and type inference
 
@@ -227,15 +355,25 @@ functions. Here are a couple of examples.
 The `map` function applies a given function `f` to each element of a
 list, returning a list, as follows:
 
-```sml
-= fun map f [] = []
--   | map f (head :: tail) = (f head) :: (map f tail);
-val map = fn : ('a -> 'b) -> 'a list -> 'b list
-= fun double n = n * 2;
-val double = fn : int -> int
-= map double [1, 2, 3, 4];
-val it = [2,4,6,8] : int list
-```
+<!-- morel
+fun map f [] = []
+  | map f (head :: tail) = (f head) :: (map f tail);
+> val map = fn : ('a -> 'b) -> 'a list -> 'b list
+fun double n = n * 2;
+> val double = fn : int -> int
+map double [1, 2, 3, 4];
+> val it = [2,4,6,8] : int list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">fun</span> <span class="nf">map</span> <span class="n">f</span> <span class="p">[]</span> <span class="p">=</span> <span class="p">[]</span>
+  <span class="p">|</span> <span class="n">map</span> <span class="n">f</span> <span class="p">(</span><span class="n">head</span> <span class="o">::</span> <span class="n">tail</span><span class="p">)</span> <span class="p">=</span> <span class="p">(</span><span class="n">f</span> <span class="n">head</span><span class="p">)</span> <span class="o">::</span> <span class="p">(</span><span class="n">map</span> <span class="n">f</span> <span class="n">tail</span><span class="p">);</span></div>
+<div class="code-output">val map = fn : ('a -&gt; 'b) -&gt; 'a list -&gt; 'b list</div>
+<div class="code-input"><span class="kr">fun</span> <span class="nf">double</span> <span class="n">n</span> <span class="p">=</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span></div>
+<div class="code-output">val double = fn : int -&gt; int</div>
+<div class="code-input"><span class="n">map</span> <span class="n">double</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">];</span></div>
+<div class="code-output">val it = [2,4,6,8] : int list</div>
+</div>
 
 The type of the `map` function, above, is `fn : ('a -> 'b) -> 'a list
 -> 'b list`.  Morel's type system (based, like that of ML, on the
@@ -245,9 +383,9 @@ type variables.  This means that if `f` has type `'a -> 'b`, for any
 types `'a` and `'b`, then `map f` will transform a list of '`a' to a
 list of '`b'.
 
-For example, if `f` is the built-in function `String_length` of type
+For example, if `f` is the built-in function `String.size` of type
 `string -> int`, then `'a` is `string` and `'b` is `int`, and `map
-String_length` will convert a `string list` to an `int list`.
+String.size` will convert a `string list` to an `int list`.
 
 Notice that we did not declare any types; the type system deduced
 everything for us. Type inference is perhaps ML's greatest feature. In
@@ -259,19 +397,33 @@ them.
 The `filter` function keeps only those elements of a list for which a
 predicate `p` evaluates to true, as follows:
 
-```sml
-= fun filter p [] = []
--   | filter p (head :: tail) =
--     if (p head) then
--       (head :: (filter p tail))
--     else
--       (filter p tail);
-val filter = fn : ('a -> bool) -> 'a list -> 'a list
-= fun even n = n mod 2 = 0;
-val even = fn : int -> bool
-= filter even [1, 2, 3, 4];
-val it = [2,4] : int list
-```
+<!-- morel
+fun filter p [] = []
+  | filter p (head :: tail) =
+    if (p head) then
+      (head :: (filter p tail))
+    else
+      (filter p tail);
+> val filter = fn : ('a -> bool) -> 'a list -> 'a list
+fun even n = n mod 2 = 0;
+> val even = fn : int -> bool
+filter even [1, 2, 3, 4];
+> val it = [2,4] : int list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">fun</span> <span class="nf">filter</span> <span class="n">p</span> <span class="p">[]</span> <span class="p">=</span> <span class="p">[]</span>
+  <span class="p">|</span> <span class="n">filter</span> <span class="n">p</span> <span class="p">(</span><span class="n">head</span> <span class="o">::</span> <span class="n">tail</span><span class="p">)</span> <span class="p">=</span>
+    <span class="kr">if</span> <span class="p">(</span><span class="n">p</span> <span class="n">head</span><span class="p">)</span> <span class="kr">then</span>
+      <span class="p">(</span><span class="n">head</span> <span class="o">::</span> <span class="p">(</span><span class="n">filter</span> <span class="n">p</span> <span class="n">tail</span><span class="p">))</span>
+    <span class="kr">else</span>
+      <span class="p">(</span><span class="n">filter</span> <span class="n">p</span> <span class="n">tail</span><span class="p">);</span></div>
+<div class="code-output">val filter = fn : ('a -&gt; bool) -&gt; 'a list -&gt; 'a list</div>
+<div class="code-input"><span class="kr">fun</span> <span class="nf">even</span> <span class="n">n</span> <span class="p">=</span> <span class="n">n</span> <span class="kr">mod</span> <span class="mi">2</span> <span class="p">=</span> <span class="mi">0</span><span class="p">;</span></div>
+<div class="code-output">val even = fn : int -&gt; bool</div>
+<div class="code-input"><span class="n">filter</span> <span class="n">even</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">];</span></div>
+<div class="code-output">val it = [2,4] : int list</div>
+</div>
 
 You may notice that `map` and `filter` are very similar to the
 `SELECT` and `WHERE` clauses of a SQL statement. This is no surprise:
@@ -296,36 +448,65 @@ in memory just like tables in a database.
 Let's start by defining `emps` and `depts` relations as lists of
 records.
 
-```sml
-- val emps =
-=   [{id = 100, name = "Fred", deptno = 10},
-=    {id = 101, name = "Velma", deptno = 20},
-=    {id = 102, name = "Shaggy", deptno = 30},
-=    {id = 103, name = "Scooby", deptno = 30}];
+<!-- morel
 val emps =
-  [{deptno=10,id=100,name="Fred"},{deptno=20,id=101,name="Velma"},
-     {deptno=30,id=102,name="Shaggy"},{deptno=30,id=103,name="Scooby"}]
-  : {deptno:int, id:int, name:string} list
-= val depts =
--   [{deptno = 10, name = "Sales"},
--    {deptno = 20, name = "HR"},
--    {deptno = 30, name = "Engineering"},
--    {deptno = 40, name = "Support"}];
+  [{id = 100, name = "Fred", deptno = 10},
+   {id = 101, name = "Velma", deptno = 20},
+   {id = 102, name = "Shaggy", deptno = 30},
+   {id = 103, name = "Scooby", deptno = 30}];
+> val emps =
+>   [{deptno=10,id=100,name="Fred"},{deptno=20,id=101,name="Velma"},
+>    {deptno=30,id=102,name="Shaggy"},{deptno=30,id=103,name="Scooby"}]
+>   : {deptno:int, id:int, name:string} list
 val depts =
+  [{deptno = 10, name = "Sales"},
+   {deptno = 20, name = "HR"},
+   {deptno = 30, name = "Engineering"},
+   {deptno = 40, name = "Support"}];
+> val depts =
+>   [{deptno=10,name="Sales"},{deptno=20,name="HR"},
+>    {deptno=30,name="Engineering"},{deptno=40,name="Support"}]
+>   : {deptno:int, name:string} list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">val</span> <span class="nv">emps</span> <span class="p">=</span>
+  <span class="p">[{</span><span class="n">id</span> <span class="p">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">name</span> <span class="p">=</span> <span class="s2">"Fred"</span><span class="p">,</span> <span class="n">deptno</span> <span class="p">=</span> <span class="mi">10</span><span class="p">},</span>
+   <span class="p">{</span><span class="n">id</span> <span class="p">=</span> <span class="mi">101</span><span class="p">,</span> <span class="n">name</span> <span class="p">=</span> <span class="s2">"Velma"</span><span class="p">,</span> <span class="n">deptno</span> <span class="p">=</span> <span class="mi">20</span><span class="p">},</span>
+   <span class="p">{</span><span class="n">id</span> <span class="p">=</span> <span class="mi">102</span><span class="p">,</span> <span class="n">name</span> <span class="p">=</span> <span class="s2">"Shaggy"</span><span class="p">,</span> <span class="n">deptno</span> <span class="p">=</span> <span class="mi">30</span><span class="p">},</span>
+   <span class="p">{</span><span class="n">id</span> <span class="p">=</span> <span class="mi">103</span><span class="p">,</span> <span class="n">name</span> <span class="p">=</span> <span class="s2">"Scooby"</span><span class="p">,</span> <span class="n">deptno</span> <span class="p">=</span> <span class="mi">30</span><span class="p">}];</span></div>
+<div class="code-output">val emps =
+  [{deptno=10,id=100,name="Fred"},{deptno=20,id=101,name="Velma"},
+   {deptno=30,id=102,name="Shaggy"},{deptno=30,id=103,name="Scooby"}]
+  : {deptno:int, id:int, name:string} list</div>
+<div class="code-input"><span class="kr">val</span> <span class="nv">depts</span> <span class="p">=</span>
+  <span class="p">[{</span><span class="n">deptno</span> <span class="p">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">name</span> <span class="p">=</span> <span class="s2">"Sales"</span><span class="p">},</span>
+   <span class="p">{</span><span class="n">deptno</span> <span class="p">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">name</span> <span class="p">=</span> <span class="s2">"HR"</span><span class="p">},</span>
+   <span class="p">{</span><span class="n">deptno</span> <span class="p">=</span> <span class="mi">30</span><span class="p">,</span> <span class="n">name</span> <span class="p">=</span> <span class="s2">"Engineering"</span><span class="p">},</span>
+   <span class="p">{</span><span class="n">deptno</span> <span class="p">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">name</span> <span class="p">=</span> <span class="s2">"Support"</span><span class="p">}];</span></div>
+<div class="code-output">val depts =
   [{deptno=10,name="Sales"},{deptno=20,name="HR"},
-     {deptno=30,name="Engineering"},{deptno=40,name="Support"}]
-  : {deptno:int, name:string} list
-```
+   {deptno=30,name="Engineering"},{deptno=40,name="Support"}]
+  : {deptno:int, name:string} list</div>
+</div>
 
 Now let's run our first query:
 
-```sml
-= from e in emps yield e;
-val it =
+<!-- morel
+from e in emps yield e;
+> val it =
+>   [{deptno=10,id=100,name="Fred"},{deptno=20,id=101,name="Velma"},
+>    {deptno=30,id=102,name="Shaggy"},{deptno=30,id=103,name="Scooby"}]
+>   : {deptno:int, id:int, name:string} list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span> <span class="kr">yield</span> <span class="n">e</span><span class="p">;</span></div>
+<div class="code-output">val it =
   [{deptno=10,id=100,name="Fred"},{deptno=20,id=101,name="Velma"},
-     {deptno=30,id=102,name="Shaggy"},{deptno=30,id=103,name="Scooby"}]
-  : {deptno:int, id:int, name:string} list
-```
+   {deptno=30,id=102,name="Shaggy"},{deptno=30,id=103,name="Scooby"}]
+  : {deptno:int, id:int, name:string} list</div>
+</div>
 
 The equivalent in SQL would be
 
@@ -337,23 +518,38 @@ FROM emps AS e
 In Morel there is no difference between a query, a table, and a
 list-valued expression, so we could have instead written just `emps`.
 
-```sml
-= emps;
-val it =
+<!-- morel
+emps;
+> val it =
+>   [{deptno=10,id=100,name="Fred"},{deptno=20,id=101,name="Velma"},
+>    {deptno=30,id=102,name="Shaggy"},{deptno=30,id=103,name="Scooby"}]
+>   : {deptno:int, id:int, name:string} list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="n">emps</span><span class="p">;</span></div>
+<div class="code-output">val it =
   [{deptno=10,id=100,name="Fred"},{deptno=20,id=101,name="Velma"},
-     {deptno=30,id=102,name="Shaggy"},{deptno=30,id=103,name="Scooby"}]
-  : {deptno:int, id:int, name:string} list
-```
+   {deptno=30,id=102,name="Shaggy"},{deptno=30,id=103,name="Scooby"}]
+  : {deptno:int, id:int, name:string} list</div>
+</div>
 
 A `where` clause filters out rows, and a `yield` clause controls which
 fields are returned.
 
-```sml
-= from e in emps
--   where #deptno e = 30
--   yield {id = #id e};
-val it = [{id=102},{id=103}] : {id:int} list
-```
+<!-- morel
+from e in emps
+  where #deptno e = 30
+  yield {id = #id e};
+> val it = [{id=102},{id=103}] : {id:int} list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">where</span> #<span class="n">deptno</span> <span class="n">e</span> <span class="p">=</span> <span class="mi">30</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="n">id</span> <span class="p">=</span> #<span class="n">id</span> <span class="n">e</span><span class="p">};</span></div>
+<div class="code-output">val it = [{id=102},{id=103}] : {id:int} list</div>
+</div>
 
 SQL equivalent is as follows:
 
@@ -365,14 +561,19 @@ WHERE e.deptno = 30
 
 If you omit `yield`, you get the raw values of the loop variable `e`.
 
-```sml
-= from e in emps
--   where #deptno e = 30;
-val it =
-  [{deptno=30,id=102,name="Shaggy"},
-     {deptno=30,id=103,name="Scooby"}]
-  : {deptno:int, id:int, name:string} list
-```
+<!-- morel
+from e in emps
+  where #deptno e = 30;
+> val it = [{deptno=30,id=102,name="Shaggy"},{deptno=30,id=103,name="Scooby"}]
+>   : {deptno:int, id:int, name:string} list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">where</span> #<span class="n">deptno</span> <span class="n">e</span> <span class="p">=</span> <span class="mi">30</span><span class="p">;</span></div>
+<div class="code-output">val it = [{deptno=30,id=102,name="Shaggy"},{deptno=30,id=103,name="Scooby"}]
+  : {deptno:int, id:int, name:string} list</div>
+</div>
 
 # Shorthand
 
@@ -387,17 +588,29 @@ it is the same as the current field or variable.
 
 Thus the following 3 queries are equivalent:
 
-```sml
-= from e in emps
--   yield {e = #id e};
-val it = [{id=100},{id=101},{id=102},{id=103}] : {id:int} list
-= from e in emps
--   yield {e = e.id};
-val it = [{id=100},{id=101},{id=102},{id=103}] : {id:int} list
-= from e in emps
--   yield {e.id};
-val it = [{id=100},{id=101},{id=102},{id=103}] : {id:int} list
-```
+<!-- morel
+from e in emps
+  yield {id = #id e};
+> val it = [{id=100},{id=101},{id=102},{id=103}] : {id:int} list
+from e in emps
+  yield {id = e.id};
+> val it = [{id=100},{id=101},{id=102},{id=103}] : {id:int} list
+from e in emps
+  yield {e.id};
+> val it = [{id=100},{id=101},{id=102},{id=103}] : {id:int} list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="n">id</span> <span class="p">=</span> #<span class="n">id</span> <span class="n">e</span><span class="p">};</span></div>
+<div class="code-output">val it = [{id=100},{id=101},{id=102},{id=103}] : {id:int} list</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="n">id</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">id</span><span class="p">};</span></div>
+<div class="code-output">val it = [{id=100},{id=101},{id=102},{id=103}] : {id:int} list</div>
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">id</span><span class="p">};</span></div>
+<div class="code-output">val it = [{id=100},{id=101},{id=102},{id=103}] : {id:int} list</div>
+</div>
 
 I'll use the abbreviated forms from now on.
 
@@ -406,35 +619,62 @@ I'll use the abbreviated forms from now on.
 The following query joins employees and departments relations on
 department number.
 
-```sml
-= from e in emps,
--     d in depts
--   where e.deptno = d.deptno
--   yield {e.id, e.deptno, ename = e.name, dname = d.name};
-val it =
+<!-- morel
+from e in emps,
+    d in depts
+  where e.deptno = d.deptno
+  yield {e.id, e.deptno, ename = e.name, dname = d.name};
+> val it =
+>   [{deptno=10,dname="Sales",ename="Fred",id=100},
+>    {deptno=20,dname="HR",ename="Velma",id=101},
+>    {deptno=30,dname="Engineering",ename="Shaggy",id=102},
+>    {deptno=30,dname="Engineering",ename="Scooby",id=103}]
+>   : {deptno:int, dname:string, ename:string, id:int} list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span><span class="p">,</span>
+    <span class="nv">d</span> <span class="kr">in</span> <span class="n">depts</span>
+  <span class="kr">where</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span>
+  <span class="kr">yield</span> <span class="p">{</span><span class="nn">e</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span><span class="p">,</span> <span class="n">ename</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dname</span> <span class="p">=</span> <span class="nn">d</span><span class="p">.</span><span class="n">name</span><span class="p">};</span></div>
+<div class="code-output">val it =
   [{deptno=10,dname="Sales",ename="Fred",id=100},
    {deptno=20,dname="HR",ename="Velma",id=101},
    {deptno=30,dname="Engineering",ename="Shaggy",id=102},
    {deptno=30,dname="Engineering",ename="Scooby",id=103}]
-  : {deptno:int, dname:string, ename:string, id:int} list
-```
+  : {deptno:int, dname:string, ename:string, id:int} list</div>
+</div>
 
 The following query returns the names of employees in the Engineering
 department.
 
-```sml
-= let
--   fun exists [] = false
--     | exists (head :: tail) = true
-- in
--   from e in emps
--     where exists (from d in depts
--                   where d.deptno = e.deptno
--                   andalso d.name = "Engineering")
--     yield e.name
-- end;
-val it = ["Shaggy","Scooby"] : string list
-```
+<!-- morel
+let
+  fun `exists` [] = false
+    | `exists` (head :: tail) = true
+in
+  from e in emps
+    where `exists` (from d in depts
+                  where d.deptno = e.deptno
+                  andalso d.name = "Engineering")
+    yield e.name
+end;
+> val it = ["Shaggy","Scooby"] : string list
+-->
+
+<div class="code-block">
+<div class="code-input"><span class="kr">let</span>
+  <span class="kr">fun</span> `<span class="kr">exists</span>` <span class="p">[]</span> <span class="p">=</span> <span class="n">false</span>
+    <span class="p">|</span> `<span class="kr">exists</span>` <span class="p">(</span><span class="n">head</span> <span class="o">::</span> <span class="n">tail</span><span class="p">)</span> <span class="p">=</span> <span class="n">true</span>
+<span class="kr">in</span>
+  <span class="kr">from</span> <span class="nv">e</span> <span class="kr">in</span> <span class="n">emps</span>
+    <span class="kr">where</span> `<span class="kr">exists</span>` <span class="p">(</span><span class="kr">from</span> <span class="nv">d</span> <span class="kr">in</span> <span class="n">depts</span>
+                  <span class="kr">where</span> <span class="nn">d</span><span class="p">.</span><span class="n">deptno</span> <span class="p">=</span> <span class="nn">e</span><span class="p">.</span><span class="n">deptno</span>
+                  <span class="kr">andalso</span> <span class="nn">d</span><span class="p">.</span><span class="n">name</span> <span class="p">=</span> <span class="s2">"Engineering"</span><span class="p">)</span>
+    <span class="kr">yield</span> <span class="nn">e</span><span class="p">.</span><span class="n">name</span>
+<span class="kr">end</span><span class="p">;</span></div>
+<div class="code-output">val it = ["Shaggy","Scooby"] : string list</div>
+</div>
 
 This query shows how much can be accomplished in Morel with just
 functions, without extending the language.  In SQL, the equivalent
@@ -442,6 +682,10 @@ query would have `EXISTS` and a correlated sub-query, but in Morel
 `exists` is an ordinary function that we have defined in the query,
 and a correlated sub-query is just an expression that happens to
 reference return a list and reference variables in an enclosing scope.
+
+(**Update, March 2026**: Since this post was written, `exists` has
+become a keyword, and therefore the function is enclosed in
+back-ticks.)
 
 # Summary
 
@@ -463,3 +707,6 @@ If you have comments, please reply on Twitter:
 <div data_dnt="true">
 {% twitter page.tweet limit=5 hide_media=true %}
 </div>
+
+This article
+[has been updated](https://github.com/julianhyde/share/commits/main/blog/{{ page.path }}).

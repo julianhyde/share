@@ -25,7 +25,7 @@ and the conversations started by the posts can all happen on
 I've ported all of the previous posts to
 [Jekyll](https://jekyllrb.com/),
 [Markdown](https://kramdown.gettalong.org/) and stored them in
-[GitHub](https://github.com/julianhyde/share/tree/master/blog).
+[GitHub](https://github.com/julianhyde/share/tree/main/blog).
 They're available in the [index](/). I must say, having full control
 over my content is quite a relief.
 
@@ -86,7 +86,7 @@ database technology more useful.  Lastly, I want to bring the
 technology to a wide audience via open source software.
 
 I'll be writing about those things here. I'm especially keen to
-introduce you to [Morel](https://github.com/julianhyde/morel/), a
+introduce you to [Morel](https://github.com/hydromatic/morel/), a
 language that I am developing. It is a small functional language
 derived from [Standard ML](https://en.wikipedia.org/wiki/Standard_ML)
 that is also an elegant and powerful database query language, and I

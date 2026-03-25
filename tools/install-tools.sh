@@ -19,19 +19,25 @@ for i in \
   calcite-regress.sh \
   calcite-regress2.sh \
   checkKeys.sh \
+  e \
+  ediff \
   extra.awk \
   extra.sh \
   fiximg.sh \
-  gra \
+  fullMake \
+  globa \
   gpg-export \
+  gra \
   jenv \
   lastLog.sh \
+  longLines \
   relNotes \
   remove-javadoc-timestamps \
   mailself \
   rat \
   rsync-camera.sh \
   te \
+  update-dns.sh \
   validate
 do
   ln -s $(pwd)/$i /usr/local/bin

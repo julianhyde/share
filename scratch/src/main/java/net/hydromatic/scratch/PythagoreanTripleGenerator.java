@@ -16,6 +16,8 @@
  */
 package net.hydromatic.scratch;
 
+import net.hydromatic.scratch.PythagoreanTripleGenerator.Triple;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,8 +29,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import net.hydromatic.scratch.PythagoreanTripleGenerator.Triple;
 
 /**
  * Generates triples of the form (a, b, c)

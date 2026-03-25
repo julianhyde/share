@@ -1,0 +1,95 @@
+#!/bin/bash
+
+function usage {
+cat <<EOF
+Usage: globa [--help] path
+
+Convert between paths of reference and actual files.
+
+Options:
+  --help Print help
+EOF
+}
+
+case "$1" in
+(--help) usage; exit 0;;
+esac
+
+if [ $# -ne 2 ]; then
+  echo "Require 2 arguments"; exit 1
+fi
+
+function foo {
+  echo "$2" | awk -v flags=$1 '
+{
+  for (k = 0; k < length(flags); k++) {
+    if (k > 0) {
+      printf " "
+    }
+    flag = substr(flags, k + 1, 1)
+    s = $0
+    isOut = s ~ /_actual/ || s ~ /surefire/ || s ~ /quidem/ || s ~ /target\/test-output/;
+    if (flag == "o") {
+      if (isOut) {
+        # leave s as is
+      } else if (s ~ /^tests\//) {
+        gsub(/^tests\//, "target/test-output/tests/", s);
+        s = s ".out";
+      } else if (s ~ /^\.\/tests\//) {
+        gsub(/^\.\/tests\//, "./target/test-output/tests/", s);
+        s = s ".out";
+      } else if (s ~ /src\/test\/resources\/sql/) {
+        gsub(/src\/test\/resources\/sql/, "build/quidem/test/sql", s);
+      } else if (s ~ /src\/test\/resources\/script/) {
+        gsub(/src\/test\/resources/, "target/test-classes/script/surefire", s);
+      } else if (s ~ /src\/test\/resources/) {
+        gsub(/src\/test\/resources/, "build/diffrepo/test", s);
+        if (s ~ /\.xml/) {
+          gsub(/\.xml/, "_actual.xml", s);
+        }
+      } else {
+        s = "unknown";
+      }
+    } else if (flag == "r") {
+      if (!isOut) {
+        # leave s as is
+      } else if (s ~ /^target\/test-output\/tests\//) {
+        gsub(/^target\/test-output\/tests\//, "tests/", s);
+        gsub(/\.out$/, "", s);
+      } else if (s ~ /^\.\/target\/test-output\/tests\//) {
+        gsub(/^\.\/target\/test-output\/tests\//, "./tests/", s);
+        gsub(/\.out$/, "", s);
+      } else if (s ~ /_actual/) {
+        if (s ~ /build\/diffrepo\/test/) {
+          gsub(/build\/diffrepo\/test/, "src/test/resources", s)
+        } else if (s ~ /build\/resources\/test/) {
+          gsub(/build\/resources\/test/, "src/test/resources", s)
+        } else {
+          s = "unknown"
+        }
+        gsub(/_actual/, "", s)
+      } else if (s ~ /surefire/) {
+        gsub(/test\/.*\/surefire/, "test", s)
+        gsub(/build\/resources\/test/, "src/test/resources", s)
+        gsub(/target\/test-classes\/.*\/surefire/, "src/test/resources", s)
+      } else if (s ~ /quidem/) {
+        gsub(/build\/quidem\/test/, "src/test/resources", s)
+      } else {
+        s = "unknown"
+      }
+    } else {
+      s = "unknown"
+    }
+    printf "%s", s
+  }
+  printf "\n"
+}
+'
+}
+
+case "$1" in
+(or|ro) foo "$1" "$2";;
+(*) echo "Unknown flag '$1'";;
+esac
+
+# End globa

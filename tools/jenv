@@ -13,7 +13,7 @@
 # jdk-11 -> jdk-11.0.1
 # jdk-11.0.1 -> /Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home/
 #
-# On Linux, create links/directories in /usr/lib/jvm.
+# On Linux and Cygwin, create links/directories in /usr/lib/jvm.
 
 . ~/.bash_profile
 
@@ -35,11 +35,27 @@ case "$JDK" in
 (12|jdk12|jdk-12) export JDK=jdk-12; v=12;;
 (13|jdk13|jdk-13) export JDK=jdk-13; v=13;;
 (14|jdk14|jdk-14) export JDK=jdk-14; v=14;;
+(15|jdk15|jdk-15) export JDK=jdk-15; v=15;;
+(16|jdk16|jdk-16) export JDK=jdk-16; v=16;;
+(17|jdk17|jdk-17) export JDK=jdk-17; v=17;;
+(18|jdk18|jdk-18) export JDK=jdk-18; v=18;;
+(19|jdk19|jdk-19) export JDK=jdk-19; v=19;;
+(20|jdk20|jdk-20) export JDK=jdk-20; v=20;;
+(21|jdk21|jdk-21) export JDK=jdk-21; v=21;;
+(22|jdk22|jdk-22) export JDK=jdk-22; v=22;;
 (o10|openjdk10|openjdk-10) export JDK=openjdk-10; v=10;;
 (o11|openjdk11|openjdk-11) export JDK=openjdk-11; v=11;;
 (o12|openjdk12|openjdk-12) export JDK=openjdk-12; v=12;;
 (o13|openjdk13|openjdk-13) export JDK=openjdk-13; v=13;;
 (o14|openjdk14|openjdk-14) export JDK=openjdk-14; v=14;;
+(o15|openjdk15|openjdk-15) export JDK=openjdk-15; v=15;;
+(o16|openjdk16|openjdk-16) export JDK=openjdk-16; v=16;;
+(o17|openjdk17|openjdk-17) export JDK=openjdk-17; v=17;;
+(o18|openjdk18|openjdk-18) export JDK=openjdk-18; v=18;;
+(o19|openjdk19|openjdk-19) export JDK=openjdk-19; v=19;;
+(o20|openjdk20|openjdk-20) export JDK=openjdk-20; v=20;;
+(o21|openjdk21|openjdk-21) export JDK=openjdk-21; v=21;;
+(o22|openjdk22|openjdk-22) export JDK=openjdk-22; v=22;;
 esac
 
 case $(uname) in

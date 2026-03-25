@@ -107,11 +107,10 @@ limitations under the License.
     <module name="IllegalImport"/>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
-    <module name="ImportOrder">
-      <property name="groups" value="mondrian,/com\.fasterxml\./,/com\.google\./,/^javax?\./"/>
-      <property name="ordered" value="true"/>
-      <property name="separated" value="true"/>
-      <property name="option" value="above"/>
+    <module name="CustomImportOrder">
+      <property name="specialImportsRegExp" value="net.hydromatic"/>
+      <property name="sortImportsInGroupAlphabetically" value="true"/>
+      <property name="customImportOrderRules" value="SPECIAL_IMPORTS###THIRD_PARTY_PACKAGE###STANDARD_JAVA_PACKAGE###STATIC"/>
     </module>
 
     <!-- Checks for Size Violations.                    -->

@@ -16,7 +16,7 @@
  */
 package net.hydromatic.scratch;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /** Tests for Cover. */
 public class CoverTest {
@@ -52,15 +52,15 @@ public class CoverTest {
     return Cover.create(Arrays.asList(options));
   }
 
-  @Test public void testCoverInitialState() {
+  @Test void testCoverInitialState() {
     checkCoverInitialState(exampleCover());
   }
 
-  @Test public void testCoverInitialState2() {
+  @Test void testCoverInitialState2() {
     checkCoverInitialState(exampleCover2());
   }
 
-  @Test public void testCoverSolve() {
+  @Test void testCoverSolve() {
     final StringWriter sw = new StringWriter();
     final PrintWriter w = new PrintWriter(sw);
     final Cover cover = exampleCover();
@@ -124,7 +124,7 @@ public class CoverTest {
     w.close();
   }
 
-  @Test public void testPrintShapes() {
+  @Test void testPrintShapes() {
     final StringWriter sw = new StringWriter();
     final List<Shape> map = new ArrayList<>();
     map.add(Shapes.Pentonimo.V.shape);
@@ -149,7 +149,7 @@ public class CoverTest {
     assertThat(sw.toString(), is(expected));
   }
 
-  @Test public void testSolvePentonimo() {
+  @Test void testSolvePentonimo() {
     PentonimoCoverSolver.solve(new PrintWriter(System.out));
   }
 }
