@@ -38,7 +38,9 @@ The following is a list of possible steps.
 
 ### add-column-default
 
-Adds a column with a default value, for example
+Adds a column with a default value. The default value may be NULL, or a literal, or a deterministic expression involving the existing columns.
+
+For example
 ```sql
 ALTER TABLE Orders ADD returned BOOLEAN NOT NULL DEFAULT FALSE;
 ```
@@ -48,6 +50,20 @@ PRE users do not see the column.
 POST users see the column with the default value in existing
 rows. When inserting rows they may provide a value. They may update
 the column's value in existing rows.
+
+```mermaid
+erDiagram
+    Orders1 {
+        int *order_id
+        string product_name
+    }
+
+    Orders2 {
+        int *order_id
+        string product_name
+        boolean returned
+    }
+```
 
 ### normalize-table
 
@@ -61,10 +77,32 @@ becomes `Orders (order_id, product_name, quantity)` and `Products
 (product_name, unit_price)`.
 
 ```mermaid
-flowchart LR
-    A["Orders<br/>(order_id, product_name,<br/>quantity, unit_price)"] --> B["Orders<br/>(order_id, product_name,<br/>quantity)"]
-    A --> C["Products<br/>(product_name, unit_price)"]
+erDiagram
+    Orders1 {
+        int *order_id
+        string product_name
+        int quantity
+        decimal unit_price
+    }
+
+    Orders2 {
+        int *order_id
+        string product_name
+        int quantity
+    }
+    Products {
+        string *product_name
+        decimal unit_price
+    }
+    Orders2 }o--|| Products : "product_name"
 ```
+
+PRE users must comply with the constraint that the value is
+functionally dependent. (If there is one order where Budweiser has a unit price of $3,
+then it must be $3 in all orders.)
+
+POST users must adhere to the foreign key relationship. (Before placing an order for Budweiser, make sure that there is a row in the `Products`
+table.)
 
 ## Support
 
