@@ -49,6 +49,23 @@ POST users see the column with the default value in existing
 rows. When inserting rows they may provide a value. They may update
 the column's value in existing rows.
 
+### normalize-table
+
+Vertically splits one table into two tables, so that one or more
+columns become the primary key of the new table, and remain in the old
+table as a foreign key. Zero or more columns that are functionally
+dependent are moved to the new table.
+
+For example, `Orders (order_id, product_name, quantity, unit_price)`
+becomes `Orders (order_id, product_name, quantity)` and `Products
+(product_name, unit_price)`.
+
+```mermaid
+flowchart LR
+    A["Orders<br/>(order_id, product_name,<br/>quantity, unit_price)"] --> B["Orders<br/>(order_id, product_name,<br/>quantity)"]
+    A --> C["Products<br/>(product_name, unit_price)"]
+```
+
 ## Support
 
 The following table lists the priority for supporting particular step
@@ -57,4 +74,4 @@ types.
 | Type | Physical       | Logical
 | ---- | -------------- | --------
 | add-column-default | Native   | Priority 1. Easy and common. 
-
+| normalize-table | Complex | Priority 3. Difficult but desirable.
