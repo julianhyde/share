@@ -36,7 +36,71 @@ phase, can pause, and can roll back to the INITIAL phase.
 
 The following is a list of possible steps.
 
-### add-column-default
+Step names follows some conventions. We use 'add' or 'drop' (not 'create', 'introduce' or 'remove'), and also 'alter' and 'rename'.
+
+The term 'key' includes both primary and unique key (also called secondary key). Some databases require that primary keys are over columns that are not null and/or not modifiable, and some databases automatically create an index on keys.
+
+We use the term 'column constraint' rather than 'check'.
+
+We call a step *lossy* if it loses information (e.g. removing trailing spaces from `product_name`), *gainy* if it gains information (e.g. creating a table), and *reversible* if it is neither of these.
+
+### DropColumn
+
+Not the inverse of `AddColumn` unless the column is constrained to be a single value.
+
+### DropTable
+
+Not the inverse of `CreateTable` unless the table is constrained to be empty.
+
+### DropView
+
+Inverse of `CreateView`.
+
+### AddCalculatedColumn
+
+Equivalent to `AddColumn` followed by `AddCheck`.
+
+There are three kinds of calculated column:
+ * column is calculated and stored;
+ * column calculated and not stored;
+ * regular column that is constrained so that only one value is possible.
+
+### AddSurrogateKey
+
+Equivalent to `AddGeneratedColumn` + `AddKey`, plus optional `AlterKey` if there is an existing primary key that should become secondary.
+
+### AddGeneratedColumn
+
+Adds a column whose values come from a generator.
+
+Variants include a shared generator (what Oracle calls a sequence) and a column-specific generator (what MSS calls a generated columns), options for the initial value of the generator, and the value type (e.g. ascending integers, UUIDs).
+
+### AddKey
+
+Adds a primary or unique key to an existing table. The key consists of one or more existing columns.
+
+### AlterKey
+
+Changes a key from primary to unique, or vice versa.
+
+### CreateTable
+
+Creates a table, initially empty.
+
+Example,
+```sql
+CREATE TABLE Products (
+  product_id INTEGER NOT NULL PRIMARY KEY,
+  product_name VARCHAR(30) NOT NULL);
+```
+
+PRE user cannot see the table.
+
+POST user can see the table and insert, update, delete rows.
+
+Migration is straightforward, provided that there is no table of the same name.
+
+### AddColumnWithDefault
 
 Adds a column with a default value. The default value may be NULL, or a literal, or a deterministic expression involving the existing columns.
 
@@ -65,7 +129,7 @@ erDiagram
     }
 ```
 
-### normalize-table
+### NormalizeTable
 
 Vertically splits one table into two tables, so that one or more
 columns become the primary key of the new table, and remain in the old
@@ -103,6 +167,41 @@ then it must be $3 in all orders.)
 
 POST users must adhere to the foreign key relationship. (Before placing an order for Budweiser, make sure that there is a row in the `Products`
 table.)
+
+### MergeColumns
+
+TODO figure out what Ambler means by this
+
+### MergeTable
+
+TODO figure out what Curino means by this
+
+### RenameColumn
+
+Renames a column within a table.
+
+## ReorderColumns
+
+Changes the ordering of columns in a table.
+
+### RenameTable
+
+Not equivalent to `DropTable` + `CreateTable`.
+
+### RenameView
+
+Decomposes to `DropView` + `CreateView`.
+
+### AlterColumn
+
+Replaces a column with an expression in terms of the other columns.
+
+For example, you have table `OrderItems (order_id, item_number, product_id, quantity)`
+and wish to change `item_number` from 1-based to 0-based. The expression is `item_number - 1`.
+
+Equivalent to `RenameColumn` (optional) + `AddColumnWithDefault` + `DropColumn`.
+
+This step is usually lossy but may be reversible.
 
 ## Support
 
