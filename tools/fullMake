@@ -25,7 +25,7 @@ export GUAVA_VERSIONS="\
 15.0 \
 14.0.1 \
 "
-export MAX_GUAVA_VERSION=31.0.1-jre
+export MAX_GUAVA_VERSION=33.4.8-jre  # matches Calcite CI's GUAVA_MAX
 
 function doAvatica {
   if [ "$1" = --allGuava ]; then
@@ -66,7 +66,7 @@ function doCalcite {
     done
     return
   fi
-  GUAVA_VERSION=21.0
+  GUAVA_VERSION=31.0.1-jre
   if [ "$1" = --guava-version ]; then
     shift
     GUAVA_VERSION=$1
@@ -110,6 +110,23 @@ function doMorel {
   ./mvnw $args clean test javadoc:javadoc javadoc:test-javadoc
 }
 
+function doMorelRust {
+  if [ "$CLEAN" ]; then
+    echo ::: clean ::: && \
+        cargo clean
+  fi
+  echo ::: build ::: && \
+      cargo build --verbose $RELEASE && \
+      echo ::: clippy ::: && \
+      cargo clippy --message-format=short $RELEASE -- -D warnings && \
+      echo ::: fmt ::: && \
+      cargo fmt --all -- --check && \
+      echo ::: test ::: && \
+      cargo test --verbose $RELEASE && \
+      echo ::: doc ::: && \
+      cargo doc $RELEASE
+}
+
 function doQuidem {
   java -version
   args=
@@ -118,6 +135,40 @@ function doQuidem {
   esac
   ./mvnw $args clean test javadoc:javadoc javadoc:test-javadoc
 }
+
+function usage {
+  cat <<'EOF'
+Usage: fullMake [OPTIONS]
+
+  Performs an exhaustive build for the project detected in the current
+  directory (avatica, calcite, filtex, morel, morel-rust, or quidem).
+
+Options:
+  --clean         Run `cargo clean` before building.    [morel-rust only]
+  --no-clean      Skip `cargo clean` (default).         [morel-rust only]
+  --release       Build in release mode.                [morel-rust only]
+  --debug         Build in debug mode (default).        [morel-rust only]
+  --help          Show this message and exit.
+
+Project-specific options (recognized by individual projects):
+  --allGuava              Build against every Guava version. [avatica, calcite]
+  --guava-version <ver>   Build against the given Guava version.
+                                                        [avatica, calcite]
+EOF
+}
+
+CLEAN=
+RELEASE=
+while true; do
+  case "$1" in
+    (--no-clean) CLEAN= ; shift ;;
+    (--clean) CLEAN=true; shift ;;
+    (--debug) RELEASE= ; shift ;;
+    (--release) RELEASE=--release; shift ;;
+    (--help) usage; exit 0 ;;
+    (*) break ;;
+  esac
+done
 
 case $(pwd) in
 (*/avatica*)
@@ -129,6 +180,9 @@ case $(pwd) in
 (*/filtex*)
   doFiltex "$@"
   ;;
+(*/morel-rust*)
+  doMorelRust "$@"
+  ;;
 (*/morel*)
   doMorel "$@"
   ;;
@@ -139,6 +193,8 @@ case $(pwd) in
   echo "don't know how to make in $(pwd)"
   ;;
 esac 2>&1 | tee $LOG
-echo "See $LOG for output"
+status=${PIPESTATUS[0] :- pipestatus[1]}
+echo "Status ${status}; see $LOG for output"
+exit $status
 
 # End fullMake
