@@ -9,15 +9,16 @@ tweet:  https://x.com/julianhyde/status/XXXXXXXXXXXXXXXXX
 
 Morel is more than a query language. Because it is a functional
 language with relational algebra built in, it can express problems
-that a query language can't &mdash; and *package queries* are a good
-example.
+that a query language can't. It already supports constraint
+programming and logic programming, and *package queries* are
+another example.
 
-Consider the following problem: choose three gluten-free recipes
-that together total between
-2,000 and 2,500 calories, with the least saturated fat. That
-constraint is not about any single row; it is about a *combination* of
-rows, and no `where` clause can express it. It is an optimization
-problem in the shape of a query.
+Consider the following problem: given a set of recipes, find the
+combination of three gluten-free recipes that total between 2,000 and
+2,500 calories and has less saturated fat than all other such
+combinations. That constraint is not about any single row; it is about
+a *combination* of rows, and no `where` clause can express it. It is
+an optimization problem in the shape of a query.
 
 A 2016 paper,
 [Scalable Package Queries in Relational Database Systems][paper],
@@ -50,6 +51,19 @@ testing each subset; but neither is declarative, optimizable, or
 efficient. (The paper makes both points.) In Morel it is
 straightforward:
 
+<!-- morel silent
+fun subLists list =
+    List.foldr
+      (fn (x, acc) => acc @ List.map (fn s => x :: s) acc)
+      [[]]
+      list;
+> val subLists = fn : 'a list -> 'a list list
+fun subBags bag =
+    Bag.map Bag.fromList (Bag.fromList (subLists (Bag.toList bag)));
+> val subBags = fn : 'a bag -> 'a bag bag
+Sys.set ("output", "tabular");
+> val it = () : unit
+-->
 <!-- morel skip
 from p in subBags (from r in recipes where r.gluten = "free")
   where Bag.length p = 3
@@ -83,17 +97,19 @@ val recipes = bag [
   {name = "Cheese Omelette",     gluten = "free",    cal = 650, satFat = 10},
   {name = "Pasta Carbonara",     gluten = "present", cal = 800, satFat = 14},
   {name = "Pizza Margherita",    gluten = "present", cal = 900, satFat = 11}];
-> val recipes =
->   [{cal=700,gluten="free",name="Grilled Salmon Bowl",satFat=4},
->    {cal=550,gluten="free",name="Quinoa Veg Stir-fry",satFat=2},
->    {cal=600,gluten="free",name="Lentil Curry",satFat=3},
->    {cal=850,gluten="free",name="Chicken Rice Plate",satFat=6},
->    {cal=950,gluten="free",name="Steak & Potatoes",satFat=12},
->    {cal=500,gluten="free",name="Avocado Tofu Salad",satFat=5},
->    {cal=650,gluten="free",name="Cheese Omelette",satFat=10},
->    {cal=800,gluten="present",name="Pasta Carbonara",satFat=14},
->    {cal=900,gluten="present",name="Pizza Margherita",satFat=11}]
->   : {cal:int, gluten:string, name:string, satFat:int} bag
+> cal gluten  name                satFat
+> --- ------- ------------------- ------
+> 700 free    Grilled Salmon Bowl      4
+> 550 free    Quinoa Veg Stir-fry      2
+> 600 free    Lentil Curry             3
+> 850 free    Chicken Rice Plate       6
+> 950 free    Steak & Potatoes        12
+> 500 free    Avocado Tofu Salad       5
+> 650 free    Cheese Omelette         10
+> 800 present Pasta Carbonara         14
+> 900 present Pizza Margherita        11
+>
+> val recipes : {cal:int, gluten:string, name:string, satFat:int} bag
 -->
 
 <div class="code-block">
@@ -111,19 +127,6 @@ val recipes = bag [
 
 the more concise query returns:
 
-<!-- morel silent
-fun subLists list =
-    List.foldr
-      (fn (x, acc) => acc @ List.map (fn s => x :: s) acc)
-      [[]]
-      list;
-> val subLists = fn : 'a list -> 'a list list
-fun subBags bag =
-    Bag.map Bag.fromList (Bag.fromList (subLists (Bag.toList bag)));
-> val subBags = fn : 'a bag -> 'a bag bag
-Sys.set ("output", "tabular");
-> val it = () : unit
--->
 <!-- morel
 from p in subBags (from r in recipes where r.gluten = "free"),
     {c, cal, fat} =
@@ -232,7 +235,8 @@ high probability" bound, or a requirement that the chosen tuples form
 a contiguous region &mdash; you are outside what this machinery can
 lower, and you need a different solver.
 
-One such solver is presented in the paper: SKETCHREFINE, an
+One such solver is presented in the paper:
+<span style="font-variant: small-caps">SketchRefine</span>, an
 approximate divide-and-conquer technique for answering package queries
 efficiently on large datasets.
 
@@ -247,6 +251,19 @@ describe is, in Morel, just another query: the irreducibly hard part
 goes to a solver, and the ordinary relational work around it does not
 have to.
 
+Constraint programming and logic programming both run on the same
+`from` and `where` constructs, made runnable by predicate inversion.
+Coloring a map so that no two neighboring states share a color is a
+`from` over color variables whose `where` is a conjunction of
+inequalities; a small optimization &mdash; say, how many banana and
+chocolate cakes to bake from a limited pantry, an example from
+[Basic Modelling in MiniZinc][minizinc] &mdash; is the same, with an
+`order` on the objective. And because a predicate can recurse, Morel
+runs Datalog; an
+[earlier article]({% post_url 2026-03-09-datalog-in-morel %})
+walked through transitive closure and the classic Joe's bar rules.
+Package queries add combinatorial optimization over packages of rows.
+
 That seam is the point. A single language, type system, and
 environment can express a hybrid problem end to end &mdash; pull
 records from a database, feed them into a solver for a graph algorithm
@@ -258,6 +275,7 @@ handing the hard core to a specialized solver.
 
 [paper]: https://www.vldb.org/pvldb/vol9/p576-brucato.pdf
 [morel-372]: https://github.com/hydromatic/morel/issues/372
+[minizinc]: https://docs.minizinc.dev/en/stable/modelling.html
 
 If you have comments, please reply on
 [Bluesky @julianhyde.bsky.social](https://bsky.app/profile/julianhyde.bsky.social)
