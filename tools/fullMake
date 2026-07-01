@@ -170,7 +170,11 @@ while true; do
   esac
 done
 
-case $(pwd) in
+proj=$(pwd)
+if gitdir=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null); then
+  proj=$(dirname "$gitdir")   # main worktree, even when run from a linked one
+fi
+case $proj in
 (*/avatica*)
   doAvatica "$@"
   ;;

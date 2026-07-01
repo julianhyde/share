@@ -1,0 +1,32 @@
+#!/bin/bash
+# git-worktree-run COMMIT CMD...
+#
+# Run CMD in a throwaway detached worktree checked out at COMMIT, then exit
+# with CMD's status. A PASS/FAIL summary is written to stderr; the wrapped
+# command's stdout passes through untouched. Safe to run many in parallel
+# (each invocation gets its own worktree) and cleans up on exit.
+#
+# The parallel analog of `git rebase BASE -x CMD`:
+#
+#   git rev-list --reverse BASE..HEAD | xargs -P2 -I{} git worktree-run {} CMD
+#
+set -u
+commit=${1:?usage: git worktree-run <commit> <cmd>...}; shift
+[ $# -gt 0 ] || { echo "usage: git worktree-run <commit> <cmd>..." >&2; exit 2; }
+
+sha=$(git rev-parse --short "$commit") || exit 2
+wt=$(mktemp -d "${TMPDIR:-/tmp}/gwr-$sha.XXXXXX") || exit 2
+trap 'git worktree remove --force "$wt" 2>/dev/null; git worktree prune 2>/dev/null' EXIT
+
+for _ in 1 2 3 4 5; do                 # git briefly locks .git/worktrees;
+  git worktree add --detach --quiet "$wt" "$commit" && break
+  sleep "0.$((RANDOM % 4 + 1))"        # jittered retry keeps parallel adds safe
+done
+git -C "$wt" rev-parse --verify HEAD >/dev/null 2>&1 \
+  || { echo "FAIL $sha (worktree add)" >&2; exit 2; }
+
+( cd "$wt" && "$@" ); status=$?
+[ "$status" -eq 0 ] && echo "PASS $sha" >&2 || echo "FAIL $sha (exit $status)" >&2
+exit $status
+
+# End git-worktree-run

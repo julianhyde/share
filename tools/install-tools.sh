@@ -25,16 +25,17 @@ for i in \
   extra.sh \
   fiximg.sh \
   fullMake \
+  git-worktree-run \
   globa \
   gpg-export \
   gra \
   jenv \
   lastLog.sh \
   longLines \
-  relNotes \
-  remove-javadoc-timestamps \
   mailself \
   rat \
+  relNotes \
+  remove-javadoc-timestamps \
   rsync-camera.sh \
   te \
   update-dns.sh \

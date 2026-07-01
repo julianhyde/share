@@ -10,12 +10,13 @@
 # or commits since a given point.
 [[ -z ${1} ]] && range="" || range=${1}^..HEAD
 
-git log --abbrev-commit ${range} --pretty=format:'* %s' -- ${2}  |
+git log --abbrev-commit ${range} --pretty=format:'* %s' -- ${2} |
 sed -e '
+s!\[MOREL-\([0-9]*\)\] \(.*\)!\2 (#\1)!;
 s!\(http.*\), !<a href="\1">#xxx</a>, !;
 s!\(CALCITE-[0-9]*\)!<a href="https://issues.apache.org/jira/browse/\1">\1</a>!;
-s!\(MOREL-\([0-9]*\)\)!<a href="https://github.com/hydromatic/morel/issues/\2">\1</a>!;
-s!\(QUIDEM-\([0-9]*\)\)!<a href="https://github.com/hydromatic/quidem/issues/\2">\1</a>!;
+s!\(MOREL-\([0-9]*\)\)![\1](https://github.com/hydromatic/morel/issues/\2)!;
+s!\(QUIDEM-\([0-9]*\)\)![\1](https://github.com/hydromatic/quidem/issues/\2)!;
 s!\(SMLJ-\([0-9]*\)\)!<a href="https://github.com/hydromatic/morel/issues/\2">\1</a>!;
 s!\(SQLLINE-\([0-9]*\)\)!<a href="https://github.com/julianhyde/sqlline/issues/\2">\1</a>!;
 s!</a>\]!</a>]\
@@ -24,4 +25,7 @@ fold -s -81 |
 sed -e 's/ *$//' |
 grep '[^ ]' |
 gawk '!/^\* / && !/^ / {print "  " $0;next} {print}'
+
+# s!\(#[0-9]+\)!</a>]\
+
 # End

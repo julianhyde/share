@@ -28,7 +28,7 @@
     <calcite.version>1.35.0</calcite.version>
     <chinook-data-hsqldb.version>0.2</chinook-data-hsqldb.version>
     <flight-data-hsqldb.version>0.2</flight-data-hsqldb.version>
-    <foodmart-data-hsqldb.version>0.5</foodmart-data-hsqldb.version>
+    <foodmart-data-hsqldb.version>0.7-SNAPSHOT</foodmart-data-hsqldb.version>
     <h2.version>2.2.220</h2.version>
     <hsqldb.version>2.7.1</hsqldb.version>
     <look-data-hsqldb.version>0.1</look-data-hsqldb.version>
@@ -44,7 +44,7 @@
     <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
     <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     <sakila-data-hsqldb.version>0.1</sakila-data-hsqldb.version>
-    <scott-data-hsqldb.version>0.2</scott-data-hsqldb.version>
+    <scott-data-hsqldb.version>0.3</scott-data-hsqldb.version>
     <sqlline.version>1.12.0</sqlline.version>
     <steelwheels-data-hsqldb.version>0.2</steelwheels-data-hsqldb.version>
   </properties>
