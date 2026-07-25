@@ -99,7 +99,7 @@ function doCalcite {
 
 function doFiltex {
   java -version
-  ./mvnw clean verify -Dcheckstyle.version=9.3 javadoc:javadoc javadoc:test-javadoc
+  ./mvnw clean verify -Dgit-commit-id.skip=true -Dcheckstyle.version=9.3 javadoc:javadoc javadoc:test-javadoc
 }
 
 function doMorel {
@@ -107,7 +107,22 @@ function doMorel {
   case $(java -version 2>&1 | awk 'FNR == 1 {print substr($3, 2, length($3) - 2)}') in
   (1.8.*) args="$args -Dhsqldb.version=2.5.2 -Dguava.version=19.0 -Dcheckstyle.version=9.3";;
   esac
-  ./mvnw $args clean test javadoc:javadoc javadoc:test-javadoc
+  ./mvnw $args clean test -Dgit-commit-id.skip=true javadoc:javadoc javadoc:test-javadoc
+}
+
+function doMorelGo {
+  if [ "$CLEAN" ]; then
+    echo ::: clean ::: && \
+        go clean && \
+        go clean -testcache && \
+        golangci-lint cache clean
+  fi
+  echo ::: build ::: && \
+      go build -v ./... && \
+      echo ::: lint ::: && \
+      golangci-lint run ./... && \
+      echo ::: test ::: && \
+      go test -v ./...
 }
 
 function doMorelRust {
@@ -133,7 +148,7 @@ function doQuidem {
   case $(java -version 2>&1 | awk 'FNR == 1 {print substr($3, 2, length($3) - 2)}') in
   (1.8.*) args="$args -Dhsqldb.version=2.5.2 -Dguava.version=19.0 -Dcheckstyle.version=9.3";;
   esac
-  ./mvnw $args clean test javadoc:javadoc javadoc:test-javadoc
+  ./mvnw $args clean test -Dgit-commit-id.skip=true javadoc:javadoc javadoc:test-javadoc
 }
 
 function usage {
@@ -141,11 +156,12 @@ function usage {
 Usage: fullMake [OPTIONS]
 
   Performs an exhaustive build for the project detected in the current
-  directory (avatica, calcite, filtex, morel, morel-rust, or quidem).
+  directory (avatica, calcite, filtex, morel, morel-go, morel-rust, or
+  quidem).
 
 Options:
-  --clean         Run `cargo clean` before building.    [morel-rust only]
-  --no-clean      Skip `cargo clean` (default).         [morel-rust only]
+  --clean         Clean before building.          [morel-go, morel-rust]
+  --no-clean      Skip cleaning (default).         [morel-go, morel-rust]
   --release       Build in release mode.                [morel-rust only]
   --debug         Build in debug mode (default).        [morel-rust only]
   --help          Show this message and exit.
@@ -183,6 +199,9 @@ case $proj in
   ;;
 (*/filtex*)
   doFiltex "$@"
+  ;;
+(*/morel-go*)
+  doMorelGo "$@"
   ;;
 (*/morel-rust*)
   doMorelRust "$@"
