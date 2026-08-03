@@ -96,23 +96,54 @@ docker compose run --service-ports dev
 
 Then open `http://localhost:4000/draft-blog/`.
 
-### Production build
+### Production build (this is how the site is published)
+
+**This machine is the web server for `blog.hydromatic.net`.** The live site is
+served from `~/web2/blog` (NOT from `blog/_site/`, which is only the build
+output). There is no remote deploy — building here and copying into `~/web2/blog`
+*is* publishing. Pushing to git is only version control; it does not update the
+live site.
+
+Full publish sequence:
 
 ```bash
 cd blog
-docker compose run build-site
+
+# 1. Build into blog/_site/
+docker compose run --rm build-site
+
+# 2. Fix ownership (build-site runs as root — see gotcha below), then highlight
+docker run --rm -v "$PWD":/work alpine chown -R "$(id -u):$(id -g)" /work/_site
 bash after.sh
+
+# 3. Back up the current live dir to the next ~/web2/blog.N, then deploy
+N=$(( $(ls -d ~/web2/blog.* 2>/dev/null | sed 's/.*blog\.//' | sort -n | tail -1) + 1 ))
+mv ~/web2/blog ~/web2/blog.$N
+cp -a _site ~/web2/blog
 ```
 
-The built site is in `blog/_site/`.
+**Gotcha: fix `_site/` ownership before `after.sh`.** The `build-site`
+container runs as `root`, so the generated `_site/` subdirectories are
+root-owned and `after.sh` (run as your user) fails with
+`Can't do inplace edit ... Cannot make temp name: Permission denied` on every
+file — silently skipping the Morel keyword highlighting. The `chown` step above
+resets ownership; run it before `after.sh`.
 
 ## Publishing workflow
 
-1. Create the post file in `blog/_posts/YYYY-MM-DD-slug.md`.
+1. Draft in `blog/_drafts/`; publish by moving to `blog/_posts/` with a
+   `YYYY-MM-DD-slug.md` name (`git mv blog/_drafts/foo.md blog/_posts/YYYY-MM-DD-slug.md`).
+   The filename date should match the front-matter `date`.
 2. Preview with the dev server.
 3. Commit the file: `git add blog/_posts/YYYY-MM-DD-slug.md && git commit`.
-4. Push to `master` (the main branch for this repo): `git push origin master`.
-5. Post on Bluesky and/or Twitter/X, then update the `tweet:` field in the front matter with the tweet URL and commit again.
+4. Push to `main` (the active branch; `master` is stale): `git push origin main`.
+   Note: this is version control only — see the production build above for the
+   step that actually updates the live site.
+5. **Run the full production build sequence above** (build → chown → `after.sh` →
+   back up `~/web2/blog` to `~/web2/blog.N` → `cp -a _site ~/web2/blog`) to
+   publish to `blog.hydromatic.net`.
+6. Post on Bluesky and/or Twitter/X, then update the `tweet:` field in the front
+   matter with the tweet URL, commit, and rebuild.
 
 ## Config notes
 

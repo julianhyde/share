@@ -4,7 +4,7 @@ title:  "Morel on Go, and why platforms shouldn't matter"
 date:   2026-08-01 12:00:00 -0800
 author: Julian Hyde
 image:  /assets/img/OldDesignShop_MushroomSpringMorel-240x240.jpg
-tweet:  https://x.com/julianhyde/status/XXXXXXXXXXXXXXXXX
+tweet:  https://x.com/julianhyde/status/2084405057387434352
 ---
 
 ![The morel-go shell, computing the prefixes of "Hello, world!"](/assets/img/morel-go-shell.png)
@@ -149,7 +149,7 @@ not execute). We disable sections of tests by setting `mode` to
 [type.smli][rust-type-smli] are disabled because `typeof` is not
 implemented yet:
 
-<!-- morel skip
+```
 val m = 5;
 > val m = 5 : int
 
@@ -167,39 +167,14 @@ end;
 
 set("mode", "evaluate");
 > val it = () : unit
--->
-
-<div class="code-block">
-<div class="code-input"><span class="kr">val</span> <span class="nv">m</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span></div>
-<div class="code-output">val m = 5 : int</div>
-<div class="code-input">
-<span class="n">set</span><span class="p">(</span><span class="s2">"mode"</span><span class="p">,</span> <span class="s2">"validate"</span><span class="p">);</span></div>
-<div class="code-output">val it = () : unit</div>
-<div class="code-input"><span class="kr">let</span>
-  <span class="kr">val</span> <span class="kr">rec</span> <span class="nv">fact</span> <span class="p">=</span>
-    <span class="kr">fn</span> <span class="n">n</span> <span class="p">:</span> <span class="n">typeof</span> <span class="n">m</span> <span class="o">=&gt;</span>
-      <span class="kr">if</span> <span class="n">n</span> <span class="p">=</span> <span class="mi">0</span> <span class="kr">then</span> <span class="mi">1</span>
-      <span class="kr">else</span> <span class="n">n</span> <span class="o">*</span> <span class="n">fact</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-<span class="kr">in</span>
-  <span class="n">fact</span> <span class="mi">5</span>
-<span class="kr">end</span><span class="p">;</span></div>
-<div class="code-output">val it = 120 : int</div>
-<div class="code-input">
-<span class="n">set</span><span class="p">(</span><span class="s2">"mode"</span><span class="p">,</span> <span class="s2">"evaluate"</span><span class="p">);</span></div>
-<div class="code-output">val it = () : unit</div>
-</div>
+```
 
 During the Go port, we would simply omit disabled lines:
 
-<!-- morel skip
+```
 val m = 5;
 > val m = 5 : int
--->
-
-<div class="code-block">
-<div class="code-input"><span class="kr">val</span> <span class="nv">m</span> <span class="p">=</span> <span class="mi">5</span><span class="p">;</span></div>
-<div class="code-output">val m = 5 : int</div>
-</div>
+```
 
 The Go approach was simpler and more effective. The Rust approach
 achieved our goal of having the whole test corpus in Rust, but our
