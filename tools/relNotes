@@ -5,10 +5,21 @@
 # If you require release notes since a specific commit (such as the
 # commit of the last release), specify this commit as first argument:
 #   relNotes abc123
+#
+# Set WIDTH to fold at other than 81 columns. Continuation lines are
+# indented by 2, so they can be 2 columns wider than WIDTH; a project
+# whose lint allows 80 columns should use WIDTH=78.
 
 # The range of commits. All commits if there is no first argument,
 # or commits since a given point.
 [[ -z ${1} ]] && range="" || range=${1}^..HEAD
+
+width=${WIDTH:-81}
+
+# The GitHub URL of the repository we are being run in. A bare '#123'
+# refers to an issue of this repository.
+repo=$(git config --get remote.origin.url |
+  sed -e 's!^git@github.com:!https://github.com/!' -e 's!\.git$!!')
 
 git log --abbrev-commit ${range} --pretty=format:'* %s' -- ${2} |
 sed -e '
@@ -21,11 +32,15 @@ s!\(SMLJ-\([0-9]*\)\)!<a href="https://github.com/hydromatic/morel/issues/\2">\1
 s!\(SQLLINE-\([0-9]*\)\)!<a href="https://github.com/julianhyde/sqlline/issues/\2">\1</a>!;
 s!</a>\]!</a>]\
  !;' |
-fold -s -81 |
+sed -e '
+s!hydromatic/morel-rust#\([0-9]*\)![rust#\1](https://github.com/hydromatic/morel-rust/issues/\1)!g;
+s!hydromatic/morel-go#\([0-9]*\)![#\1](https://github.com/hydromatic/morel-go/issues/\1)!g;
+s!hydromatic/morel#\([0-9]*\)![morel#\1](https://github.com/hydromatic/morel/issues/\1)!g;
+' |
+sed -e 's!\([ (]\)#\([0-9]*\)!\1[#\2]('"${repo}"'/issues/\2)!g' |
+fold -s -${width} |
 sed -e 's/ *$//' |
 grep '[^ ]' |
 gawk '!/^\* / && !/^ / {print "  " $0;next} {print}'
-
-# s!\(#[0-9]+\)!</a>]\
 
 # End
