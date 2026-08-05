@@ -1,0 +1,125 @@
+#!/bin/bash
+# Licensed to Julian Hyde under one or more contributor license
+# agreements.  See the NOTICE file distributed with this work
+# for additional information regarding copyright ownership.
+# Julian Hyde licenses this file to you under the Apache
+# License, Version 2.0 (the "License"); you may not use this
+# file except in compliance with the License.  You may obtain a
+# copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+# either express or implied.  See the License for the specific
+# language governing permissions and limitations under the
+# License.
+# Push the commits on a local branch to origin/main one at a
+# time, waiting until CI succeeds on each commit before pushing
+# the next. Requires the gh CLI, authenticated.
+#
+# Usage: pushGreen [BRANCH]
+#   BRANCH   local branch holding the commits (default: main)
+#
+# Resumable: each run re-reads origin/main and pushes only the
+# commits it does not yet have, so an interrupted run picks up
+# where it left off. If CI fails, the script stops with the
+# failing commit as the remote tip; fix (amend and force-push,
+# or revert) and re-run.
+set -euo pipefail
+
+branch=${1:-main}
+remote=origin
+remote_branch=main
+poll_seconds=30
+ci_timeout_seconds=1800
+
+git fetch --quiet "$remote"
+base=$(git rev-parse "$remote/$remote_branch")
+
+if ! git merge-base --is-ancestor "$base" "$branch"; then
+  echo "error: $remote/$remote_branch ($(git rev-parse --short "$base"))" \
+       "is not an ancestor of $branch" >&2
+  echo "       (nothing here force-pushes; reconcile first)" >&2
+  exit 1
+fi
+
+commits=$(git rev-list --reverse "$base..$branch")
+if [ -z "$commits" ]; then
+  echo "$remote/$remote_branch is up to date with $branch"
+  exit 0
+fi
+total_commits=$(echo "$commits" | wc -l | tr -d ' ')
+
+# Remark if CI is already busy. Runs in flight -- on a branch, or from
+# an earlier push to main -- compete for the same runners, so the first
+# wait below can be far longer than a build usually takes, and that is
+# worth knowing before it looks like a hang. Anything not "completed"
+# counts, which covers "queued" and "waiting" as well as "in_progress".
+# Informational only: if gh cannot answer, say nothing and carry on.
+busy=$(gh run list --limit 50 \
+         --json status,workflowName,headBranch,headSha \
+         --jq '.[]
+               | select(.status != "completed")
+               | "\(.status)  \(.workflowName)  \(.headBranch)  " +
+                 .headSha[0:7]' 2>/dev/null || true)
+if [ -n "$busy" ]; then
+  busy_count=$(echo "$busy" | wc -l | tr -d ' ')
+  echo "note: CI is busy ($busy_count run(s) not yet complete);" \
+       "the first push may queue"
+  echo "$busy" | sed 's/^/        /'
+fi
+
+# ci_state SHA -> "pending" | "success" | "failure"; success only
+# when at least one check run exists and every completed run
+# passed (success, neutral, or skipped count as passing).
+ci_state() {
+  gh api "repos/{owner}/{repo}/commits/$1/check-runs" --jq '
+    (.total_count) as $n
+    | ([.check_runs[] | select(.status == "completed")] | length) as $done
+    | ([.check_runs[]
+        | select(.status == "completed")
+        | select(.conclusion != "success"
+                 and .conclusion != "neutral"
+                 and .conclusion != "skipped")] | length) as $bad
+    | if $bad > 0 then "failure"
+      elif $n == 0 or $done < $n then "pending"
+      else "success"
+      end'
+}
+
+n=0
+for sha in $commits; do
+  n=$((n + 1))
+  short=$(git rev-parse --short "$sha")
+  subject=$(git log -1 --format=%s "$sha")
+  echo "== [$n/$total_commits] pushing $short  $subject"
+  git push --quiet "$remote" "$sha:refs/heads/$remote_branch"
+
+  deadline=$((SECONDS + ci_timeout_seconds))
+  while :; do
+    state=$(ci_state "$sha")
+    case $state in
+      success)
+        echo "   CI green"
+        break
+        ;;
+      failure)
+        echo "error: CI failed on $short  $subject" >&2
+        echo "       see: gh run list --commit $sha" >&2
+        exit 1
+        ;;
+      pending)
+        if [ "$SECONDS" -ge "$deadline" ]; then
+          echo "error: CI still pending on $short" \
+               "after ${ci_timeout_seconds}s" >&2
+          exit 1
+        fi
+        sleep "$poll_seconds"
+        ;;
+    esac
+  done
+done
+
+echo "all $total_commits commits pushed, CI green on each"

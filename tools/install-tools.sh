@@ -33,6 +33,7 @@ for i in \
   lastLog.sh \
   longLines \
   mailself \
+  pushGreen \
   rat \
   relNotes \
   remove-javadoc-timestamps \
