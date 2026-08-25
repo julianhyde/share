@@ -15,28 +15,142 @@
 # either express or implied.  See the License for the specific
 # language governing permissions and limitations under the
 # License.
-# Push the commits on a local branch to origin/main one at a
-# time, waiting until CI succeeds on each commit before pushing
-# the next. Requires the gh CLI, authenticated.
+# Push the commits on a local branch to a remote's main branch one
+# at a time, waiting until CI succeeds on each commit before
+# pushing the next. Requires the gh CLI, authenticated.
 #
-# Usage: pushGreen [BRANCH]
-#   BRANCH   local branch holding the commits (default: main)
+# Usage: pushGreen [OPTION]... [BRANCH]
+#   BRANCH               local branch holding the commits
+#                        (default: main)
+#   -r, --remote REMOTE  remote to push to (default: origin)
+#   -b, --branch NAME    branch to push to on the remote
+#                        (default: main)
+#   -h, --help           print usage and exit
 #
-# Resumable: each run re-reads origin/main and pushes only the
-# commits it does not yet have, so an interrupted run picks up
+# Resumable: each run re-reads the remote's main and pushes only
+# the commits it does not yet have, so an interrupted run picks up
 # where it left off. If CI fails, the script stops with the
 # failing commit as the remote tip; fix (amend and force-push,
 # or revert) and re-run.
 set -euo pipefail
 
-branch=${1:-main}
 remote=origin
 remote_branch=main
 poll_seconds=30
 ci_timeout_seconds=1800
 
+usage() {
+  cat <<'END'
+Usage: pushGreen [OPTION]... [BRANCH]
+
+Push the commits on a local branch to a remote's main branch one at a
+time, waiting until CI succeeds on each commit before pushing the next.
+Requires the gh CLI, authenticated, and a remote on github.com.
+
+Arguments:
+  BRANCH                 local branch holding the commits (default: main)
+
+Options:
+  -r, --remote REMOTE    remote to push to, also --remote=REMOTE
+                         (default: origin)
+  -b, --branch NAME      branch to push to on the remote, also
+                         --branch=NAME (default: main)
+  -h, --help             print this message and exit
+
+Before the first push it waits for any CI already running on the remote
+branch's tip, so that two jobs never run at once.
+
+Nothing here force-pushes: the remote branch must be an ancestor of
+BRANCH. Each run re-reads it and pushes only the commits it does not yet
+have, so an interrupted run picks up where it left off. If CI fails, the
+script stops with the failing commit as the remote tip; fix (amend and
+force-push, or revert) and re-run.
+END
+}
+
+branch=
+while [ $# -gt 0 ]; do
+  case $1 in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    -r|--remote)
+      if [ $# -lt 2 ]; then
+        echo "error: $1 needs the name of a remote" >&2
+        exit 1
+      fi
+      remote=$2
+      shift 2
+      ;;
+    --remote=*)
+      remote=${1#--remote=}
+      shift
+      ;;
+    -b|--branch)
+      if [ $# -lt 2 ]; then
+        echo "error: $1 needs the name of a branch" >&2
+        exit 1
+      fi
+      remote_branch=$2
+      shift 2
+      ;;
+    --branch=*)
+      remote_branch=${1#--branch=}
+      shift
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      echo "error: unknown option: $1 (try 'pushGreen --help')" >&2
+      exit 1
+      ;;
+    *)
+      if [ -n "$branch" ]; then
+        echo "error: unexpected argument: $1 (try 'pushGreen --help')" >&2
+        exit 1
+      fi
+      branch=$1
+      shift
+      ;;
+  esac
+done
+# A branch given after `--` is still a branch.
+if [ -z "$branch" ] && [ $# -gt 0 ]; then
+  branch=$1
+fi
+branch=${branch:-main}
+
+if ! remote_url=$(git remote get-url "$remote" 2>/dev/null); then
+  echo "error: no such remote: $remote" >&2
+  echo "       remotes here: $(git remote | tr '\n' ' ')" >&2
+  exit 1
+fi
+
+# `gh` resolves {owner}/{repo} from the directory's remotes, which need
+# not be the remote we are pushing to, so ask it about the right one.
+case $remote_url in
+  *github.com[:/]*)
+    repo=${remote_url#*github.com}
+    repo=${repo#[:/]}
+    repo=${repo%.git}
+    ;;
+  *)
+    echo "error: remote $remote is $remote_url, which is not on" \
+         "github.com;" >&2
+    echo "       CI status can only be polled for a GitHub repository" >&2
+    exit 1
+    ;;
+esac
+
 git fetch --quiet "$remote"
-base=$(git rev-parse "$remote/$remote_branch")
+if ! base=$(git rev-parse --verify --quiet "$remote/$remote_branch"); then
+  echo "error: $remote has no branch $remote_branch" >&2
+  echo "       (this pushes to an existing branch; create it first)" >&2
+  exit 1
+fi
 
 if ! git merge-base --is-ancestor "$base" "$branch"; then
   echo "error: $remote/$remote_branch ($(git rev-parse --short "$base"))" \
@@ -58,7 +172,7 @@ total_commits=$(echo "$commits" | wc -l | tr -d ' ')
 # worth knowing before it looks like a hang. Anything not "completed"
 # counts, which covers "queued" and "waiting" as well as "in_progress".
 # Informational only: if gh cannot answer, say nothing and carry on.
-busy=$(gh run list --limit 50 \
+busy=$(gh run list --limit 50 --repo "$repo" \
          --json status,workflowName,headBranch,headSha \
          --jq '.[]
                | select(.status != "completed")
@@ -71,11 +185,14 @@ if [ -n "$busy" ]; then
   echo "$busy" | sed 's/^/        /'
 fi
 
-# ci_state SHA -> "pending" | "success" | "failure"; success only
-# when at least one check run exists and every completed run
-# passed (success, neutral, or skipped count as passing).
+# ci_state SHA -> "none" | "pending" | "success" | "failure".
+# "none" means no check run exists for the commit at all, which for a
+# commit just pushed means CI has yet to register and for an older one
+# means it never ran; the caller decides which. Otherwise success only
+# when every completed run passed (success, neutral, or skipped count
+# as passing).
 ci_state() {
-  gh api "repos/{owner}/{repo}/commits/$1/check-runs" --jq '
+  gh api "repos/$repo/commits/$1/check-runs" --jq '
     (.total_count) as $n
     | ([.check_runs[] | select(.status == "completed")] | length) as $done
     | ([.check_runs[]
@@ -83,11 +200,59 @@ ci_state() {
         | select(.conclusion != "success"
                  and .conclusion != "neutral"
                  and .conclusion != "skipped")] | length) as $bad
-    | if $bad > 0 then "failure"
-      elif $n == 0 or $done < $n then "pending"
+    | if $n == 0 then "none"
+      elif $bad > 0 then "failure"
+      elif $done < $n then "pending"
       else "success"
       end'
 }
+
+# Wait for CI already running on the remote tip before pushing anything
+# on top of it: two commits building at once compete for runners, and a
+# failure on the tip is one this run would otherwise bury.
+wait_for_tip() {
+  local short state deadline
+  short=$(git rev-parse --short "$base")
+  state=$(ci_state "$base")
+  case $state in
+    none)
+      echo "note: no CI run for $remote/$remote_branch ($short); not waiting"
+      return 0
+      ;;
+    success) return 0 ;;
+    failure)
+      echo "error: CI failed on $remote/$remote_branch ($short)" >&2
+      echo "       fix that before pushing on top of it;" \
+           "see: gh run list --repo $repo --commit $base" >&2
+      exit 1
+      ;;
+  esac
+  echo "waiting for CI on $remote/$remote_branch ($short) to finish"
+  deadline=$((SECONDS + ci_timeout_seconds))
+  while :; do
+    sleep "$poll_seconds"
+    state=$(ci_state "$base")
+    case $state in
+      success)
+        echo "   CI green; starting"
+        return 0
+        ;;
+      failure)
+        echo "error: CI failed on $remote/$remote_branch ($short)" >&2
+        exit 1
+        ;;
+      *)
+        if [ "$SECONDS" -ge "$deadline" ]; then
+          echo "error: CI still running on $short after" \
+               "${ci_timeout_seconds}s" >&2
+          exit 1
+        fi
+        ;;
+    esac
+  done
+}
+
+wait_for_tip
 
 n=0
 for sha in $commits; do
@@ -107,10 +272,10 @@ for sha in $commits; do
         ;;
       failure)
         echo "error: CI failed on $short  $subject" >&2
-        echo "       see: gh run list --commit $sha" >&2
+        echo "       see: gh run list --repo $repo --commit $sha" >&2
         exit 1
         ;;
-      pending)
+      none|pending)
         if [ "$SECONDS" -ge "$deadline" ]; then
           echo "error: CI still pending on $short" \
                "after ${ci_timeout_seconds}s" >&2
