@@ -16,10 +16,25 @@
 
 width=${WIDTH:-81}
 
-# The GitHub URL of the repository we are being run in. A bare '#123'
-# refers to an issue of this repository.
+# The GitHub URL of the repository we are being run in, and its name.
+# A bare '#123' refers to an issue of this repository.
 repo=$(git config --get remote.origin.url |
   sed -e 's!^git@github.com:!https://github.com/!' -e 's!\.git$!!')
+if [[ -z ${repo} ]]; then
+  echo "relNotes: no remote 'origin'; run me inside a git clone" >&2
+  exit 1
+fi
+project=${repo##*/}
+
+# How to name an issue of a sibling project. An issue of the project we
+# are running in is bare ('#123'); one of another project is qualified
+# ('morel#123'), so that the two are told apart.
+morel_tag=morel; rust_tag=rust; go_tag=go
+case ${project} in
+  morel) morel_tag= ;;
+  morel-rust) rust_tag= ;;
+  morel-go) go_tag= ;;
+esac
 
 git log --abbrev-commit ${range} --pretty=format:'* %s' -- ${2} |
 sed -e '
@@ -32,11 +47,11 @@ s!\(SMLJ-\([0-9]*\)\)!<a href="https://github.com/hydromatic/morel/issues/\2">\1
 s!\(SQLLINE-\([0-9]*\)\)!<a href="https://github.com/julianhyde/sqlline/issues/\2">\1</a>!;
 s!</a>\]!</a>]\
  !;' |
-sed -e '
-s!hydromatic/morel-rust#\([0-9]*\)![rust#\1](https://github.com/hydromatic/morel-rust/issues/\1)!g;
-s!hydromatic/morel-go#\([0-9]*\)![#\1](https://github.com/hydromatic/morel-go/issues/\1)!g;
-s!hydromatic/morel#\([0-9]*\)![morel#\1](https://github.com/hydromatic/morel/issues/\1)!g;
-' |
+sed -e "
+s!hydromatic/morel-rust#\\([0-9]*\\)![${rust_tag}#\\1](https://github.com/hydromatic/morel-rust/issues/\\1)!g;
+s!hydromatic/morel-go#\\([0-9]*\\)![${go_tag}#\\1](https://github.com/hydromatic/morel-go/issues/\\1)!g;
+s!hydromatic/morel#\\([0-9]*\\)![${morel_tag}#\\1](https://github.com/hydromatic/morel/issues/\\1)!g;
+" |
 sed -e 's!\([ (]\)#\([0-9]*\)!\1[#\2]('"${repo}"'/issues/\2)!g' |
 fold -s -${width} |
 sed -e 's/ *$//' |
