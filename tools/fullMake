@@ -132,6 +132,8 @@ function doMorelRust {
   fi
   echo ::: build ::: && \
       cargo build --verbose $RELEASE && \
+      echo ::: wasm ::: && \
+      cargo build --target wasm32-unknown-unknown --lib $RELEASE && \
       echo ::: clippy ::: && \
       cargo clippy --message-format=short $RELEASE -- -D warnings && \
       echo ::: fmt ::: && \
