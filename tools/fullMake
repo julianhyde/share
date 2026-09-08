@@ -104,8 +104,12 @@ function doFiltex {
 
 function doMorel {
   java -version
+  args=
+  # Older JDKs need older versions of some dependencies; see the
+  # comments on 'checkstyle.version' in Morel's pom.xml.
   case $(java -version 2>&1 | awk 'FNR == 1 {print substr($3, 2, length($3) - 2)}') in
   (1.8.*) args="$args -Dhsqldb.version=2.5.2 -Dguava.version=19.0 -Dcheckstyle.version=9.3";;
+  (9.*|1[0-6].*) args="$args -Dcheckstyle.version=10.26.1";;
   esac
   ./mvnw $args clean test -Dgit-commit-id.skip=true javadoc:javadoc javadoc:test-javadoc
 }
