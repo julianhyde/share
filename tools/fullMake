@@ -102,6 +102,46 @@ function doFiltex {
   ./mvnw clean verify -Dgit-commit-id.skip=true -Dcheckstyle.version=9.3 javadoc:javadoc javadoc:test-javadoc
 }
 
+function doFoodmartData {
+  if [ "$CLEAN" ]; then
+    echo ::: clean ::: && \
+        go clean && \
+        go clean -testcache && \
+        golangci-lint cache clean && \
+        cargo clean
+  fi
+  echo ::: schema ::: && \
+      ./tools/schema.py && \
+      git diff --exit-code -- schema.go src/schema.rs && \
+      echo ::: go build ::: && \
+      go build -v ./... && \
+      echo ::: go vet ::: && \
+      go vet ./... && \
+      echo ::: gofmt ::: && \
+      { test -z "$(gofmt -l .)" || { gofmt -l .; false; }; } && \
+      echo ::: golangci-lint ::: && \
+      golangci-lint run ./... && \
+      echo ::: go test ::: && \
+      go test -v ./... && \
+      echo ::: cargo build ::: && \
+      cargo build --verbose $RELEASE && \
+      echo ::: clippy ::: && \
+      cargo clippy --all-targets --message-format=short $RELEASE -- -D warnings && \
+      echo ::: fmt ::: && \
+      cargo fmt --all -- --check && \
+      echo ::: cargo test ::: && \
+      cargo test --verbose $RELEASE && \
+      echo ::: doc ::: && \
+      cargo doc $RELEASE && \
+      echo ::: package ::: && \
+      cargo package --allow-dirty
+}
+
+function doFoodmartDataHsqldb {
+  java -version
+  ./mvnw clean verify -Dgit-commit-id.skip=true javadoc:javadoc javadoc:test-javadoc
+}
+
 function doMorel {
   java -version
   args=
@@ -162,14 +202,17 @@ function usage {
 Usage: fullMake [OPTIONS]
 
   Performs an exhaustive build for the project detected in the current
-  directory (avatica, calcite, filtex, morel, morel-go, morel-rust, or
-  quidem).
+  directory (avatica, calcite, filtex, foodmart-data,
+  foodmart-data-hsqldb, morel, morel-go, morel-rust, or quidem).
 
 Options:
-  --clean         Clean before building.          [morel-go, morel-rust]
-  --no-clean      Skip cleaning (default).         [morel-go, morel-rust]
-  --release       Build in release mode.                [morel-rust only]
-  --debug         Build in debug mode (default).        [morel-rust only]
+  --clean         Clean before building.
+                            [foodmart-data, morel-go, morel-rust]
+  --no-clean      Skip cleaning (default).
+                            [foodmart-data, morel-go, morel-rust]
+  --release       Build in release mode.  [foodmart-data, morel-rust]
+  --debug         Build in debug mode (default).
+                                          [foodmart-data, morel-rust]
   --help          Show this message and exit.
 
 Project-specific options (recognized by individual projects):
@@ -205,6 +248,12 @@ case $proj in
   ;;
 (*/filtex*)
   doFiltex "$@"
+  ;;
+(*/foodmart-data-hsqldb*)
+  doFoodmartDataHsqldb "$@"
+  ;;
+(*/foodmart-data*)
+  doFoodmartData "$@"
   ;;
 (*/morel-go*)
   doMorelGo "$@"
