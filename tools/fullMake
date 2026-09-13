@@ -26,6 +26,7 @@ export GUAVA_VERSIONS="\
 14.0.1 \
 "
 export MAX_GUAVA_VERSION=33.4.8-jre  # matches Calcite CI's GUAVA_MAX
+export MIN_GUAVA_VERSION=21.0
 
 function doAvatica {
   if [ "$1" = --allGuava ]; then
@@ -86,7 +87,7 @@ function doCalcite {
   ./gradlew test -Pguava.version=${GUAVA_VERSION} ${SKIP} &&
   if test "$DO_CHECKER"; then
     echo ::checkerFramework::
-    ./gradlew --no-parallel --no-daemon -PenableCheckerframework :linq4j:classes :core:classes # :arrow:classes
+    ./gradlew --no-parallel --no-daemon -PenableCheckerframework -Pguava.version=${MIN_GUAVA_VERSION} :linq4j:classes :core:classes :server:classes # :arrow:classes
   else
     echo ::skip checkerFramework::
   fi &&
@@ -148,7 +149,7 @@ function doMorel {
   # Older JDKs need older versions of some dependencies; see the
   # comments on 'checkstyle.version' in Morel's pom.xml.
   case $(java -version 2>&1 | awk 'FNR == 1 {print substr($3, 2, length($3) - 2)}') in
-  (1.8.*) args="$args -Dhsqldb.version=2.5.2 -Dguava.version=19.0 -Dcheckstyle.version=9.3";;
+  (1.8.*) args="$args -Dhsqldb.version=2.5.1 -Dguava.version=23.1-jre -Dcheckstyle.version=9.3";;
   (9.*|1[0-6].*) args="$args -Dcheckstyle.version=10.26.1";;
   esac
   ./mvnw $args clean test -Dgit-commit-id.skip=true javadoc:javadoc javadoc:test-javadoc
@@ -271,7 +272,7 @@ case $proj in
   echo "don't know how to make in $(pwd)"
   ;;
 esac 2>&1 | tee $LOG
-status=${PIPESTATUS[0] :- pipestatus[1]}
+status=${PIPESTATUS[0]}
 echo "Status ${status}; see $LOG for output"
 exit $status
 
