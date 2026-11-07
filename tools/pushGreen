@@ -15,19 +15,19 @@
 # either express or implied.  See the License for the specific
 # language governing permissions and limitations under the
 # License.
-# Push the commits on a local branch to a remote's main branch one
+# Push the commits on a local branch to a branch on a remote one
 # at a time, waiting until CI succeeds on each commit before
 # pushing the next. Requires the gh CLI, authenticated.
 #
 # Usage: pushGreen [OPTION]... [BRANCH]
 #   BRANCH               local branch holding the commits
-#                        (default: main)
+#                        (default: the remote branch's name)
 #   -r, --remote REMOTE  remote to push to (default: origin)
 #   -b, --branch NAME    branch to push to on the remote
 #                        (default: main)
 #   -h, --help           print usage and exit
 #
-# Resumable: each run re-reads the remote's main and pushes only
+# Resumable: each run re-reads the remote branch and pushes only
 # the commits it does not yet have, so an interrupted run picks up
 # where it left off. If CI fails, the script stops with the
 # failing commit as the remote tip; fix (amend and force-push,
@@ -43,12 +43,13 @@ usage() {
   cat <<'END'
 Usage: pushGreen [OPTION]... [BRANCH]
 
-Push the commits on a local branch to a remote's main branch one at a
+Push the commits on a local branch to a branch on a remote one at a
 time, waiting until CI succeeds on each commit before pushing the next.
 Requires the gh CLI, authenticated, and a remote on github.com.
 
 Arguments:
-  BRANCH                 local branch holding the commits (default: main)
+  BRANCH                 local branch holding the commits (default: the
+                         name given by --branch, or main)
 
 Options:
   -r, --remote REMOTE    remote to push to, also --remote=REMOTE
@@ -121,7 +122,9 @@ done
 if [ -z "$branch" ] && [ $# -gt 0 ]; then
   branch=$1
 fi
-branch=${branch:-main}
+# Default to the remote branch's name, not the current branch: a bare
+# `pushGreen` run from a feature branch must not push it to main.
+branch=${branch:-$remote_branch}
 
 if ! remote_url=$(git remote get-url "$remote" 2>/dev/null); then
   echo "error: no such remote: $remote" >&2
@@ -131,19 +134,53 @@ fi
 
 # `gh` resolves {owner}/{repo} from the directory's remotes, which need
 # not be the remote we are pushing to, so ask it about the right one.
+#
+# Split the URL into scheme, host and path. Forms:
+#   scheme://[user@]host[:port]/path   (ssh, https, git, ...)
+#   [user@]host:path                   (scp-like, which is ssh)
 case $remote_url in
-  *github.com[:/]*)
-    repo=${remote_url#*github.com}
-    repo=${repo#[:/]}
-    repo=${repo%.git}
+  *://*)
+    scheme=${remote_url%%://*}
+    host=${remote_url#*://}
+    path=${host#*/}
+    host=${host%%/*}
+    host=${host##*@}
+    host=${host%%:*}
+    ;;
+  *:*)
+    scheme=ssh
+    host=${remote_url%%:*}
+    host=${host##*@}
+    path=${remote_url#*:}
     ;;
   *)
-    echo "error: remote $remote is $remote_url, which is not on" \
-         "github.com;" >&2
-    echo "       CI status can only be polled for a GitHub repository" >&2
-    exit 1
+    scheme= host= path=
     ;;
 esac
+# An ssh host may be an alias in ~/.ssh/config, such as
+# "Host github-work" with "HostName github.com", for a second account.
+# `ssh -G` prints the configuration that ssh would use, which applies
+# Host and Match blocks and Include files, without connecting.
+case $scheme in
+  ssh|git+ssh|ssh+git)
+    if resolved=$(ssh -G "$host" 2>/dev/null \
+                    | awk '$1 == "hostname" { print $2; exit }') \
+       && [ -n "$resolved" ]; then
+      host=$resolved
+    fi
+    ;;
+esac
+host=$(echo "$host" | tr '[:upper:]' '[:lower:]')
+path=${path#/}
+path=${path%/}
+path=${path%.git}
+if [ "$host" != github.com ] || [ -z "$path" ]; then
+  echo "error: remote $remote is $remote_url, which is not on" \
+       "github.com;" >&2
+  echo "       CI status can only be polled for a GitHub repository" >&2
+  exit 1
+fi
+repo=$path
 
 git fetch --quiet "$remote"
 if ! base=$(git rev-parse --verify --quiet "$remote/$remote_branch"); then
