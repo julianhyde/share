@@ -37,6 +37,7 @@ set -euo pipefail
 remote=origin
 remote_branch=main
 poll_seconds=30
+quiet_seconds=300
 ci_timeout_seconds=1800
 
 usage() {
@@ -45,7 +46,9 @@ Usage: pushGreen [OPTION]... [BRANCH]
 
 Push the commits on a local branch to a branch on a remote one at a
 time, waiting until CI succeeds on each commit before pushing the next.
-Requires the gh CLI, authenticated, and a remote on github.com.
+Requires the gh CLI, authenticated, and a remote on github.com. If the
+remote is a fork, CI is also looked for in its parent repository, where
+it runs for a pull request from the fork.
 
 Arguments:
   BRANCH                 local branch holding the commits (default: the
@@ -182,6 +185,16 @@ if [ "$host" != github.com ] || [ -z "$path" ]; then
 fi
 repo=$path
 
+# The repositories whose CI reports on the commits we push. If the
+# remote is a fork, CI usually runs in its parent, on the pull request
+# from the fork's branch (forks often have Actions disabled), and the
+# check runs are recorded against the commit there, not in the fork.
+ci_repos=$repo
+if parent=$(gh api "repos/$repo" --jq '.parent.full_name // ""' 2>/dev/null) \
+   && [ -n "$parent" ]; then
+  ci_repos="$repo $parent"
+fi
+
 git fetch --quiet "$remote"
 if ! base=$(git rev-parse --verify --quiet "$remote/$remote_branch"); then
   echo "error: $remote has no branch $remote_branch" >&2
@@ -209,12 +222,14 @@ total_commits=$(echo "$commits" | wc -l | tr -d ' ')
 # worth knowing before it looks like a hang. Anything not "completed"
 # counts, which covers "queued" and "waiting" as well as "in_progress".
 # Informational only: if gh cannot answer, say nothing and carry on.
-busy=$(gh run list --limit 50 --repo "$repo" \
-         --json status,workflowName,headBranch,headSha \
-         --jq '.[]
-               | select(.status != "completed")
-               | "\(.status)  \(.workflowName)  \(.headBranch)  " +
-                 .headSha[0:7]' 2>/dev/null || true)
+busy=$(for r in $ci_repos; do
+         gh run list --limit 50 --repo "$r" \
+           --json status,workflowName,headBranch,headSha \
+           --jq '.[]
+                 | select(.status != "completed")
+                 | "\(.status)  \(.workflowName)  \(.headBranch)  " +
+                   .headSha[0:7]' 2>/dev/null || true
+       done)
 if [ -n "$busy" ]; then
   busy_count=$(echo "$busy" | wc -l | tr -d ' ')
   echo "note: CI is busy ($busy_count run(s) not yet complete);" \
@@ -227,21 +242,37 @@ fi
 # commit just pushed means CI has yet to register and for an older one
 # means it never ran; the caller decides which. Otherwise success only
 # when every completed run passed (success, neutral, or skipped count
-# as passing).
+# as passing). Counts the check runs in every repository in $ci_repos.
 ci_state() {
-  gh api "repos/$repo/commits/$1/check-runs" --jq '
-    (.total_count) as $n
-    | ([.check_runs[] | select(.status == "completed")] | length) as $done
-    | ([.check_runs[]
-        | select(.status == "completed")
-        | select(.conclusion != "success"
-                 and .conclusion != "neutral"
-                 and .conclusion != "skipped")] | length) as $bad
-    | if $n == 0 then "none"
-      elif $bad > 0 then "failure"
-      elif $done < $n then "pending"
-      else "success"
-      end'
+  local r counts n=0 n_done=0 n_bad=0 c_n c_done c_bad
+  for r in $ci_repos; do
+    counts=$(gh api "repos/$r/commits/$1/check-runs?per_page=100" --jq '
+      [(.check_runs | length),
+       ([.check_runs[] | select(.status == "completed")] | length),
+       ([.check_runs[]
+         | select(.status == "completed")
+         | select(.conclusion != "success"
+                  and .conclusion != "neutral"
+                  and .conclusion != "skipped")] | length)]
+      | map(tostring) | join(" ")')
+    read -r c_n c_done c_bad <<<"$counts"
+    n=$((n + c_n))
+    n_done=$((n_done + c_done))
+    n_bad=$((n_bad + c_bad))
+  done
+  if [ "$n" -eq 0 ]; then echo none
+  elif [ "$n_bad" -gt 0 ]; then echo failure
+  elif [ "$n_done" -lt "$n" ]; then echo pending
+  else echo success
+  fi
+}
+
+# see_runs SHA: tells the user where to look for the runs on a commit.
+see_runs() {
+  local r
+  for r in $ci_repos; do
+    echo "       see: gh run list --repo $r --commit $1" >&2
+  done
 }
 
 # Wait for CI already running on the remote tip before pushing anything
@@ -259,8 +290,8 @@ wait_for_tip() {
     success) return 0 ;;
     failure)
       echo "error: CI failed on $remote/$remote_branch ($short)" >&2
-      echo "       fix that before pushing on top of it;" \
-           "see: gh run list --repo $repo --commit $base" >&2
+      echo "       fix that before pushing on top of it" >&2
+      see_runs "$base"
       exit 1
       ;;
   esac
@@ -299,7 +330,9 @@ for sha in $commits; do
   echo "== [$n/$total_commits] pushing $short  $subject"
   git push --quiet "$remote" "$sha:refs/heads/$remote_branch"
 
+  pushed=$SECONDS
   deadline=$((SECONDS + ci_timeout_seconds))
+  noted=
   while :; do
     state=$(ci_state "$sha")
     case $state in
@@ -309,10 +342,17 @@ for sha in $commits; do
         ;;
       failure)
         echo "error: CI failed on $short  $subject" >&2
-        echo "       see: gh run list --repo $repo --commit $sha" >&2
+        see_runs "$sha"
         exit 1
         ;;
       none|pending)
+        # CI that never starts looks like a hang, so say so, once.
+        if [ "$state" = none ] && [ -z "$noted" ] \
+           && [ $((SECONDS - pushed)) -ge "$quiet_seconds" ]; then
+          echo "   note: no CI run on $short after ${quiet_seconds}s" \
+               "(looked in: $ci_repos); still waiting"
+          noted=1
+        fi
         if [ "$SECONDS" -ge "$deadline" ]; then
           echo "error: CI still pending on $short" \
                "after ${ci_timeout_seconds}s" >&2
