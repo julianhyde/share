@@ -198,13 +198,24 @@ function doQuidem {
   ./mvnw $args clean test -Dgit-commit-id.skip=true javadoc:javadoc javadoc:test-javadoc
 }
 
+function doScottDataHsqldb {
+  java -version
+  args=
+  # hsqldb >= 2.6 requires JDK >= 11; see .github/workflows/main.yml.
+  case $(java -version 2>&1 | awk 'FNR == 1 {print substr($3, 2, length($3) - 2)}') in
+  (1.8.*) args="$args -Dhsqldb.version=2.3.6";;
+  esac
+  ./mvnw $args clean verify -Dgit-commit-id.skip=true javadoc:javadoc javadoc:test-javadoc
+}
+
 function usage {
   cat <<'EOF'
 Usage: fullMake [OPTIONS]
 
   Performs an exhaustive build for the project detected in the current
   directory (avatica, calcite, filtex, foodmart-data,
-  foodmart-data-hsqldb, morel, morel-go, morel-rust, or quidem).
+  foodmart-data-hsqldb, morel, morel-go, morel-rust, quidem, or
+  scott-data-hsqldb).
 
 Options:
   --clean         Clean before building.
@@ -267,6 +278,9 @@ case $proj in
   ;;
 (*/quidem*)
   doQuidem "$@"
+  ;;
+(*/scott-data-hsqldb*)
+  doScottDataHsqldb "$@"
   ;;
 (*)
   echo "don't know how to make in $(pwd)"
